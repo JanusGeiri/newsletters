@@ -1,0 +1,304 @@
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+from datetime import datetime
+import os
+import json
+import logging
+from pathlib import Path
+from dotenv import load_dotenv
+import argparse
+
+# Load environment variables from .env file
+load_dotenv()
+
+# Configure logging
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(levelname)s - %(message)s'
+)
+logger = logging.getLogger(__name__)
+
+# Email configuration
+SMTP_SERVER = "smtp.gmail.com"
+SMTP_PORT = 587
+SENDER_EMAIL = os.getenv("NEWSLETTER_EMAIL")
+SENDER_PASSWORD = os.getenv("NEWSLETTER_PASSWORD")
+
+
+def get_newsletter_by_date(date_str):
+    """Get newsletter content for a specific date."""
+    newsletters_dir = Path('outputs/formatted_newsletters')
+    if not newsletters_dir.exists():
+        logger.error("Newsletters directory not found")
+        return None
+
+    # Try to parse the date
+    try:
+        target_date = datetime.strptime(date_str, '%Y-%m-%d')
+    except ValueError:
+        logger.error(f"Invalid date format. Please use YYYY-MM-DD")
+        return None
+
+    # Get all HTML files
+    html_files = []
+    for type_dir in newsletters_dir.iterdir():
+        if type_dir.is_dir() and 'archived' not in type_dir.name.lower():
+            html_files.extend(type_dir.glob('*.html'))
+
+    if not html_files:
+        logger.error("No newsletter files found")
+        return None
+
+    # Find file matching the date
+    for file in html_files:
+        try:
+            # Get date part from filename (last part before .html)
+            # Get the last part after underscore
+            file_date_str = file.stem.split('_')[-1]
+            file_date = datetime.strptime(file_date_str, '%Y-%m-%d')
+            if file_date.date() == target_date.date():
+                logger.info(f"Found newsletter file: {file}")
+                with open(file, 'r', encoding='utf-8') as f:
+                    return f.read()
+        except (ValueError, IndexError) as e:
+            logger.debug(
+                f"Could not parse date from filename {file}: {str(e)}")
+            continue
+
+    logger.error(f"No newsletter found for date {date_str}")
+    return None
+
+
+def get_newsletter_by_filename(filename):
+    """Get newsletter content for a specific filename."""
+    newsletters_dir = Path('outputs/formatted_newsletters')
+    if not newsletters_dir.exists():
+        logger.error("Newsletters directory not found")
+        return None
+
+    # Try to find the file
+    for type_dir in newsletters_dir.iterdir():
+        if type_dir.is_dir() and 'archived' not in type_dir.name.lower():
+            file_path = type_dir / filename
+            if file_path.exists():
+                try:
+                    with open(file_path, 'r', encoding='utf-8') as f:
+                        return f.read()
+                except Exception as e:
+                    logger.error(f"Error reading newsletter file: {e}")
+                    return None
+
+    logger.error(f"No newsletter found with filename {filename}")
+    return None
+
+
+def get_latest_newsletter():
+    """Get the latest newsletter content."""
+    newsletters_dir = Path('outputs/formatted_newsletters')
+    if not newsletters_dir.exists():
+        logger.error("Newsletters directory not found")
+        return None
+
+    # Get all HTML files
+    html_files = []
+    for type_dir in newsletters_dir.iterdir():
+        if type_dir.is_dir() and 'archived' not in type_dir.name.lower():
+            html_files.extend(type_dir.glob('*.html'))
+
+    if not html_files:
+        logger.error("No newsletter files found")
+        return None
+
+    # Sort by date (newest first)
+    html_files.sort(key=lambda x: x.stat().st_mtime, reverse=True)
+    latest_file = html_files[0]
+
+    try:
+        with open(latest_file, 'r', encoding='utf-8') as f:
+            content = f.read()
+        return content
+    except Exception as e:
+        logger.error(f"Error reading newsletter file: {e}")
+        return None
+
+
+def create_email_html(newsletter_content):
+    """Create the HTML email template."""
+    today = datetime.now().strftime("%d. %B %Y")
+
+    html = f"""
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <meta charset="UTF-8">
+        <style>
+            body {{
+                font-family: Arial, sans-serif;
+                line-height: 1.6;
+                color: #333;
+                max-width: 800px;
+                margin: 0 auto;
+                padding: 20px;
+            }}
+            .header {{
+                text-align: center;
+                padding: 20px;
+                background-color: #f8f9fa;
+                border-radius: 8px;
+                margin-bottom: 20px;
+            }}
+            .content {{
+                background-color: white;
+                padding: 20px;
+                border-radius: 8px;
+                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            }}
+            .footer {{
+                text-align: center;
+                margin-top: 20px;
+                padding: 20px;
+                color: #666;
+                font-size: 0.9em;
+            }}
+            a {{
+                color: #2563eb;
+                text-decoration: none;
+            }}
+            a:hover {{
+                text-decoration: underline;
+            }}
+        </style>
+    </head>
+    <body>
+        <div class="content">
+            {newsletter_content}
+        </div>
+    </body>
+    </html>
+    """
+    return html
+
+
+def get_active_subscribers():
+    """Get list of active subscribers."""
+    try:
+        with open('subscribers.json', 'r') as f:
+            data = json.load(f)
+            # Filter only active subscribers
+            active_subscribers = [
+                subscriber['email']
+                for subscriber in data.get('subscribers', [])
+                if subscriber.get('active', False)
+            ]
+            return active_subscribers
+    except FileNotFoundError:
+        logger.error("No subscribers file found")
+        return []
+    except json.JSONDecodeError:
+        logger.error("Error reading subscribers file")
+        return []
+
+
+def add_subscriber(email):
+    """Add a new subscriber to the list."""
+    try:
+        # Load existing subscribers
+        if os.path.exists('subscribers.json'):
+            with open('subscribers.json', 'r') as f:
+                data = json.load(f)
+        else:
+            data = {"subscribers": []}
+
+        # Check if email already exists
+        for subscriber in data['subscribers']:
+            if subscriber['email'].lower() == email.lower():
+                logger.warning(f"Email {email} already exists")
+                return False
+
+        # Add new subscriber
+        data['subscribers'].append({
+            "email": email.lower(),
+            "subscribed_at": datetime.now().isoformat(),
+            "active": True
+        })
+
+        # Save updated list
+        with open('subscribers.json', 'w') as f:
+            json.dump(data, f, indent=2)
+
+        logger.info(f"Added new subscriber: {email}")
+        return True
+
+    except Exception as e:
+        logger.error(f"Error adding subscriber: {e}")
+        return False
+
+
+def send_newsletter(newsletter_content=None, date=None, filename=None):
+    """Send the newsletter to all active subscribers."""
+    if not all([SENDER_EMAIL, SENDER_PASSWORD]):
+        logger.error(
+            "Email configuration missing. Please set NEWSLETTER_EMAIL and NEWSLETTER_PASSWORD in .env file")
+        return
+
+    # Get active subscribers
+    subscribers = get_active_subscribers()
+    if not subscribers:
+        logger.warning("No active subscribers found")
+        return
+
+    # Get newsletter content based on provided parameters
+    if newsletter_content is None:
+        if date:
+            newsletter_content = get_newsletter_by_date(date)
+        elif filename:
+            newsletter_content = get_newsletter_by_filename(filename)
+        else:
+            newsletter_content = get_latest_newsletter()
+
+    if not newsletter_content:
+        logger.error("No newsletter content found")
+        return
+
+    # Create email template
+    email_html = create_email_html(newsletter_content)
+    subject = f"Daglegt Fréttabréf - {datetime.now().strftime('%d. %B %Y')}"
+
+    # Send to each subscriber
+    try:
+        with smtplib.SMTP(SMTP_SERVER, SMTP_PORT) as server:
+            server.starttls()
+            server.login(SENDER_EMAIL, SENDER_PASSWORD)
+
+            for subscriber in subscribers:
+                try:
+                    # Create a new message for each recipient
+                    msg = MIMEMultipart('alternative')
+                    msg['Subject'] = subject
+                    msg['From'] = SENDER_EMAIL
+                    msg['To'] = subscriber
+                    msg.attach(MIMEText(email_html, 'html'))
+
+                    server.send_message(msg)
+                    logger.info(f"Newsletter sent to {subscriber}")
+                except Exception as e:
+                    logger.error(f"Error sending to {subscriber}: {e}")
+                    continue
+
+    except Exception as e:
+        logger.error(f"Error connecting to SMTP server: {e}")
+        return
+
+    logger.info(f"Newsletter sent to {len(subscribers)} subscribers")
+
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(
+        description='Send newsletter to subscribers')
+    parser.add_argument(
+        '--date', help='Date of newsletter to send (YYYY-MM-DD)')
+    parser.add_argument('--file', help='Filename of newsletter to send')
+    args = parser.parse_args()
+
+    send_newsletter(date=args.date, filename=args.file)
