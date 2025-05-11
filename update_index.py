@@ -49,7 +49,7 @@ def update_index_html():
             latest_link = latest_section.find('a')
             if latest_link:
                 latest_link[
-                    'href'] = f'newsletters/outputs/formatted_newsletters/daily_morning/{latest_file.name}'
+                    'href'] = f'/newsletters/outputs/formatted_newsletters/daily_morning/{latest_file.name}'
                 latest_title = latest_link.find('h3')
                 if latest_title:
                     latest_title.string = f'Fréttabréf ({latest_date})'
@@ -64,7 +64,7 @@ def update_index_html():
         for file in newsletter_files:
             date = extract_date_from_filename(file)
             if date:
-                link = soup.new_tag('a', href=f'newsletters/outputs/formatted_newsletters/daily_morning/{file.name}',
+                link = soup.new_tag('a', href=f'/newsletters/outputs/formatted_newsletters/daily_morning/{file.name}',
                                     attrs={'class': 'newsletter-link'})
                 card = soup.new_tag('div', attrs={'class': 'newsletter-card'})
                 title = soup.new_tag('h3')
