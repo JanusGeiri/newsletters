@@ -7,9 +7,10 @@ This project automatically generates daily news summaries from various Icelandic
 - Scrapes news from multiple Icelandic sources (Visir, MBL, Vb, RUV)
 - Generates summaries using OpenAI's GPT-4
 - Supports multiple newsletter types (daily morning, daily noon, daily evening, weekly)
-- Formats newsletters in HTML
+- Formats newsletters in HTML with a clean, modern design
 - Sends newsletters to subscribers via email
 - Web interface to view past newsletters
+- Automatic index page updates with reverse chronological ordering
 
 ## Installation
 
@@ -41,7 +42,7 @@ The main script (`main.py`) supports several modes of operation:
 # Full pipeline (scrape, generate, and format)
 python main.py --mode full_pipeline --daily-morning --date 2024-03-15
 
-# Generate and format without scraping (new mode)
+# Generate and format without scraping
 python main.py --mode generate_and_format --daily-morning --date 2024-03-15
 
 # Scrape only
@@ -95,10 +96,26 @@ python send_newsletter.py --file daily_morning_2024-03-15.html
 To start the web interface:
 
 ```bash
-python app.py
+# Start the simple HTTP server
+python serve.py
 ```
 
-The web interface will be available at `http://localhost:5000`
+The web interface will be available at `http://localhost:8000`
+
+### Updating the Index Page
+
+The index page is automatically updated to show the latest newsletters in reverse chronological order:
+
+```bash
+# Update index.html with latest newsletter links
+python update_index.py
+```
+
+This script:
+- Scans the `outputs/formatted_newsletters/daily_morning` directory for newsletter files
+- Updates the latest newsletter section with the most recent newsletter
+- Updates the newsletter list with all newsletters sorted by date (newest first)
+- Maintains a clean, organized display of all past newsletters
 
 ## Project Structure
 
@@ -108,14 +125,22 @@ news_summary/
 ├── news_scraper.py         # News scraping functionality
 ├── newsletter_generator.py # Newsletter generation using GPT-4
 ├── newsletter_formatter.py # HTML formatting for newsletters
+├── newsletter_schemas.py   # Newsletter type definitions and schemas
 ├── send_newsletter.py      # Email sending functionality
-├── app.py                  # Web interface
-├── templates/             # HTML templates
-│   └── index.html        # Main web interface template
+├── update_index.py         # Index page update functionality
+├── serve.py               # Simple HTTP server for the web interface
+├── automate_newsletter.py # Automation script for scheduled runs
+├── index.html             # Main web interface template
+├── static/                # Static assets
+│   └── css/              # CSS stylesheets
+├── prompts/              # GPT prompt templates
 ├── outputs/              # Generated content
 │   ├── news/            # Scraped news articles
-│   └── newsletters/     # Generated newsletters
-└── logs/                # Log files
+│   ├── newsletters/     # Raw generated newsletters
+│   └── formatted_newsletters/  # Formatted HTML newsletters
+│       └── daily_morning/     # Morning newsletters
+├── logs/                # Log files
+└── instance/           # Instance-specific files
 ```
 
 ## Automation
