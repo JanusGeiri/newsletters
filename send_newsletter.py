@@ -8,6 +8,9 @@ import logging
 from pathlib import Path
 from dotenv import load_dotenv
 import argparse
+from google.oauth2 import service_account
+from googleapiclient.discovery import build
+from googleapiclient.errors import HttpError
 
 # Load environment variables from .env file
 load_dotenv()
@@ -24,6 +27,42 @@ SMTP_SERVER = "smtp.gmail.com"
 SMTP_PORT = 587
 SENDER_EMAIL = os.getenv("NEWSLETTER_EMAIL")
 SENDER_PASSWORD = os.getenv("NEWSLETTER_PASSWORD")
+
+# Google Sheets API configuration
+SPREADSHEET_ID = os.getenv('GOOGLE_SHEET_ID')
+RANGE_NAME = 's1!B:B'  # Column B (netfang) in sheet s1
+
+
+def get_active_subscribers():
+    """Get list of active subscribers from Google Sheets."""
+    try:
+        credentials = service_account.Credentials.from_service_account_file(
+            "creds.json",
+            scopes=["https://www.googleapis.com/auth/spreadsheets.readonly"]
+        )
+        service = build("sheets", "v4", credentials=credentials)
+        sheet = service.spreadsheets()
+        result = sheet.values().get(
+            spreadsheetId=SPREADSHEET_ID,
+            range=RANGE_NAME
+        ).execute()
+
+        values = result.get('values', [])
+        if not values:
+            logger.warning('No data found in spreadsheet')
+            return []
+
+        # Skip header row and get email addresses
+        subscribers = [row[0] for row in values[1:]
+                       if row]  # Get first (and only) column
+        return subscribers
+
+    except HttpError as e:
+        logger.error(f"Error fetching subscribers from Google Sheets: {e}")
+        return []
+    except Exception as e:
+        logger.error(f"Unexpected error: {e}")
+        return []
 
 
 def get_newsletter_by_date(date_str):
@@ -180,26 +219,6 @@ def create_email_html(newsletter_content):
     return html
 
 
-def get_active_subscribers():
-    """Get list of active subscribers."""
-    try:
-        with open('subscribers.json', 'r') as f:
-            data = json.load(f)
-            # Filter only active subscribers
-            active_subscribers = [
-                subscriber['email']
-                for subscriber in data.get('subscribers', [])
-                if subscriber.get('active', False)
-            ]
-            return active_subscribers
-    except FileNotFoundError:
-        logger.error("No subscribers file found")
-        return []
-    except json.JSONDecodeError:
-        logger.error("Error reading subscribers file")
-        return []
-
-
 def add_subscriber(email):
     """Add a new subscriber to the list."""
     try:
@@ -242,7 +261,7 @@ def send_newsletter(newsletter_content=None, date=None, filename=None):
             "Email configuration missing. Please set NEWSLETTER_EMAIL and NEWSLETTER_PASSWORD in .env file")
         return
 
-    # Get active subscribers
+    # Get active subscribers from Google Sheets
     subscribers = get_active_subscribers()
     if not subscribers:
         logger.warning("No active subscribers found")

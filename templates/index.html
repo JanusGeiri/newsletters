@@ -309,15 +309,11 @@
     <div class="subscribe-card">
         <h2>Gerast áskrifandi að fréttabréfinu</h2>
         <p>Fáðu nýjustu fréttabréfin beint í tölvupóstinn þinn. Engin kostnaður og hægt að segja upp hvenær sem er.</p>
-        <form class="subscribe-form" method="POST" action="/subscribe">
-            <input type="email" name="email" class="subscribe-input" placeholder="Netfang þitt" required>
-            <button type="submit" class="subscribe-button">Gerast áskrifandi</button>
-        </form>
-        {% if subscribe_message %}
-        <div class="subscribe-message {{ subscribe_message.type }}">
-            {{ subscribe_message.text }}
-        </div>
-        {% endif %}
+        <iframe
+            src="https://docs.google.com/forms/d/e/1FAIpQLSeseHqqnEi-7YgsEOuCnDCWsy4nS6P5FCl6dfMeJW0lw9vZOQ/viewform?embedded=true"
+            width="100%" height="400" frameborder="0" marginheight="0" marginwidth="0">
+            Loading…
+        </iframe>
     </div>
 
     <div class="filter-section">

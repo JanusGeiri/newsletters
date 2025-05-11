@@ -5,6 +5,9 @@ import logging
 from translations import TRANSLATIONS
 import os
 import json
+from google.oauth2 import service_account
+from googleapiclient.discovery import build
+from googleapiclient.errors import HttpError
 
 # Set up logging
 logging.basicConfig(level=logging.INFO)
@@ -13,27 +16,41 @@ logger = logging.getLogger(__name__)
 app = Flask(__name__)
 app.secret_key = os.urandom(24)  # Required for flash messages
 
-# File to store subscribers
-SUBSCRIBERS_FILE = 'subscribers.json'
+# Google Sheets API configuration
+SPREADSHEET_ID = os.getenv('GOOGLE_SHEET_ID')
+RANGE_NAME = 's1!B:B'  # Column B (netfang) in sheet s1
 
 
-def load_subscribers():
-    if os.path.exists(SUBSCRIBERS_FILE):
-        try:
-            with open(SUBSCRIBERS_FILE, 'r') as f:
-                return json.load(f)
-        except json.JSONDecodeError:
-            logger.error("Error reading subscribers file")
-            return []
-    return []
-
-
-def save_subscribers(subscribers):
+def get_subscribers():
+    """Get list of subscribers from Google Sheets."""
     try:
-        with open(SUBSCRIBERS_FILE, 'w') as f:
-            json.dump(subscribers, f, indent=2)
+        credentials = service_account.Credentials.from_service_account_file(
+            "creds.json",
+            scopes=["https://www.googleapis.com/auth/spreadsheets.readonly"]
+        )
+        service = build("sheets", "v4", credentials=credentials)
+        sheet = service.spreadsheets()
+        result = sheet.values().get(
+            spreadsheetId=SPREADSHEET_ID,
+            range=RANGE_NAME
+        ).execute()
+
+        values = result.get('values', [])
+        if not values:
+            logger.warning('No data found in spreadsheet')
+            return []
+
+        # Skip header row and get email addresses
+        subscribers = [row[0] for row in values[1:]
+                       if row]  # Get first (and only) column
+        return subscribers
+
+    except HttpError as e:
+        logger.error(f"Error fetching subscribers from Google Sheets: {e}")
+        return []
     except Exception as e:
-        logger.error(f"Error saving subscribers: {e}")
+        logger.error(f"Unexpected error: {e}")
+        return []
 
 
 def get_newsletter_files():
@@ -126,42 +143,6 @@ def home():
 def serve_newsletter(filename):
     """Serve a newsletter HTML file."""
     return send_file(f'outputs/formatted_newsletters/{filename}')
-
-
-@app.route('/subscribe', methods=['POST'])
-def subscribe():
-    email = request.form.get('email', '').strip().lower()
-
-    if not email:
-        return render_template('index.html',
-                               newsletters=get_newsletter_files(),
-                               newsletter_types=sorted(
-                                   set(n['type'] for n in get_newsletter_files())),
-                               subscribe_message={
-                                   'type': 'error', 'text': 'Vinsamlegast sláðu inn netfang.'},
-                               t=TRANSLATIONS['is'])
-
-    subscribers = load_subscribers()
-
-    if email in subscribers:
-        return render_template('index.html',
-                               newsletters=get_newsletter_files(),
-                               newsletter_types=sorted(
-                                   set(n['type'] for n in get_newsletter_files())),
-                               subscribe_message={
-                                   'type': 'error', 'text': 'Þetta netfang er þegar á skrá.'},
-                               t=TRANSLATIONS['is'])
-
-    subscribers.append(email)
-    save_subscribers(subscribers)
-
-    return render_template('index.html',
-                           newsletters=get_newsletter_files(),
-                           newsletter_types=sorted(
-                               set(n['type'] for n in get_newsletter_files())),
-                           subscribe_message={
-                               'type': 'success', 'text': 'Takk fyrir áskriftina! Þú munt fá næsta fréttabréf í póstinn.'},
-                           t=TRANSLATIONS['is'])
 
 
 if __name__ == '__main__':
