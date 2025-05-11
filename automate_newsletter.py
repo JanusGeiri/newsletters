@@ -103,8 +103,21 @@ def main():
     if not run_command(generate_command, "newsletter generation"):
         logger.error("Newsletter generation failed. Stopping automation.")
         return
+    logger.info("Newsletter generation completed successfully")
 
-    # Step 2: Send the newsletter
+    # Step 2: Update the index
+    send_command = [
+        sys.executable,
+        "update_index.py"
+    ]
+
+    if not run_command(send_command, "updating index"):
+        logger.error("Updating index failed.")
+        return
+
+    logger.info("Updating index completed successfully")
+
+    # Step 3: Send the newsletter
     send_command = [
         sys.executable,
         "send_newsletter.py",
