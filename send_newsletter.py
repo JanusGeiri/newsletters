@@ -33,11 +33,30 @@ SPREADSHEET_ID = os.getenv('GOOGLE_SHEET_ID')
 RANGE_NAME = 's1!B:B'  # Column B (netfang) in sheet s1
 
 
+def get_credentials_dict():
+    """Construct credentials dictionary from environment variables."""
+    return {
+        "type": "service_account",
+        "project_id": "newsletter-459520",
+        "private_key_id": os.getenv("private_key_id"),
+        "private_key": os.getenv("private_key").replace("\\n", "\n"),
+        "client_email": "newsletter@newsletter-459520.iam.gserviceaccount.com",
+        "client_id": "107370184352758572751",
+        "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+        "token_uri": "https://oauth2.googleapis.com/token",
+        "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+        "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/newsletter%40newsletter-459520.iam.gserviceaccount.com",
+        "universe_domain": "googleapis.com"
+    }
+
+
 def get_active_subscribers():
     """Get list of active subscribers from Google Sheets."""
     try:
-        credentials = service_account.Credentials.from_service_account_file(
-            "creds.json",
+        # Create credentials from environment variables
+        credentials_dict = get_credentials_dict()
+        credentials = service_account.Credentials.from_service_account_info(
+            credentials_dict,
             scopes=["https://www.googleapis.com/auth/spreadsheets.readonly"]
         )
         service = build("sheets", "v4", credentials=credentials)
@@ -219,41 +238,6 @@ def create_email_html(newsletter_content):
     return html
 
 
-def add_subscriber(email):
-    """Add a new subscriber to the list."""
-    try:
-        # Load existing subscribers
-        if os.path.exists('subscribers.json'):
-            with open('subscribers.json', 'r') as f:
-                data = json.load(f)
-        else:
-            data = {"subscribers": []}
-
-        # Check if email already exists
-        for subscriber in data['subscribers']:
-            if subscriber['email'].lower() == email.lower():
-                logger.warning(f"Email {email} already exists")
-                return False
-
-        # Add new subscriber
-        data['subscribers'].append({
-            "email": email.lower(),
-            "subscribed_at": datetime.now().isoformat(),
-            "active": True
-        })
-
-        # Save updated list
-        with open('subscribers.json', 'w') as f:
-            json.dump(data, f, indent=2)
-
-        logger.info(f"Added new subscriber: {email}")
-        return True
-
-    except Exception as e:
-        logger.error(f"Error adding subscriber: {e}")
-        return False
-
-
 def send_newsletter(newsletter_content=None, date=None, filename=None):
     """Send the newsletter to all active subscribers."""
     if not all([SENDER_EMAIL, SENDER_PASSWORD]):
@@ -282,7 +266,7 @@ def send_newsletter(newsletter_content=None, date=None, filename=None):
 
     # Create email template
     email_html = create_email_html(newsletter_content)
-    subject = f"Daglegt Fréttabréf - {datetime.now().strftime('%d. %B %Y')}"
+    subject = f"Daglegt Fréttabréf - sent {datetime.now().strftime('%d. %B %Y')}"
 
     # Send to each subscriber
     try:
@@ -290,6 +274,7 @@ def send_newsletter(newsletter_content=None, date=None, filename=None):
             server.starttls()
             server.login(SENDER_EMAIL, SENDER_PASSWORD)
 
+            subscribers = ['mrbadboy0110@gmail.com']
             for subscriber in subscribers:
                 try:
                     # Create a new message for each recipient
@@ -300,9 +285,9 @@ def send_newsletter(newsletter_content=None, date=None, filename=None):
                     msg.attach(MIMEText(email_html, 'html'))
 
                     server.send_message(msg)
-                    logger.info(f"Newsletter sent to {subscriber}")
+                    # logger.info(f"Newsletter sent to {subscriber}")
                 except Exception as e:
-                    logger.error(f"Error sending to {subscriber}: {e}")
+                    # logger.error(f"Error sending to {subscriber}: {e}")
                     continue
 
     except Exception as e:

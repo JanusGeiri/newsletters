@@ -268,6 +268,7 @@ def format_newsletter_html(content):
     html_sections.append(f"""
     <div class="section signature-section">
         <p class="signature">Fréttabréfið er skrifað af gervigreind frá OpenAI. Gæti innihaldið ofsjónir. Verkefni forritað af Jasoni Andra Gíslasyni.</p>
+        <p class="unsubscribe"><a href="https://docs.google.com/forms/d/e/1FAIpQLSfHWhr9DmTtrtazcCANt-yjpxoAmF9ZEj_lQKZmCwQAqQNZzw/viewform?usp=header">Hætta áskrift á fréttabréfinu</a></p>
     </div>
     """)
 
@@ -369,6 +370,17 @@ def format_newsletter_html(content):
                 margin: 0;
                 font-size: 0.9em;
             }}
+            .unsubscribe {{
+                margin-top: 15px;
+                font-size: 0.9em;
+            }}
+            .unsubscribe a {{
+                color: #666;
+                text-decoration: underline;
+            }}
+            .unsubscribe a:hover {{
+                color: #333;
+            }}
             strong {{
                 color: #2c3e50;
                 font-weight: 600;
@@ -428,12 +440,6 @@ def save_formatted_newsletter(html_content: str, date_str: str, newsletter_type:
     # Generate base filename with type prefix
     base_filename = f'{newsletter_type.value}_{date_str}'
     output_file = type_dir / f'{base_filename}.html'
-
-    # Check if file exists and add incremental suffix if needed
-    counter = 1
-    while output_file.exists():
-        output_file = type_dir / f'{base_filename}_{counter}.html'
-        counter += 1
 
     # Save the HTML content
     with open(output_file, 'w', encoding='utf-8') as f:

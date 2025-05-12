@@ -218,7 +218,7 @@ def get_previous_newsletters(newsletter_type: NewsletterType, date_str: str, num
             print(
                 f"Warning: Could not read previous newsletter {file}: {str(e)}")
 
-    if not previous_newsletters:
+    if not previous_newsletters or True:
         return "NO PREVIOUS NEWSLETTERS FOUND"
 
     # Add extra newline between newsletters
@@ -415,12 +415,6 @@ def save_newsletter(newsletter_content: str, date_str: str, newsletter_type: New
     # Generate base filename with type prefix
     base_filename = f'{newsletter_type.value}_{date_str}'
     output_file = type_dir / f'{base_filename}.json'
-
-    # Check if file exists and add incremental suffix if needed
-    counter = 1
-    while output_file.exists():
-        output_file = type_dir / f'{base_filename}_{counter}.json'
-        counter += 1
 
     # Parse the newsletter content back to JSON since it was converted to string
     newsletter_json = json.loads(newsletter_content)

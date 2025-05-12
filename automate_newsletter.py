@@ -87,15 +87,26 @@ def main():
     """Main automation function."""
     logger.info("Starting newsletter automation process")
 
+    # Step 1: Process unsubscribes
+    unsub_command = [
+        sys.executable,
+        "process_unsubscribes.py"
+    ]
+
+    if not run_command(unsub_command, "processing unsubscribes"):
+        logger.error("Processing unsubscribes failed. Stopping automation.")
+        return
+    logger.info("Unsubscribe processing completed successfully")
+
     # Get yesterday's date
     yesterday = get_yesterday_date()
     logger.info(f"Processing newsletter for date: {yesterday}")
 
-    # Step 1: Generate the newsletter
+    # Step 2: Generate the newsletter
     generate_command = [
         sys.executable,  # Use the same Python interpreter
         "main.py",
-        "--mode", "full_pipeline",
+        "--mode", "generate_and_format",
         "--daily-morning",
         "--date", yesterday
     ]
@@ -105,7 +116,7 @@ def main():
         return
     logger.info("Newsletter generation completed successfully")
 
-    # Step 2: Update the index
+    # Step 3: Update the index
     send_command = [
         sys.executable,
         "update_index.py"
@@ -117,7 +128,7 @@ def main():
 
     logger.info("Updating index completed successfully")
 
-    # Step 3: Send the newsletter
+    # Step 4: Send the newsletter
     send_command = [
         sys.executable,
         "send_newsletter.py",
