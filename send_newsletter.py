@@ -274,7 +274,6 @@ def send_newsletter(newsletter_content=None, date=None, filename=None):
             server.starttls()
             server.login(SENDER_EMAIL, SENDER_PASSWORD)
 
-            subscribers = ['mrbadboy0110@gmail.com']
             for subscriber in subscribers:
                 try:
                     # Create a new message for each recipient
@@ -287,7 +286,7 @@ def send_newsletter(newsletter_content=None, date=None, filename=None):
                     server.send_message(msg)
                     # logger.info(f"Newsletter sent to {subscriber}")
                 except Exception as e:
-                    # logger.error(f"Error sending to {subscriber}: {e}")
+                    logger.error(f"Error sending to {subscriber}: {e}")
                     continue
 
     except Exception as e:

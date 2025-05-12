@@ -3,10 +3,13 @@ name: Deploy static content to Pages
 
 on:
   # Runs on pushes targeting the default branch
+  workflow_run:
+    workflows: [actions] # Replace with the name of your newsletter workflow file (without .yml)
+    types: [completed]
   push:
     branches: ["main"]
   schedule:
-    - cron: '0/1 * * * *'
+    - cron: '30 5 * * *'
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:

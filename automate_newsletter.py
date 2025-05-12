@@ -29,7 +29,6 @@ logger = logging.getLogger(__name__)
 def get_yesterday_date():
     """Get yesterday's date in YYYY-MM-DD format."""
     yesterday = datetime.now() - timedelta(days=1)
-    yesterday = datetime.now()
     return yesterday.strftime('%Y-%m-%d')
 
 
