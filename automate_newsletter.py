@@ -106,7 +106,7 @@ def main():
     generate_command = [
         sys.executable,  # Use the same Python interpreter
         "main.py",
-        "--mode", "generate_and_format",
+        "--mode", "full_pipeline",
         "--daily-morning",
         "--date", yesterday
     ]
