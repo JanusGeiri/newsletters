@@ -4,7 +4,7 @@ name: Deploy static content to Pages
 on:
   # Runs on pushes targeting the default branch
   workflow_run:
-    workflows: [actions] # Replace with the name of your newsletter workflow file (without .yml)
+    workflows: [actions, run automate_newsletter.py] # Replace with the name of your newsletter workflow file (without .yml)
     types: [completed]
   push:
     branches: ["main"]
