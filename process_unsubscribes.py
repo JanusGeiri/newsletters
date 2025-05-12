@@ -173,7 +173,7 @@ def main():
     remove_unsubscribed_emails(unsubscribed_emails)
 
     # Clear the unsubscribe sheet
-    # clear_unsubscribe_sheet()
+    clear_unsubscribe_sheet()
 
     logger.info("Unsubscribe processing completed")
 
