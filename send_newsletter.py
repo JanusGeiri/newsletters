@@ -266,7 +266,7 @@ def send_newsletter(newsletter_content=None, date=None, filename=None):
 
     # Create email template
     email_html = create_email_html(newsletter_content)
-    subject = f"Daglegt Fréttabréf - sent {datetime.now().strftime('%d. %B %Y')}"
+    subject = f"Daglegt Fréttabréf - sent {datetime.now().strftime('%d-%m-%Y')}"
 
     # Send to each subscriber
     try:

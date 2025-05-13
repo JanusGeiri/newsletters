@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 import os
 from pathlib import Path
-from datetime import datetime
+from datetime import datetime, timedelta
 import re
 from bs4 import BeautifulSoup
 
@@ -52,7 +52,9 @@ def update_index_html():
                     'href'] = f'/newsletters/outputs/formatted_newsletters/daily_morning/{latest_file.name}'
                 latest_title = latest_link.find('h3')
                 if latest_title:
-                    latest_title.string = f'Fréttabréf ({latest_date})'
+                    news_date = datetime.strptime(latest_date, '%Y-%m-%d')
+                    send_date = news_date + timedelta(days=1)
+                    latest_title.string = f'Fréttabréf ({latest_date}) - sent {send_date.strftime("%Y-%m-%d")}'
 
     # Update all newsletters section
     newsletter_list = soup.find('div', class_='newsletter-list')
@@ -64,11 +66,13 @@ def update_index_html():
         for file in newsletter_files:
             date = extract_date_from_filename(file)
             if date:
+                news_date = datetime.strptime(date, '%Y-%m-%d')
+                send_date = news_date + timedelta(days=1)
                 link = soup.new_tag('a', href=f'/newsletters/outputs/formatted_newsletters/daily_morning/{file.name}',
                                     attrs={'class': 'newsletter-link'})
                 card = soup.new_tag('div', attrs={'class': 'newsletter-card'})
                 title = soup.new_tag('h3')
-                title.string = f'Fréttabréf ({date})'
+                title.string = f'Fréttabréf ({date}) - sent {send_date.strftime("%Y-%m-%d")}'
                 card.append(title)
                 link.append(card)
                 newsletter_list.append(link)
