@@ -43,7 +43,7 @@ def extract_date_from_filename(filename):
 def update_index_html():
     """Update index.html with latest newsletter links."""
     # Read the current index.html
-    index_path = Path('src/index/index.html')
+    index_path = Path('index.html')
     if not index_path.exists():
         logger.error(f"Index file not found: {index_path}")
         return

@@ -14,7 +14,7 @@ class StaticHandler(http.server.SimpleHTTPRequestHandler):
     def do_GET(self):
         # Handle root path
         if self.path == '/':
-            self.path = '/src/index/index.html'
+            self.path = 'index.html'
         # Handle static files
         elif self.path.startswith('/static/'):
             self.path = self.path[1:]  # Remove leading slash
