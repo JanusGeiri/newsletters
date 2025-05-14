@@ -20,7 +20,13 @@ class RSSFeedHandler:
     def __init__(self):
         self.feed_links = {
             'visir': [
-                'https://www.visir.is/rss/allt'
+                'https://www.visir.is/rss/frettir',
+                'https://www.visir.is/rss/vidskipti',
+                'https://www.visir.is/rss/sport',
+                'https://www.visir.is/rss/lifid',
+                'https://www.visir.is/rss/skodun',
+                'https://www.visir.is/rss/innherji'
+
             ],
             'mbl': [
                 "https://www.mbl.is/feeds/fp/",
@@ -231,7 +237,7 @@ class NewsScraper(ABC):
 
             # Get article content
             self.logger.debug(
-                f"Fetching content for article: {article['article_title']}")
+                f"Fetching content for article: {article['article_title']} from {url}")
             content = self.get_article_content(url)
             if content:
                 # Combine RSS data with scraped content
@@ -246,10 +252,10 @@ class NewsScraper(ABC):
                 processed_articles.append(article_data)
                 processed_urls.add(url)
                 self.logger.debug(
-                    f"Successfully processed article: {article['article_title']}")
+                    f"Successfully processed article: {article['article_title']} from {url}")
             else:
                 self.logger.warning(
-                    f"Failed to get content for article: {article['article_title']}")
+                    f"Failed to get content for article: {article['article_title']} from {url}")
 
         self.logger.info(
             f"Completed processing {len(processed_articles)} articles from {self.source_name}")

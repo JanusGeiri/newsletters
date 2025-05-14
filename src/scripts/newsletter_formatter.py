@@ -8,7 +8,6 @@ import sys
 import json
 import logging
 from typing import Tuple, Optional, List
-from newsletter_generator import NewsletterType
 from logger_config import get_logger
 
 # Get logger
@@ -25,54 +24,47 @@ def get_date_from_filename(filename):
     return None, None
 
 
-def read_newsletter_file(date_str: Optional[str] = None, file_path: Optional[str] = None, increment: int = 1, newsletter_type: Optional[NewsletterType] = None) -> Tuple[dict, str, Path]:
+def read_newsletter_file(date_str: Optional[str] = None, file_path: Optional[str] = None, increment: int = 1) -> Tuple[dict, str, Path]:
     """Read a newsletter file and return its content.
 
     Args:
         date_str (Optional[str]): Date string in YYYY-MM-DD format. If None, use current date.
         file_path (Optional[str]): Path to the newsletter file. If None, find the most recent file.
         increment (int): Increment number for the newsletter file.
-        newsletter_type (Optional[NewsletterType]): Type of newsletter to read.
 
     Returns:
         Tuple[dict, str, Path]: Tuple containing the newsletter content as a dict, date string, and input file path.
     """
     try:
-        logger.debug(
-            f"Reading newsletter file for date: {date_str}, type: {newsletter_type}")
+        logger.debug(f"Reading newsletter file for date: {date_str}")
 
         if not date_str:
             date_str = datetime.now().strftime('%Y-%m-%d')
 
         # Create base newsletters directory
-        newsletters_dir = Path('src/outputs/newsletters')
+        newsletters_dir = Path('src/outputs/newsletters/daily_morning')
+
+        # Initialize input_file
+        input_file = None
 
         if file_path:
             input_file = Path(file_path)
         else:
-            if not newsletter_type:
-                raise ValueError(
-                    "Newsletter type must be specified when no file path is provided")
-
-            # Create type-specific subdirectory
-            type_dir = newsletters_dir / newsletter_type.value
-            if not type_dir.exists():
-                raise FileNotFoundError(
-                    f"No directory found for newsletter type: {newsletter_type.value}")
-
             # First try to find a file matching the exact date
-            base_filename = f'{newsletter_type.value}_{date_str}'
+            base_filename = f'{date_str}'
             if increment > 1:
                 base_filename = f'{base_filename}_{increment}'
 
-            input_file = type_dir / f'{base_filename}.json'
+            input_file = newsletters_dir / f'{base_filename}.json'
 
             # If no file exists for the specified date, find the most recent file
             if not input_file.exists():
-                files = list(type_dir.glob(f'{newsletter_type.value}_*.json'))
+                files = list(newsletters_dir.glob(f'{date_str}_*.json'))
                 if not files:
-                    raise FileNotFoundError(
-                        f"No newsletter files found for type: {newsletter_type.value}")
+                    # If no files found for the date, look for any files
+                    files = list(newsletters_dir.glob('*.json'))
+                    if not files:
+                        raise FileNotFoundError(f"No newsletter files found")
 
                 # Sort files by modification time (newest first)
                 files.sort(key=lambda x: x.stat().st_mtime, reverse=True)
@@ -82,7 +74,7 @@ def read_newsletter_file(date_str: Optional[str] = None, file_path: Optional[str
                     target_date = datetime.strptime(date_str, '%Y-%m-%d')
                     for file in files:
                         # Get date part from filename
-                        file_date_str = file.stem.split('_')[1]
+                        file_date_str = file.stem.split('_')[0]
                         try:
                             file_date = datetime.strptime(
                                 file_date_str, '%Y-%m-%d')
@@ -120,7 +112,8 @@ def read_newsletter_file(date_str: Optional[str] = None, file_path: Optional[str
             logger.error(f"Failed to parse JSON from {input_file}: {str(e)}")
             raise ValueError(f"Invalid JSON content in {input_file}") from e
     except Exception as e:
-        logger.error(f"Error reading newsletter file {input_file}: {str(e)}")
+        logger.error(
+            f"Error reading newsletter file {input_file if 'input_file' in locals() else 'unknown'}: {str(e)}")
         raise
 
 
@@ -153,24 +146,20 @@ def format_newsletter_html(content):
                 return ""
             return text.replace('\n\n', '<br><br>').replace('\n', '<br>')
 
-        # Get newsletter type from content
-        newsletter_type = content.get('newsletter_type', 'daily_morning')
+        # Helper function to create footnote links
+        def create_footnote_links(urls, prefix=''):
+            if not urls:
+                return ""
+            links = []
+            for i, url in enumerate(urls, 1):
+                footnote_id = f"{prefix}fn{i}"
+                links.append(
+                    f'<a href="{url}" class="footnote-link" data-tooltip="{url}" id="{footnote_id}">[{i}]</a>')
+            return ' '.join(links)
 
-        # Format title based on newsletter type
-        if newsletter_type == 'weekly':
-            date_from = content.get('date_from', '')
-            date_to = content.get('date_to', '')
-            title = f"VIKULEGT FRÉTTABRÉF ({date_from} - {date_to})"
-        else:
-            date = content.get('date', '')
-            if newsletter_type == 'daily_morning':
-                title = f"FRÉTTIR GÆRDAGSINS ({date})"
-            elif newsletter_type == 'daily_noon':
-                title = f"FRÉTTIR DAGSINS - HÁDEGI ({date})"
-            elif newsletter_type == 'daily_evening':
-                title = f"FRÉTTIR DAGSINS - KVÖLD ({date})"
-            else:
-                title = f"FRÉTTIR DAGSINS ({date})"
+        # Get date from content or use current date
+        date_str = content.get('date', datetime.now().strftime('%Y-%m-%d'))
+        title = 'Fréttir Gærdagsins'
 
         # Start building HTML sections
         html_sections = []
@@ -179,18 +168,56 @@ def format_newsletter_html(content):
         html_sections.append(f"""
         <div class="section title-section">
             <h1 class="newsletter-title">{title}</h1>
+            <h2 class="newsletter-date">{date_str}</h2>
         </div>
         """)
 
         # Add main headline and summary section
+        summary_urls = create_footnote_links(
+            content.get('summary_urls', []), 'summary')
+        summary_impact_urls = create_footnote_links(
+            content.get('summary_impact_urls', []), 'impact')
+
         html_sections.append(f"""
-        <div class="section">
+        <div class="section" id="summary">
             <h2 class="main-headline">{content.get('main_headline', '')}</h2>
             <div class="section-content">
-                <p>{format_text(content.get('summary', ''))}</p>
+                <p>{format_text(content.get('summary', ''))} {summary_urls}</p>
+                <p class="impact"><strong>Áhrif:</strong> {format_text(content.get('summary_impact', ''))} {summary_impact_urls}</p>
             </div>
         </div>
         """)
+
+        # Create table of contents
+        toc_items = []
+        section_mapping = {
+            'key_events': '1. MIKILVÆGUSTU FRÉTTIRNAR',
+            'domestic_news': '2. INNLENT',
+            'foreign_news': '3. ERLENT',
+            'business': '4. VIÐSKIPTI',
+            'famous_people': '5. FRÆGA FÓLKIÐ',
+            'sports': '6. ÍÞRÓTTIR',
+            'arts': '7. LISTIR',
+            'science': '8. VÍSINDI',
+            'closing_summary': '9. LOKAORÐ'
+        }
+
+        # Add sections to TOC if they have content
+        for section_key, section_title in section_mapping.items():
+            if section_key in content and content[section_key]:
+                toc_items.append(
+                    f'<a href="#{section_key}" class="toc-item">{section_title}</a>')
+
+        # Add table of contents section
+        if toc_items:
+            html_sections.append(f"""
+            <div class="section toc-section">
+                <h2 class="section-header">Efnisyfirlit</h2>
+                <div class="toc-container">
+                    {''.join(toc_items)}
+                </div>
+            </div>
+            """)
 
         # Add key events section
         if 'key_events' in content and content['key_events']:
@@ -200,20 +227,26 @@ def format_newsletter_html(content):
                     logger.warning(f"Skipping invalid key event: {event}")
                     continue
 
+                event_urls = create_footnote_links(
+                    event.get('urls', []), 'event')
+                impact_urls = create_footnote_links(
+                    event.get('impact_urls', []), 'impact')
+
                 key_events_html.append(f"""
                 <div class="news-item">
                     <h3>{event.get('title', '')}</h3>
-                    <p>{format_text(event.get('description', ''))}</p>
-                    <p class="impact"><strong>Áhrif:</strong> {format_text(event.get('impact', ''))}</p>
+                    <p>{format_text(event.get('description', ''))} {event_urls}</p>
+                    <p class="impact"><strong>Áhrif:</strong> {format_text(event.get('impact', ''))} {impact_urls}</p>
                     <div class="tags">
-                        {', '.join(f'<span class="tag">{tag}</span>' for tag in event.get('tags', []))}
+                        {', '.join(
+                            f'<span class="tag">{tag}</span>' for tag in event.get('tags', []))}
                     </div>
                 </div>
                 """)
 
             if key_events_html:
                 html_sections.append(f"""
-                <div class="section">
+                <div class="section" id="key_events">
                     <h2 class="section-header">1. MIKILVÆGUSTU FRÉTTIRNAR:</h2>
                     <div class="section-content">
                         {''.join(key_events_html)}
@@ -241,20 +274,23 @@ def format_newsletter_html(content):
                             f"Skipping invalid item in {section_key}: {item}")
                         continue
 
+                    item_urls = create_footnote_links(
+                        item.get('urls', []), f'{section_key}')
+
                     section_items.append(f"""
                     <div class="news-item">
                         <h3>{item.get('title', '')}</h3>
-                        <p>{format_text(item.get('description', ''))}</p>
-                        <p class="impact"><strong>Áhrif:</strong> {format_text(item.get('impact', ''))}</p>
+                        <p>{format_text(item.get('description', ''))} {item_urls}</p>
                         <div class="tags">
-                            {', '.join(f'<span class="tag">{tag}</span>' for tag in item.get('tags', []))}
+                            {', '.join(
+                                f'<span class="tag">{tag}</span>' for tag in item.get('tags', []))}
                         </div>
                     </div>
                     """)
 
                 if section_items:
                     html_sections.append(f"""
-                    <div class="section">
+                    <div class="section" id="{section_key}">
                         <h2 class="section-header">{section_header}</h2>
                         <div class="section-content">
                             {''.join(section_items)}
@@ -265,7 +301,7 @@ def format_newsletter_html(content):
         # Add closing summary section
         if 'closing_summary' in content and content['closing_summary']:
             html_sections.append(f"""
-            <div class="section">
+            <div class="section" id="closing_summary">
                 <h2 class="section-header">9. LOKAORÐ:</h2>
                 <div class="section-content">
                     <p>{format_text(content['closing_summary'])}</p>
@@ -293,39 +329,50 @@ def format_newsletter_html(content):
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
             <style>
                 body {{
-                    font-family: Arial, sans-serif;
+                    font-family: 'Segoe UI', Arial, sans-serif;
                     line-height: 1.6;
-                    color: #333;
+                    color: #2c3e50;
                     max-width: 800px;
                     margin: 0 auto;
                     padding: 20px;
-                    background-color: #f9f9f9;
+                    background-color: #f8f9fa;
                 }}
                 .section {{
                     background-color: #ffffff;
-                    border-radius: 8px;
-                    padding: 20px;
-                    margin-bottom: 20px;
-                    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                    border-radius: 12px;
+                    padding: 25px;
+                    margin-bottom: 25px;
+                    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+                    transition: transform 0.2s ease;
+                }}
+                .section:hover {{
+                    transform: translateY(-2px);
                 }}
                 .title-section {{
                     text-align: center;
-                    background-color: #2c3e50;
+                    background: linear-gradient(135deg, #2c3e50, #3498db);
                     color: white;
-                    padding: 30px 20px;
+                    padding: 40px 20px;
+                    border-radius: 12px;
                 }}
                 .newsletter-title {{
-                    font-size: 2.2em;
+                    font-size: 2.4em;
                     margin: 0;
                     font-weight: bold;
+                    text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+                }}
+                .newsletter-date {{
+                    font-size: 1.2em;
+                    margin: 10px 0 0;
+                    opacity: 0.9;
                 }}
                 .main-headline {{
                     color: #2c3e50;
                     font-size: 1.8em;
                     margin-top: 0;
                     margin-bottom: 20px;
-                    padding-bottom: 10px;
-                    border-bottom: 2px solid #eee;
+                    padding-bottom: 15px;
+                    border-bottom: 3px solid #3498db;
                 }}
                 .section-header {{
                     color: #2c3e50;
@@ -333,15 +380,15 @@ def format_newsletter_html(content):
                     margin-top: 0;
                     margin-bottom: 20px;
                     padding-bottom: 10px;
-                    border-bottom: 2px solid #eee;
+                    border-bottom: 2px solid #e9ecef;
                 }}
                 .section-content {{
                     color: #444;
                 }}
                 .news-item {{
                     margin-bottom: 25px;
-                    padding-bottom: 15px;
-                    border-bottom: 1px solid #eee;
+                    padding-bottom: 20px;
+                    border-bottom: 1px solid #e9ecef;
                 }}
                 .news-item:last-child {{
                     border-bottom: none;
@@ -349,31 +396,41 @@ def format_newsletter_html(content):
                 .news-item h3 {{
                     color: #2c3e50;
                     margin-top: 0;
-                    margin-bottom: 10px;
+                    margin-bottom: 12px;
+                    font-size: 1.3em;
                 }}
                 .impact {{
                     font-style: italic;
                     color: #666;
-                    margin: 10px 0;
+                    margin: 12px 0;
+                    padding: 10px;
+                    background-color: #f8f9fa;
+                    border-left: 4px solid #3498db;
                 }}
                 .tags {{
-                    margin-top: 10px;
+                    margin-top: 12px;
                 }}
                 .tag {{
                     display: inline-block;
                     background-color: #e9ecef;
                     color: #495057;
-                    padding: 3px 8px;
-                    border-radius: 4px;
-                    margin-right: 5px;
+                    padding: 4px 10px;
+                    border-radius: 20px;
+                    margin-right: 8px;
                     font-size: 0.9em;
+                    transition: background-color 0.2s ease;
+                }}
+                .tag:hover {{
+                    background-color: #3498db;
+                    color: white;
                 }}
                 .signature-section {{
                     text-align: center;
                     font-style: italic;
                     color: #666;
-                    border-top: 1px solid #eee;
+                    border-top: 2px solid #e9ecef;
                     margin-top: 40px;
+                    padding-top: 20px;
                 }}
                 .signature {{
                     margin: 0;
@@ -385,10 +442,63 @@ def format_newsletter_html(content):
                 }}
                 .unsubscribe a {{
                     color: #666;
-                    text-decoration: underline;
+                    text-decoration: none;
+                    border-bottom: 1px solid #666;
+                    transition: color 0.2s ease;
                 }}
                 .unsubscribe a:hover {{
-                    color: #333;
+                    color: #3498db;
+                    border-bottom-color: #3498db;
+                }}
+                .footnote-link {{
+                    color: #3498db;
+                    text-decoration: none;
+                    font-size: 0.8em;
+                    vertical-align: super;
+                    position: relative;
+                }}
+                .footnote-link:hover {{
+                    color: #2980b9;
+                }}
+                .footnote-link[data-tooltip]:hover::after {{
+                    content: attr(data-tooltip);
+                    position: absolute;
+                    bottom: 100%;
+                    left: 50%;
+                    transform: translateX(-50%);
+                    padding: 8px;
+                    background-color: #2c3e50;
+                    color: white;
+                    border-radius: 4px;
+                    font-size: 0.9em;
+                    white-space: nowrap;
+                    z-index: 1000;
+                    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+                }}
+                .toc-section {{
+                    background-color: #f8f9fa;
+                    border: 1px solid #e9ecef;
+                }}
+                .toc-container {{
+                    display: flex;
+                    flex-wrap: wrap;
+                    gap: 10px;
+                    padding: 10px;
+                }}
+                .toc-item {{
+                    display: inline-block;
+                    padding: 8px 15px;
+                    background-color: #e9ecef;
+                    color: #2c3e50;
+                    text-decoration: none;
+                    border-radius: 20px;
+                    font-size: 0.9em;
+                    transition: all 0.2s ease;
+                }}
+                .toc-item:hover {{
+                    background-color: #3498db;
+                    color: white;
+                    transform: translateY(-2px);
                 }}
                 strong {{
                     color: #2c3e50;
@@ -414,6 +524,16 @@ def format_newsletter_html(content):
                     .section-header {{
                         font-size: 1.3em;
                     }}
+                    .footnote-link[data-tooltip]:hover::after {{
+                        display: none;
+                    }}
+                    .toc-container {{
+                        flex-direction: column;
+                    }}
+                    .toc-item {{
+                        width: 100%;
+                        text-align: center;
+                    }}
                 }}
             </style>
         </head>
@@ -433,31 +553,26 @@ def format_newsletter_html(content):
         return None
 
 
-def save_formatted_newsletter(html_content: str, date_str: str, newsletter_type: NewsletterType) -> Path:
+def save_formatted_newsletter(html_content: str, date_str: str) -> Path:
     """Save the formatted newsletter to an HTML file.
 
     Args:
         html_content (str): The HTML content to save.
         date_str (str): The date string to use in the filename.
-        newsletter_type (NewsletterType): Type of newsletter being saved.
 
     Returns:
         Path: The path to the saved HTML file.
     """
     try:
-        logger.debug(
-            f"Saving formatted {newsletter_type} newsletter for {date_str}")
+        logger.debug(f"Saving formatted newsletter for {date_str}")
 
         # Create base formatted newsletters directory
-        formatted_dir = Path('src/outputs/formatted_newsletters')
+        formatted_dir = Path('src/outputs/formatted_newsletters/daily_morning')
+        formatted_dir.mkdir(parents=True, exist_ok=True)
 
-        # Create type-specific subdirectory
-        type_dir = formatted_dir / newsletter_type.value
-        type_dir.mkdir(parents=True, exist_ok=True)
-
-        # Generate base filename with type prefix
-        base_filename = f'{newsletter_type.value}_{date_str}'
-        output_file = type_dir / f'{base_filename}.html'
+        # Generate base filename
+        base_filename = f'daily_morning_{date_str}'
+        output_file = formatted_dir / f'{base_filename}.html'
 
         # Save the HTML content
         with open(output_file, 'w', encoding='utf-8') as f:
@@ -471,20 +586,6 @@ def save_formatted_newsletter(html_content: str, date_str: str, newsletter_type:
         return None
 
 
-def get_newsletter_types(args) -> List[NewsletterType]:
-    """Get the newsletter types to process based on command line arguments.
-
-    Args:
-        args: Command line arguments.
-
-    Returns:
-        List[NewsletterType]: List of newsletter types to process.
-    """
-    if args.type:
-        return [NewsletterType(args.type)]
-    return list(NewsletterType)
-
-
 def run_formatter(args) -> None:
     """Run the newsletter formatter.
 
@@ -493,49 +594,40 @@ def run_formatter(args) -> None:
     """
     logger.info("Starting newsletter formatting...")
 
-    # Get newsletter types to process
-    newsletter_types = get_newsletter_types(args)
-    if not newsletter_types:
-        logger.error("No newsletter types specified")
-        return
+    try:
+        logger.info(f"Formatting newsletter...")
 
-    for newsletter_type in newsletter_types:
-        try:
-            logger.info(f"Formatting {newsletter_type.value} newsletter...")
+        # Read the newsletter content
+        content, date_str, input_file = read_newsletter_file(
+            date_str=args.date,
+            file_path=args.file
+        )
 
-            # Read the newsletter content
-            content, date_str, input_file = read_newsletter_file(
-                date_str=args.date,
-                file_path=args.file,
-                increment=args.increment,
-                newsletter_type=newsletter_type
-            )
+        # Log the content structure for debugging
+        logger.info(f"Processing newsletter from {input_file}")
+        logger.info(f"Content keys: {list(content.keys())}")
 
-            # Log the content structure for debugging
-            logger.info(f"Processing newsletter from {input_file}")
-            logger.info(f"Content keys: {list(content.keys())}")
+        # Format the content as HTML
+        html_content = format_newsletter_html(content)
 
-            # Format the content as HTML
-            html_content = format_newsletter_html(content)
+        # Save the formatted newsletter
+        output_file = save_formatted_newsletter(
+            html_content, date_str)
+        logger.info(f"Formatted newsletter saved to: {output_file}")
 
-            # Save the formatted newsletter
-            output_file = save_formatted_newsletter(
-                html_content, date_str, newsletter_type)
-            logger.info(f"Formatted newsletter saved to: {output_file}")
-
-        except FileNotFoundError as e:
-            logger.error(
-                f"File not found for {newsletter_type.value} newsletter: {str(e)}")
-        except ValueError as e:
-            logger.error(
-                f"Error formatting {newsletter_type.value} newsletter: {str(e)}")
-        except Exception as e:
-            logger.error(
-                f"Unexpected error formatting {newsletter_type.value} newsletter: {str(e)}")
-            logger.exception("Detailed error information:")
+    except FileNotFoundError as e:
+        logger.error(
+            f"File not found for newsletter: {str(e)}")
+    except ValueError as e:
+        logger.error(
+            f"Error formatting newsletter: {str(e)}")
+    except Exception as e:
+        logger.error(
+            f"Unexpected error formatting newsletter: {str(e)}")
+        logger.exception("Detailed error information:")
 
 
-def main(args):
+def main():
     """Main function to run the newsletter formatter."""
     parser = argparse.ArgumentParser(
         description='Format newsletter content into HTML')
@@ -543,8 +635,6 @@ def main(args):
     parser.add_argument('--file', help='Path to the newsletter file')
     parser.add_argument('--increment', type=int, default=1,
                         help='Increment number for the newsletter file (e.g., 1 for newsletter_2025-05-10_1.txt)')
-    parser.add_argument('--type', help='Type of newsletter to process',
-                        choices=[t.value for t in NewsletterType])
     args = parser.parse_args()
 
     # Set up logging

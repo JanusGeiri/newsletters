@@ -111,6 +111,7 @@ def remove_unsubscribed_emails(unsubscribed_emails):
         for row_num, email in active_subscribers:
             if email in unsubscribed_emails:
                 # Column B, specific row
+                logger.info(f"Clearing cell {row_num} for email {email}")
                 cells_to_clear.append(f's1!B{row_num}')
 
         if not cells_to_clear:

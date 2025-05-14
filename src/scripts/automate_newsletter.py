@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 from send_newsletter import send_newsletter
 from update_index import update_index
-from main import run_scraper, run_generator, run_formatter
+from main import run_scraper, run_generator, run_formatter, run_impacts, run_url_cleaner
 from process_unsubscribes import process_unsubscribes
 import sys
 from datetime import datetime, timedelta
@@ -43,19 +43,18 @@ def main():
         args = type('Args', (), {
             'mode': 'full_pipeline',
             'date': yesterday,
-            'daily_morning': True,
             'verbose': False,
             'sources': ['visir', 'mbl', 'vb', 'ruv'],  # Add all news sources
             'sample_size': 200,  # Default sample size
-            'all_types': False,
-            'daily_noon': False,
-            'daily_evening': False,
-            'weekly': False
+            'input_file': None
         })
 
         # Run the full pipeline
         run_scraper(args)
         run_generator(args)
+        run_url_cleaner(args)
+        # run_impacts(args)
+        # run_url_cleaner(args)
         run_formatter(args)
         logger.info("Newsletter generation completed successfully")
 

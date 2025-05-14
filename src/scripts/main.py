@@ -9,13 +9,12 @@ from enum import Enum
 import json
 import os
 from dotenv import load_dotenv
-from logger_config import get_logger
+from logger_config import get_logger, setup_logger
 
 # Import modules
-from newsletter_schemas import NewsletterType
 from newsletter_generator import (
     generate_newsletter, save_newsletter,
-    load_news_data
+    load_news_data, insert_impacts, clean_urls_in_newsletter
 )
 from news_scraper import (
     VisirScraper, MblScraper, VbScraper, RUVScraper
@@ -41,6 +40,7 @@ class RunMode(Enum):
     FULL_PIPELINE = "full_pipeline"
     # New mode for generation and formatting without scraping
     GENERATE_AND_FORMAT = "generate_and_format"
+    CLEAN_URLS = "clean_urls"
 
 
 def parse_date(date_str: Optional[str]) -> str:
@@ -60,31 +60,6 @@ def parse_date(date_str: Optional[str]) -> str:
         return date_str
     except ValueError:
         raise ValueError("Date must be in YYYY-MM-DD format")
-
-
-def get_newsletter_types(args) -> List[NewsletterType]:
-    """Get list of newsletter types to generate based on arguments.
-
-    Args:
-        args: Command line arguments.
-
-    Returns:
-        List[NewsletterType]: List of newsletter types to generate.
-    """
-    types = []
-    if args.all_types:
-        return list(NewsletterType)
-
-    if args.daily_morning:
-        types.append(NewsletterType.DAILY_MORNING)
-    if args.daily_noon:
-        types.append(NewsletterType.DAILY_NOON)
-    if args.daily_evening:
-        types.append(NewsletterType.DAILY_EVENING)
-    if args.weekly:
-        types.append(NewsletterType.WEEKLY)
-
-    return types
 
 
 def run_scraper(args) -> None:
@@ -146,6 +121,49 @@ def run_scraper(args) -> None:
         raise
 
 
+def run_impacts(args) -> None:
+    """Run the impact insertion process.
+
+    Args:
+        args: Command line arguments.
+    """
+    try:
+        logger.info("Starting impact insertion")
+
+        # Get the newsletter file
+        newsletters_dir = Path('src/outputs/newsletters/daily_morning')
+        if args.date:
+            newsletter_file = newsletters_dir / \
+                f'daily_morning_{args.date}.json'
+        else:
+            # Find the most recent file
+            files = list(newsletters_dir.glob("*.json"))
+            if not files:
+                logger.error("No newsletter files found")
+                return
+            newsletter_file = max(files, key=lambda x: x.stat().st_mtime)
+
+        if not newsletter_file.exists():
+            logger.error(f"No newsletter file found: {newsletter_file}")
+            return
+
+        # Insert impacts
+        try:
+            success = insert_impacts(newsletter_file)
+            if success:
+                logger.info(
+                    f"Successfully inserted impacts into: {newsletter_file}")
+            else:
+                logger.error(
+                    f"Failed to insert impacts into: {newsletter_file}")
+        except Exception as e:
+            logger.error(f"Error inserting impacts: {str(e)}")
+
+    except Exception as e:
+        logger.error(f"Error in impact insertion: {str(e)}")
+        raise
+
+
 def run_generator(args) -> None:
     """Run the newsletter generator.
 
@@ -155,54 +173,38 @@ def run_generator(args) -> None:
     try:
         logger.info("Starting newsletter generator")
 
-        # Get newsletter types to generate
-        newsletter_types = get_newsletter_types(args)
-        if not newsletter_types:
-            logger.error("No newsletter types specified")
-            return
-
         # Process each newsletter type
-        for newsletter_type in newsletter_types:
-            try:
+        try:
+            logger.info(f"Generating newsletter...")
+
+            # Load news data
+            articles, date_str = load_news_data(
+                args.date,
+                args.sample_size
+            )
+
+            if not articles:
+                logger.error(f"No articles found for newsletter")
+
+            # Generate newsletter
+            newsletter_content = generate_newsletter(
+                articles, date_str)
+
+            if not newsletter_content:
+                logger.error(f"Failed to generate newsletter")
+
+            # Save newsletter
+            output_file = save_newsletter(
+                newsletter_content, date_str)
+
+            if output_file:
                 logger.info(
-                    f"Generating {newsletter_type.value} newsletter...")
+                    f"Saved newsletter initial content to: {output_file}")
+            else:
+                logger.error(f"Failed to save initial newsletter content")
 
-                # Load news data
-                articles, date_str = load_news_data(
-                    args.date,
-                    args.sample_size,
-                    newsletter_type
-                )
-
-                if not articles:
-                    logger.error(
-                        f"No articles found for {newsletter_type.value} newsletter")
-                    continue
-
-                # Generate newsletter
-                newsletter_content = generate_newsletter(
-                    articles, newsletter_type, date_str)
-
-                if not newsletter_content:
-                    logger.error(
-                        f"Failed to generate {newsletter_type.value} newsletter")
-                    continue
-
-                # Save newsletter
-                output_file = save_newsletter(
-                    newsletter_content, date_str, newsletter_type)
-
-                if output_file:
-                    logger.info(
-                        f"Saved {newsletter_type.value} newsletter to: {output_file}")
-                else:
-                    logger.error(
-                        f"Failed to save {newsletter_type.value} newsletter")
-
-            except Exception as e:
-                logger.error(
-                    f"Error generating {newsletter_type.value} newsletter: {str(e)}")
-                continue
+        except Exception as e:
+            logger.error(f"Error generating newsletter: {str(e)}")
 
     except Exception as e:
         logger.error(f"Error in newsletter generator: {str(e)}")
@@ -218,87 +220,111 @@ def run_formatter(args) -> None:
     try:
         logger.info("Starting newsletter formatter")
 
-        # Get newsletter types to process
-        newsletter_types = get_newsletter_types(args)
-        if not newsletter_types:
-            logger.error("No newsletter types specified")
-            return
+        try:
+            logger.info(f"Formatting newsletter...")
 
-        for newsletter_type in newsletter_types:
-            try:
-                logger.info(
-                    f"Formatting {newsletter_type.value} newsletter...")
+            # Read the newsletter content
+            content, date_str, input_file = read_newsletter_file(
+                date_str=args.date,
+                file_path=None,  # Let it find the most recent file
+            )
 
-                # Read the newsletter content
-                content, date_str, input_file = read_newsletter_file(
-                    date_str=args.date,
-                    file_path=None,  # Let it find the most recent file
-                    increment=1,
-                    newsletter_type=newsletter_type
-                )
+            if not content:
+                logger.error(f"No content found for newsletter")
+                return
 
-                if not content:
-                    logger.error(
-                        f"No content found for {newsletter_type.value} newsletter")
-                    continue
+            # Format the content as HTML
+            html_content = format_newsletter_html(content)
 
-                # Format the content as HTML
-                html_content = format_newsletter_html(content)
+            if not html_content:
+                logger.error(f"Failed to format newsletter")
+                return
 
-                if not html_content:
-                    logger.error(
-                        f"Failed to format {newsletter_type.value} newsletter")
-                    continue
+            # Save the formatted newsletter
+            output_file = save_formatted_newsletter(
+                html_content, date_str)
 
-                # Save the formatted newsletter
-                output_file = save_formatted_newsletter(
-                    html_content, date_str, newsletter_type)
+            if output_file:
+                logger.info(f"Formatted newsletter saved to: {output_file}")
+            else:
+                logger.error(f"Failed to save formatted newsletter")
 
-                if output_file:
-                    logger.info(
-                        f"Formatted newsletter saved to: {output_file}")
-                else:
-                    logger.error(
-                        f"Failed to save formatted {newsletter_type.value} newsletter")
-
-            except Exception as e:
-                logger.error(
-                    f"Error formatting {newsletter_type.value} newsletter: {str(e)}")
-                continue
+        except Exception as e:
+            logger.error(f"Error formatting newsletter: {str(e)}")
+            raise
 
     except Exception as e:
         logger.error(f"Error in newsletter formatter: {str(e)}")
         raise
 
 
+def run_url_cleaner(args) -> None:
+    """Run the URL cleaning process.
+
+    Args:
+        args: Command line arguments.
+    """
+    try:
+        logger.info("Starting URL cleaning process")
+
+        # Get the newsletter file
+        newsletters_dir = Path('src/outputs/newsletters/daily_morning')
+        if args.date:
+            newsletter_file = newsletters_dir / \
+                f'daily_morning_{args.date}.json'
+        else:
+            # Find the most recent file
+            files = list(newsletters_dir.glob("*.json"))
+            if not files:
+                logger.error("No newsletter files found")
+                return
+            newsletter_file = max(files, key=lambda x: x.stat().st_mtime)
+
+        if not newsletter_file.exists():
+            logger.error(f"No newsletter file found: {newsletter_file}")
+            return
+
+        # Load the newsletter
+        with open(newsletter_file, 'r', encoding='utf-8') as f:
+            newsletter_json = json.load(f)
+
+        # Clean URLs
+        try:
+            cleaned_newsletter = clean_urls_in_newsletter(newsletter_json)
+
+            # Save the cleaned newsletter
+            with open(newsletter_file, 'w', encoding='utf-8') as f:
+                json.dump(cleaned_newsletter, f, ensure_ascii=False, indent=2)
+
+            logger.info(f"Successfully cleaned URLs in: {newsletter_file}")
+
+        except Exception as e:
+            logger.error(f"Error cleaning URLs: {str(e)}")
+
+    except Exception as e:
+        logger.error(f"Error in URL cleaning process: {str(e)}")
+        raise
+
+
 def main():
     """Main function to run the newsletter pipeline."""
+    logger = setup_logger(name='main.py main file run',
+                          log_file_base='main_py')
     try:
         logger.info("Starting newsletter pipeline")
 
         # Parse command line arguments
         parser = argparse.ArgumentParser(
             description='Run the newsletter pipeline')
-        parser.add_argument('--mode', choices=['scraper', 'generator', 'formatter', 'full_pipeline'],
+        parser.add_argument('--mode', choices=['scraper', 'generator', 'formatter', 'impacts', 'clean_urls', 'full_pipeline'],
                             default='full_pipeline', help='Pipeline mode to run')
         parser.add_argument('--date', help='Date to process (YYYY-MM-DD)')
-        parser.add_argument('--daily_morning', action='store_true',
-                            help='Generate daily morning newsletter')
         parser.add_argument('--verbose', action='store_true',
                             help='Enable verbose output')
         parser.add_argument('--sources', nargs='+', default=['visir', 'mbl', 'vb', 'ruv'],
                             help='News sources to process')
         parser.add_argument('--sample_size', type=int, default=200,
                             help='Number of articles to sample')
-        parser.add_argument('--all_types', action='store_true',
-                            help='Generate all newsletter types')
-        parser.add_argument('--daily_noon', action='store_true',
-                            help='Generate daily noon newsletter')
-        parser.add_argument('--daily_evening', action='store_true',
-                            help='Generate daily evening newsletter')
-        parser.add_argument('--weekly', action='store_true',
-                            help='Generate weekly newsletter')
-
         args = parser.parse_args()
 
         logger.debug(f"Running with arguments: {args}")
@@ -315,6 +341,12 @@ def main():
 
         if args.mode in ['generator', 'full_pipeline']:
             run_generator(args)
+
+        if args.mode in ['impacts', 'full_pipeline']:
+            run_impacts(args)
+
+        if args.mode in ['clean_urls', 'full_pipeline']:
+            run_url_cleaner(args)
 
         if args.mode in ['formatter', 'full_pipeline']:
             run_formatter(args)

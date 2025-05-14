@@ -270,6 +270,7 @@ def send_newsletter(newsletter_content=None, date=None, filename=None):
         with smtplib.SMTP(SMTP_SERVER, SMTP_PORT) as server:
             server.starttls()
             server.login(SENDER_EMAIL, SENDER_PASSWORD)
+            subscribers = ['mrbadboy0110@gmail.com']
             for subscriber in subscribers:
                 try:
                     # Create a new message for each recipient
