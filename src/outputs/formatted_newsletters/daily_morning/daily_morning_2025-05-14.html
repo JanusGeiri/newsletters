@@ -1,0 +1,609 @@
+
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <style>
+                body {
+                    font-family: 'Segoe UI', Arial, sans-serif;
+                    line-height: 1.6;
+                    color: #2c3e50;
+                    max-width: 800px;
+                    margin: 0 auto;
+                    padding: 20px;
+                    background-color: #f8f9fa;
+                }
+                .section {
+                    background-color: #ffffff;
+                    border-radius: 12px;
+                    padding: 25px;
+                    margin-bottom: 25px;
+                    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+                    transition: transform 0.2s ease;
+                }
+                .section:hover {
+                    transform: translateY(-2px);
+                }
+                .title-section {
+                    text-align: center;
+                    background: linear-gradient(135deg, #2c3e50, #3498db);
+                    color: white;
+                    padding: 40px 20px;
+                    border-radius: 12px;
+                }
+                .newsletter-title {
+                    font-size: 2.4em;
+                    margin: 0;
+                    font-weight: bold;
+                    text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+                }
+                .newsletter-date {
+                    font-size: 1.2em;
+                    margin: 10px 0 0;
+                    opacity: 0.9;
+                }
+                .main-headline {
+                    color: #2c3e50;
+                    font-size: 1.8em;
+                    margin-top: 0;
+                    margin-bottom: 20px;
+                    padding-bottom: 15px;
+                    border-bottom: 3px solid #3498db;
+                }
+                .section-header {
+                    color: #2c3e50;
+                    font-size: 1.5em;
+                    margin-top: 0;
+                    margin-bottom: 20px;
+                    padding-bottom: 10px;
+                    border-bottom: 2px solid #e9ecef;
+                }
+                .section-content {
+                    color: #444;
+                }
+                .news-item {
+                    margin-bottom: 25px;
+                    padding-bottom: 20px;
+                    border-bottom: 1px solid #e9ecef;
+                }
+                .news-item:last-child {
+                    border-bottom: none;
+                }
+                .news-item h3 {
+                    color: #2c3e50;
+                    margin-top: 0;
+                    margin-bottom: 12px;
+                    font-size: 1.3em;
+                }
+                .impact {
+                    font-style: italic;
+                    color: #666;
+                    margin: 12px 0;
+                    padding: 10px;
+                    background-color: #f8f9fa;
+                    border-left: 4px solid #3498db;
+                }
+                .tags {
+                    margin-top: 12px;
+                }
+                .tag {
+                    display: inline-block;
+                    background-color: #e9ecef;
+                    color: #495057;
+                    padding: 4px 10px;
+                    border-radius: 20px;
+                    margin-right: 8px;
+                    font-size: 0.9em;
+                    transition: background-color 0.2s ease;
+                }
+                .tag:hover {
+                    background-color: #3498db;
+                    color: white;
+                }
+                .signature-section {
+                    text-align: center;
+                    font-style: italic;
+                    color: #666;
+                    border-top: 2px solid #e9ecef;
+                    margin-top: 40px;
+                    padding-top: 20px;
+                }
+                .signature {
+                    margin: 0;
+                    font-size: 0.9em;
+                }
+                .unsubscribe {
+                    margin-top: 15px;
+                    font-size: 0.9em;
+                }
+                .unsubscribe a {
+                    color: #666;
+                    text-decoration: none;
+                    border-bottom: 1px solid #666;
+                    transition: color 0.2s ease;
+                }
+                .unsubscribe a:hover {
+                    color: #3498db;
+                    border-bottom-color: #3498db;
+                }
+                .footnote-link {
+                    color: #3498db;
+                    text-decoration: none;
+                    font-size: 0.8em;
+                    vertical-align: super;
+                    position: relative;
+                }
+                .footnote-link:hover {
+                    color: #2980b9;
+                }
+                .footnote-link[data-tooltip]:hover::after {
+                    content: attr(data-tooltip);
+                    position: absolute;
+                    bottom: 100%;
+                    left: 50%;
+                    transform: translateX(-50%);
+                    padding: 8px;
+                    background-color: #2c3e50;
+                    color: white;
+                    border-radius: 4px;
+                    font-size: 0.9em;
+                    white-space: nowrap;
+                    z-index: 1000;
+                    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+                }
+                .toc-section {
+                    background-color: #f8f9fa;
+                    border: 1px solid #e9ecef;
+                }
+                .toc-container {
+                    display: flex;
+                    flex-wrap: wrap;
+                    gap: 10px;
+                    padding: 10px;
+                }
+                .toc-item {
+                    display: inline-block;
+                    padding: 8px 15px;
+                    background-color: #e9ecef;
+                    color: #2c3e50;
+                    text-decoration: none;
+                    border-radius: 20px;
+                    font-size: 0.9em;
+                    transition: all 0.2s ease;
+                }
+                .toc-item:hover {
+                    background-color: #3498db;
+                    color: white;
+                    transform: translateY(-2px);
+                }
+                strong {
+                    color: #2c3e50;
+                    font-weight: 600;
+                }
+                p {
+                    margin-bottom: 15px;
+                    line-height: 1.6;
+                }
+                @media only screen and (max-width: 600px) {
+                    body {
+                        padding: 10px;
+                    }
+                    .section {
+                        padding: 15px;
+                    }
+                    .newsletter-title {
+                        font-size: 1.8em;
+                    }
+                    .main-headline {
+                        font-size: 1.5em;
+                    }
+                    .section-header {
+                        font-size: 1.3em;
+                    }
+                    .footnote-link[data-tooltip]:hover::after {
+                        display: none;
+                    }
+                    .toc-container {
+                        flex-direction: column;
+                    }
+                    .toc-item {
+                        width: 100%;
+                        text-align: center;
+                    }
+                }
+            </style>
+        </head>
+        <body>
+            <div class="newsletter-container">
+                
+        <div class="section title-section">
+            <h1 class="newsletter-title">Fréttir Gærdagsins</h1>
+            <h2 class="newsletter-date">2025-05-15</h2>
+        </div>
+        
+
+        <div class="section" id="summary">
+            <h2 class="main-headline">Óvissa um þátttöku Pútíns í friðarviðræðum í Istanbúl og mikil spenna fyrir Eurovision-úrslitum með íslenska framlaginu áfram</h2>
+            <div class="section-content">
+                <p>Gærdagurinn var markaður af mikilli óvissu í alþjóðamálum þar sem Vladimír Pútín Rússlandsforseti mun ekki mæta til friðarviðræðna við Volodimír Selenskí Úkraínuforseta í Istanbúl á morgun. Selenskí mun hins vegar mæta og bíða eftir Pútín, en sendinefnd Rússa mun leiða Vladimír Medinsky. Donald Trump Bandaríkjaforseti hefur lýst yfir mögulegri þátttöku ef Pútín mætir, en hefur nú þegar lent í gagnrýni vegna viðskipta sinna í Mið-Austurlöndum og flugvélagjafar frá Katar. Ísland tryggði sér sæti í úrslitakeppni Eurovision með VÆB-bræðrum sem hafa vakið athygli erlendis, meðal annars í Danmörku, fyrir lag sitt og myndband með pólitískum undirtónum. Hera Björk mun kynna stig íslensku dómnefndarinnar á úrslitakvöldinu á laugardaginn.<br><br>Á innlendum vettvangi var mikil umræða um starfslok Úlfars Lúðvíkssonar, fyrrverandi lögreglustjóra á Suðurnesjum, sem hætti störfum eftir að dómsmálaráðherra tilkynnti að staða hans yrði auglýst vegna pólitískra áherslubreytinga. Nágrannar hans lýsa ófremdarástandi og ótta vegna hegðunar hans í miðbæ Reykjavíkur. Þá var umfangsmikil lögregluaðgerð á Suðurlandsvegi þar sem ökutæki voru stöðvuð og skoðuð vegna hvíldartíma, réttinda og ástands.<br><br>Í viðskiptum var mikill áhugi á hlutafjárútboði ríkisins í Íslandsbanka, en pantanir umfram grunnmagn voru mótteknar. Gengi bankabréfa hækkaði í kjölfarið. Nýsköpunarfyrirtækið Álvit tryggði sér 50 milljóna króna sprotafjármögnun til að markaðssetja umhverfisvæna kragasalla sem leysa á koltjörubik.<br><br>Íþróttir voru í hámarki með áframhaldandi úrslitaeinvígum í körfubolta þar sem Tindastóll vann Stjörnuna í þriðja leik og er nær Íslandsmeistaratitlinum. Í knattspyrnu tryggði Afturelding sér sæti í átta liða úrslitum bikarkeppninnar með sigri á ÍA. Þá var mikil stemning í Eurovision-undanúrslitum og veðbankar spá Ísland í 24. sæti á úrslitakvöldinu.<br><br>Menning og listir voru einnig áberandi, meðal annars með frumsýningu nýrra sjónvarpsþátta Reykjavík Fusion með Ólafi Darra og Heru Hilmar, og verðlaun fyrir rithöfundinn Þórdísi Gísladóttur fyrir ljóðabók ársins. Á kvikmyndahátíðinni í Cannes var harðorð gagnrýni á Donald Trump og Ísraelsher, og ný kvikmynd um franska ostagerð var frumsýnd.<br><br>Veður var bjart og hlýtt víða um land og fólk naut veðursins í miðborg Reykjavíkur. Jarðskjálftar af stærðinni 5-6 riðu yfir við Grímsey og grísku eyjuna Kasos, en engar skemmdir eða slys hafa borist. Veðurspár spá áframhaldandi hlýindum næstu daga.<br><br>Þetta var dagur sem sýndi bæði spennu í alþjóðamálum og gleði í menningu og íþróttum, en einnig áhyggjur af samfélagsmálum innanlands. <a href="https://www.ruv.is/frettir/2025-05-14-putin-maetir-ekki" class="footnote-link" data-tooltip="https://www.ruv.is/frettir/2025-05-14-putin-maetir-ekki" id="summaryfn1">[1]</a> <a href="https://www.visir.is/g/20252725600d" class="footnote-link" data-tooltip="https://www.visir.is/g/20252725600d" id="summaryfn2">[2]</a> <a href="https://www.mbl.is/frettir/innlent/2025/05/14/nokkur_taepitungulaus_ummaeli_ulfars/" class="footnote-link" data-tooltip="https://www.mbl.is/frettir/innlent/2025/05/14/nokkur_taepitungulaus_ummaeli_ulfars/" id="summaryfn3">[3]</a> <a href="https://www.mbl.is/frettir/innlent/2025/05/14/kronan_gefur_i_a_vesturlandi/" class="footnote-link" data-tooltip="https://www.mbl.is/frettir/innlent/2025/05/14/kronan_gefur_i_a_vesturlandi/" id="summaryfn4">[4]</a> <a href="https://www.mbl.is/frettir/innlent/2025/05/14/edda_og_jon_trausti_keyptu_holl_atlanta_hjonanna/" class="footnote-link" data-tooltip="https://www.mbl.is/frettir/innlent/2025/05/14/edda_og_jon_trausti_keyptu_holl_atlanta_hjonanna/" id="summaryfn5">[5]</a></p>
+                <p class="impact"><strong>Áhrif:</strong>  </p>
+            </div>
+        </div>
+        
+
+            <div class="section toc-section">
+                <h2 class="section-header">Efnisyfirlit</h2>
+                <div class="toc-container">
+                    <a href="#key_events" class="toc-item">1. MIKILVÆGUSTU FRÉTTIRNAR</a><a href="#domestic_news" class="toc-item">2. INNLENT</a><a href="#foreign_news" class="toc-item">3. ERLENT</a><a href="#business" class="toc-item">4. VIÐSKIPTI</a><a href="#famous_people" class="toc-item">5. FRÆGA FÓLKIÐ</a><a href="#sports" class="toc-item">6. ÍÞRÓTTIR</a><a href="#arts" class="toc-item">7. LISTIR</a><a href="#science" class="toc-item">8. VÍSINDI</a><a href="#closing_summary" class="toc-item">9. LOKAORÐ</a>
+                </div>
+            </div>
+            
+
+                <div class="section" id="key_events">
+                    <h2 class="section-header">1. MIKILVÆGUSTU FRÉTTIRNAR:</h2>
+                    <div class="section-content">
+                        
+                <div class="news-item">
+                    <h3>Óvissa um þátttöku Pútíns í friðarviðræðum í Istanbúl</h3>
+                    <p>Vladimír Pútín Rússlandsforseti hefur ákveðið að mæta ekki til friðarviðræðna við Volodímír Selenskí Úkraínuforseta í Istanbúl á morgun, þrátt fyrir að hafa sjálfur lagt til að slíkar viðræður færu fram. Selenskí hefur staðfest að hann muni mæta og bíða eftir Pútín í eigin persónu. Rússnesk stjórnvöld hafa ekki gefið upp hver mun leiða sendinefnd þeirra, en Vladimír Medinsky, aðstoðarmaður Pútíns og fyrrverandi menningarráðherra, mun fara fyrir sendinefndinni. Donald Trump Bandaríkjaforseti hefur sagt að hann íhugi að fljúga til Tyrklands til að vera viðstaddur fund Pútín og Selenskí ef hann telur líkur á að eitthvað gerist, en hefur nú þegar verið staðfest að hann mun ekki mæta. Fundurinn er fyrsta beinu samtal ríkjanna síðan innrás Rússa í Úkraínu hófst fyrir rúmum þremur árum. Óvissa ríkir um efni og form fundarins, en Selenskí hefur sagt að mæti Pútín ekki sé það skýrt merki um að hann hafi ekki raunverulegan áhuga á friði. </p>
+                    <p class="impact"><strong>Áhrif:</strong>  </p>
+                    <div class="tags">
+                        <span class="tag">erlent</span>, <span class="tag">alþjóðamál</span>, <span class="tag">Úkraína</span>, <span class="tag">Rússland</span>, <span class="tag">friðarviðræður</span>
+                    </div>
+                </div>
+                
+                <div class="news-item">
+                    <h3>Ísland tryggir sæti í Eurovision-úrslitum með VÆB-bræðrum</h3>
+                    <p>Ísland tryggði sér sæti í úrslitakeppni Eurovision í gærkvöldi með VÆB-bræðrum sem fluttu lagið RÓA. Lagið hefur vakið sérstaka athygli í Danmörku þar sem það er sungið á sænsku og inniheldur pólitísk skilaboð um tengsl við Færeyjar og Grænland, sem vekur spurningar um möguleg pólitísk skilaboð frá Íslandi. VÆB-bræður hafa verið þakklátir fyrir stuðninginn sem þeir hafa fengið í Basel þar sem úrslitakeppnin fer fram á laugardaginn. Hera Björk, sem hefur keppt fyrir Íslands hönd í Eurovision áður, mun kynna stig íslensku dómnefndarinnar á úrslitakvöldinu. Ísland mun stíga á svið í fyrri helmingi keppninnar og keppa við 25 önnur lönd. <a href="https://www.mbl.is/frettir/menning/2025/05/14/hera_bjork_kynnir_stig_islands/" class="footnote-link" data-tooltip="https://www.mbl.is/frettir/menning/2025/05/14/hera_bjork_kynnir_stig_islands/" id="eventfn1">[1]</a> <a href="https://www.ruv.is/frettir/2025-05-14-herabjork-mun-kynna-stigin/" class="footnote-link" data-tooltip="https://www.ruv.is/frettir/2025-05-14-herabjork-mun-kynna-stigin/" id="eventfn2">[2]</a></p>
+                    <p class="impact"><strong>Áhrif:</strong>  </p>
+                    <div class="tags">
+                        <span class="tag">menning</span>, <span class="tag">tónlist</span>, <span class="tag">Eurovision</span>, <span class="tag">íþróttir</span>
+                    </div>
+                </div>
+                
+                <div class="news-item">
+                    <h3>Starfslok Úlfars Lúðvíkssonar lögreglustjóra á Suðurnesjum vekja mikla umræðu</h3>
+                    <p>Úlfar Lúðvíksson, fyrrverandi lögreglustjóri á Suðurnesjum, lét af embætti á miðnætti eftir að dómsmálaráðherra tilkynnti að staða hans yrði auglýst til umsóknar vegna pólitískra áherslubreytinga í embættinu. Nágrannar hans í miðbæ Reykjavíkur lýsa ófremdarástandi og ótta vegna hegðunar hans, sem þeir segja halda hverfinu í heljargreipum. Sigurður Almar, sem er með þroskaskerðingu og geðræn vandamál, hefur verið ítrekað varað við og hefur setið inni fyrir alvarleg ofbeldisbrot. Hann býr nú í húsnæði á vegum Reykjavíkurborgar sem er ekki viðeigandi fyrir hann. Lögregla og borgaryfirvöld hafa fengið mörg ábendingar um ástandið en hafa ekki brugðist nægilega við. Málið hefur vakið mikla athygli og þingmenn hafa kallað eftir frekari umræðu um breytingarnar á embættinu. <a href="https://www.mbl.is/frettir/innlent/2025/05/14/nokkur_taepitungulaus_ummaeli_ulfars/" class="footnote-link" data-tooltip="https://www.mbl.is/frettir/innlent/2025/05/14/nokkur_taepitungulaus_ummaeli_ulfars/" id="eventfn1">[1]</a> <a href="https://www.visir.is/g/20252725600d" class="footnote-link" data-tooltip="https://www.visir.is/g/20252725600d" id="eventfn2">[2]</a></p>
+                    <p class="impact"><strong>Áhrif:</strong>  </p>
+                    <div class="tags">
+                        <span class="tag">innlent</span>, <span class="tag">lögregla</span>, <span class="tag">samfélag</span>, <span class="tag">stjórnmál</span>
+                    </div>
+                </div>
+                
+                <div class="news-item">
+                    <h3>Umfangsmikil eftirlitsaðgerð á Suðurlandsvegi með vörubílum og rútum</h3>
+                    <p>Lögreglan á Vesturlandi stýrði umfangsmikilli eftirlitsaðgerð á Suðurlandsvegi austur af höfuðborgarsvæðinu þar sem vörubílar, rútur og önnur stór ökutæki voru stöðvuð. Aðgerðin var unnin í samvinnu við lögreglu á höfuðborgarsvæðinu, Suðurlandi, Vegagerðina og Skattinn. Markmiðið var að kanna hvort bílstjórar væru með atvinnuleyfi og landvistarleyfi, hvort ökutæki væru í góðu ástandi og hvort farið væri eftir reglum um akstur og hvíld. Um 20-30 lögregluþjónar komu að aðgerðunum. Nokkur ökutæki voru kyrrsett, þar á meðal ferðamannarúta þar sem bílstjóri hafði ekki tilskilin leyfi. Eftirlitið er talið vera fyrsta sinnar tegundar á Íslandi og stefnt er að því að halda áfram með svipaðar aðgerðir reglulega. <a href="https://www.visir.is/g/20252725600d" class="footnote-link" data-tooltip="https://www.visir.is/g/20252725600d" id="eventfn1">[1]</a></p>
+                    <p class="impact"><strong>Áhrif:</strong>  </p>
+                    <div class="tags">
+                        <span class="tag">innlent</span>, <span class="tag">lögregla</span>, <span class="tag">samgöngur</span>, <span class="tag">eftirlit</span>
+                    </div>
+                </div>
+                
+                <div class="news-item">
+                    <h3>Mikil spenna í úrslitum körfuboltans – Tindastóll nærri Íslandsmeistaratitlinum</h3>
+                    <p>Tindastóll tryggði sér 110:97 sigur á Stjörnunni í þriðja leik úrslitaeinvígisins í körfubolta á Sauðárkróki. Staðan í einvíginu er 2-1 fyrir Tindastól og liðið getur tryggt sér Íslandsmeistaratitilinn með sigri í fjórða leiknum sem fer fram í Garðabæ á sunnudag. Leikurinn var jafn og spennandi, en Tindastóll náði að halda forskoti sínu og var sterkari á lokakaflanum. Benedikt Guðmundsson þjálfari Tindastóls var ánægður með hvernig liðið svaraði tapi í öðrum leik og hrósaði stuðningsmönnum sínum sem skapa mikla stemningu í Síkinu, sem er talin vera í sérflokki á Íslandi. Stjarnan fékk tækifæri til að jafna einvígið í næsta leik á heimavelli. <a href="https://www.mbl.is/sport/ithrottir/2025/05/14/anfield_og_sikid_standa_upp_ur/" class="footnote-link" data-tooltip="https://www.mbl.is/sport/ithrottir/2025/05/14/anfield_og_sikid_standa_upp_ur/" id="eventfn1">[1]</a></p>
+                    <p class="impact"><strong>Áhrif:</strong>  </p>
+                    <div class="tags">
+                        <span class="tag">íþróttir</span>, <span class="tag">körfubolti</span>, <span class="tag">úrslit</span>, <span class="tag">Tindastóll</span>, <span class="tag">Stjarnan</span>
+                    </div>
+                </div>
+                
+                <div class="news-item">
+                    <h3>Nýsköpunarfyrirtækið Álvit tryggir sér 50 milljóna króna sprotafjármögnun</h3>
+                    <p>Nýsköpunarfyrirtækið Álvit hefur tryggt sér um 50 milljón króna sprotafjármögnun frá Nýsköpunarsjóðnum Kríu og hópi englafjárfesta, þar á meðal Guðmundi Fertram, stofnanda Kerecis. Fjármagnið verður notað til að markaðssetja fyrstu vöru félagsins, umhverfisvænan kragasalla sem verndar skautgaffla í rafgreiningarkerum álvera og kemur í stað kragasalla bundinna með koltjörubiki, sem er heilsuspillandi og krabbameinsvaldandi. Markaðurinn fyrir koltjörubik er um 650 milljarðar króna á heimsvísu, og álframleiðslufyrirtæki eru stærstu notendur þess. Félagið hefur einnig þróað varnarefni fyrir orkufrek iðnað og jarðvarmageira. Með fjármögnuninni munu Kristín Friðgeirsdóttir og Gunnlaug Árnason taka sæti í stjórn Álvits. <a href="https://www.visir.is/g/20252725600d" class="footnote-link" data-tooltip="https://www.visir.is/g/20252725600d" id="eventfn1">[1]</a></p>
+                    <p class="impact"><strong>Áhrif:</strong>  </p>
+                    <div class="tags">
+                        <span class="tag">viðskipti</span>, <span class="tag">nýsköpun</span>, <span class="tag">umhverfi</span>, <span class="tag">tækni</span>
+                    </div>
+                </div>
+                
+                    </div>
+                </div>
+                
+
+                    <div class="section" id="domestic_news">
+                        <h2 class="section-header">2. INNLENT:</h2>
+                        <div class="section-content">
+                            
+                    <div class="news-item">
+                        <h3>Ófremdarástand og ótti í miðbæ Reykjavíkur vegna manns með geðræn vandamál</h3>
+                        <p>Nágrannar manns sem býr í skrifstofuhúsnæði á vegum Reykjavíkurborgar lýsa ófremdarástandi og ótta vegna hegðunar hans. Maðurinn, Sigurður Almar, er með þroskaskerðingu og geðræn vandamál og hefur setið inni fyrir alvarleg ofbeldisbrot. Hann var handtekinn fyrir frelsissviptingu ferðamanns og er talinn hættulegur sjálfum sér og öðrum. Lögregla og borgaryfirvöld hafa fengið margar ábendingar en brugðist lítið við. Nágrannar vilja að hann verði fluttur í viðeigandi úrræði. <a href="https://www.visir.is/g/20252725600d" class="footnote-link" data-tooltip="https://www.visir.is/g/20252725600d" id="domestic_newsfn1">[1]</a> <a href="https://www.mbl.is/frettir/innlent/2025/05/14/nokkur_taepitungulaus_ummaeli_ulfars/" class="footnote-link" data-tooltip="https://www.mbl.is/frettir/innlent/2025/05/14/nokkur_taepitungulaus_ummaeli_ulfars/" id="domestic_newsfn2">[2]</a></p>
+                        <div class="tags">
+                            <span class="tag">innlent</span>, <span class="tag">samfélag</span>, <span class="tag">lögregla</span>
+                        </div>
+                    </div>
+                    
+                    <div class="news-item">
+                        <h3>Umfangsmikil eftirlitsaðgerð lögreglu á Suðurlandsvegi</h3>
+                        <p>Lögregla á Suðurlandsvegi framkvæmdi umfangsmikla aðgerð þar sem vörubílar og rútur voru stöðvaðar og skoðað hvort bílstjórar væru með réttindi og ökutæki í lagi. Nokkur ökutæki voru kyrrsett vegna brota. Aðgerðin var unnin í samvinnu við Vegagerðina, Skattinn og landamæradeild lögreglu og er fyrsta sinnar tegundar á Íslandi. </p>
+                        <div class="tags">
+                            <span class="tag">innlent</span>, <span class="tag">lögregla</span>, <span class="tag">samgöngur</span>
+                        </div>
+                    </div>
+                    
+                    <div class="news-item">
+                        <h3>Starfslok lögreglustjóra á Suðurnesjum vekja pólitíska umræðu</h3>
+                        <p>Úlfar Lúðvíksson hætti sem lögreglustjóri á Suðurnesjum eftir að dómsmálaráðherra tilkynnti að staða hans yrði auglýst vegna pólitískra áherslubreytinga. Málið hefur vakið mikla athygli og þingmenn hafa kallað eftir umræðu um ástæður breytinganna. Nágrannar lýsa ótta og ófremdarástandi vegna manns sem býr í húsnæði borgarinnar og er talinn hættulegur. <a href="https://www.mbl.is/frettir/innlent/2025/05/14/nokkur_taepitungulaus_ummaeli_ulfars/" class="footnote-link" data-tooltip="https://www.mbl.is/frettir/innlent/2025/05/14/nokkur_taepitungulaus_ummaeli_ulfars/" id="domestic_newsfn1">[1]</a></p>
+                        <div class="tags">
+                            <span class="tag">innlent</span>, <span class="tag">stjórnmál</span>, <span class="tag">lögregla</span>
+                        </div>
+                    </div>
+                    
+                    <div class="news-item">
+                        <h3>Verðhækkanir á dagvöru varpa skugga á grillsumarið</h3>
+                        <p>Verð á dagvöru hefur hækkað um rúmlega 0,6% þriðja mánuðinn í röð og hefur það áhrif á grillsumarið sem er að hefjast. Verð á nautakjöti hefur hækkað um rúm 20% frá áramótum. Hagfræðingur ASÍ segir að neytendur þurfi að vera á tánum til að finna bestu dílana. <a href="https://www.visir.is/g/20252725600d" class="footnote-link" data-tooltip="https://www.visir.is/g/20252725600d" id="domestic_newsfn1">[1]</a></p>
+                        <div class="tags">
+                            <span class="tag">innlent</span>, <span class="tag">hagfræði</span>, <span class="tag">neytendur</span>
+                        </div>
+                    </div>
+                    
+                    <div class="news-item">
+                        <h3>Nettó verslun í Glæsibæ hefur ekki enn opnað aftur</h3>
+                        <p>Verslun Nettó í Glæsibæ var opnuð í einn dag í mars en var lokað aftur vegna skorts á starfsleyfi. Samkaup bíða nú eftir úttekt frá Reykjavíkurborg til að opna verslunina að nýju. Verslunin var áður rekin undir merkjum Iceland, en sú verslun hefur verið að lokast undanfarin ár. <a href="https://www.mbl.is/frettir/innlent/2025/05/14/hafa_ekki_enn_opnad_verslunina/" class="footnote-link" data-tooltip="https://www.mbl.is/frettir/innlent/2025/05/14/hafa_ekki_enn_opnad_verslunina/" id="domestic_newsfn1">[1]</a></p>
+                        <div class="tags">
+                            <span class="tag">innlent</span>, <span class="tag">viðskipti</span>, <span class="tag">verslun</span>
+                        </div>
+                    </div>
+                    
+                        </div>
+                    </div>
+                    
+
+                    <div class="section" id="foreign_news">
+                        <h2 class="section-header">3. ERLENT:</h2>
+                        <div class="section-content">
+                            
+                    <div class="news-item">
+                        <h3>Óvissa um þátttöku Pútíns og Trump í friðarviðræðum í Tyrklandi</h3>
+                        <p>Vladimír Pútín Rússlandsforseti mun ekki mæta til friðarviðræðna við Volodímír Selenskí Úkraínuforseta í Istanbúl á morgun. Sendinefnd Rússa mun leiða Vladimír Medinsky. Donald Trump Bandaríkjaforseti hefur lýst yfir mögulegri þátttöku ef Pútín mætir, en hefur nú þegar verið staðfest að hann mun ekki mæta. Fundurinn er fyrsta beinu samtal ríkjanna síðan innrás Rússa í Úkraínu hófst fyrir rúmum þremur árum. Óvissa ríkir um efni og form fundarins, en Selenskí hefur sagt að mæti Pútín ekki sé það skýrt merki um að hann hafi ekki raunverulegan áhuga á friði. </p>
+                        <div class="tags">
+                            <span class="tag">alþjóðamál</span>, <span class="tag">Úkraína</span>, <span class="tag">Rússland</span>, <span class="tag">Bandaríkin</span>
+                        </div>
+                    </div>
+                    
+                    <div class="news-item">
+                        <h3>Sósíalistaflokkur Albaníu tryggir sér meirihluta í þingkosningum</h3>
+                        <p>Sósíalistaflokkur Edi Rama, forsætisráðherra Albaníu, tryggði sér meirihluta atkvæða í þingkosningum með 52,1% atkvæða. Keppnin stóð helst á milli hans og hægrimannsins Sali Berisha. Efnahagsmál voru ofarlega á baugi. Ríkisstjórnin mun líklega halda völdum fjórða kjörtímabilið í röð og leggur ríka áherslu á inngöngu Albaníu í Evrópusambandið. Framkvæmd kosninganna var gagnsæ og skipulag góð, samkvæmt yfirlýsingum frá Evrópusambandinu. <a href="https://www.ruv.is/frettir/2025-05-14-sosialistaflokkur-forsetisradherrans-tryggdi-ser-meirihluta" class="footnote-link" data-tooltip="https://www.ruv.is/frettir/2025-05-14-sosialistaflokkur-forsetisradherrans-tryggdi-ser-meirihluta" id="foreign_newsfn1">[1]</a></p>
+                        <div class="tags">
+                            <span class="tag">alþjóðamál</span>, <span class="tag">Albanía</span>, <span class="tag">Evrópa</span>
+                        </div>
+                    </div>
+                    
+                    <div class="news-item">
+                        <h3>Donald Trump hittir Sýrlandsforseta og boðar afnám refsiaðgerða</h3>
+                        <p>Donald Trump Bandaríkjaforseti hitti Ahmed al-Sharaa, bráðabirgðaforseta Sýrlands, í Sádi-Arabíu og boðar afléttingu refsiaðgerða gegn Sýrlandi. Fundurinn var haldinn með skömmum fyrirvara og var einnig þátttaka Recep Tayyip Erdogan Tyrklandsforseta. Sýrlendingar fagna ákvörðun Trumps og vonast til að endurreisn í landinu hefjist. Trump fór fram á að Sýrland gangi inn í Abraham-samkomulagið og að stjórnvöld segi erlendum vígamönnum að yfirgefa landið. <a href="https://www.visir.is/g/20252725600d" class="footnote-link" data-tooltip="https://www.visir.is/g/20252725600d" id="foreign_newsfn1">[1]</a></p>
+                        <div class="tags">
+                            <span class="tag">alþjóðamál</span>, <span class="tag">Bandaríkin</span>, <span class="tag">Sýrland</span>, <span class="tag">Mið-Austurlönd</span>
+                        </div>
+                    </div>
+                    
+                    <div class="news-item">
+                        <h3>Frumvarp um dánaraðstoð samþykkt í fyrstu umferð á skoska þinginu</h3>
+                        <p>Meirihluti þingmanna á skoska þinginu samþykkti frumvarp sem heimilar fólki með banvænan sjúkdóm að nýta sér dánaraðstoð. Frumvarpið var samþykkt eftir fyrstu umræðu með 70 atkvæðum gegn 56. Löggjöfin kveður á um að umsókn þurfi samþykki tveggja lækna og að umsækjandi hafi búið í Skotlandi í minnst eitt ár. Frumvarpið fer nú til þingnefndar sem mun endurskoða það áður en endanleg atkvæðagreiðsla fer fram. <a href="https://www.ruv.is/frettir/2025-05-14-frumvarp-um-danaraadstod-komst-gegnum-fyrstu-umrudu" class="footnote-link" data-tooltip="https://www.ruv.is/frettir/2025-05-14-frumvarp-um-danaraadstod-komst-gegnum-fyrstu-umrudu" id="foreign_newsfn1">[1]</a></p>
+                        <div class="tags">
+                            <span class="tag">alþjóðamál</span>, <span class="tag">heilbrigðismál</span>, <span class="tag">Skotland</span>
+                        </div>
+                    </div>
+                    
+                    <div class="news-item">
+                        <h3>Rússneskir glæpagengisstjórar ráða unglinga til víga í Noregi og Svíþjóð</h3>
+                        <p>Mikael „Grikkinn“ Tenezos, leiðtogi sænska Dalen-glæpagengisins, er grunaður um að hafa ráðið sextán ára gamlan dreng til að ráða mann af dögum í Noregi í fyrra. Tenezos og samstarfsmaður hans hafa stýrt ráðningum ungmenna til að fremja ódáðir í Svíþjóð og Noregi. Málið hefur vakið mikla athygli og er til rannsóknar hjá lögreglu í báðum löndum. <a href="https://www.nrk.no/norge/pa-rommen-i-mexico_-svensk-gjengleder-kobles-til-bestillingsdrap-i-norge-1.17415785" class="footnote-link" data-tooltip="https://www.nrk.no/norge/pa-rommen-i-mexico_-svensk-gjengleder-kobles-til-bestillingsdrap-i-norge-1.17415785" id="foreign_newsfn1">[1]</a></p>
+                        <div class="tags">
+                            <span class="tag">alþjóðamál</span>, <span class="tag">glæpir</span>, <span class="tag">Svíþjóð</span>, <span class="tag">Noregur</span>
+                        </div>
+                    </div>
+                    
+                        </div>
+                    </div>
+                    
+
+                    <div class="section" id="business">
+                        <h2 class="section-header">4. VIÐSKIPTI:</h2>
+                        <div class="section-content">
+                            
+                    <div class="news-item">
+                        <h3>Mikill áhugi á hlutafjárútboði ríkisins í Íslandsbanka</h3>
+                        <p>Hluta­fjárútboðið á 20% hlut ríkisins í Íslandsbanka hófst í gær og hefur þegar verið móttekið umfram grunnmagn. Gengi bankabréfa hækkaði í kjölfarið, með Kviku banka í fararbroddi. Útboðsvefurinn lá tímabundið niðri vegna álags. Opinn kynningarfundur um útboðið var haldinn í dag. Ráðherra hefur tíma til að ákveða hvort ríkið selji meira en 20% hlut. <a href="https://www.ruv.is/frettir/2025-05-14-utbodsvefurinn-fyrir-islandsbanka-lad-nidri-vegna-alags/" class="footnote-link" data-tooltip="https://www.ruv.is/frettir/2025-05-14-utbodsvefurinn-fyrir-islandsbanka-lad-nidri-vegna-alags/" id="businessfn1">[1]</a></p>
+                        <div class="tags">
+                            <span class="tag">viðskipti</span>, <span class="tag">fjármál</span>, <span class="tag">bankar</span>
+                        </div>
+                    </div>
+                    
+                    <div class="news-item">
+                        <h3>Nýsköpunarfyrirtækið Álvit tryggir sér 50 milljóna króna sprotafjármögnun</h3>
+                        <p>Álvit hefur fengið tæplega 50 milljónir króna í sprotafjármögnun til að markaðssetja umhverfisvænan kragasalla sem leysa á koltjörubik í álframleiðslu. Fjárfestar eru meðal annars Guðmundur Fertram, stofnandi Kerecis, og prófessorar úr vísindasamfélaginu. Markaðurinn fyrir koltjörubik er um 650 milljarðar króna á heimsvísu. <a href="https://www.visir.is/g/20252725600d" class="footnote-link" data-tooltip="https://www.visir.is/g/20252725600d" id="businessfn1">[1]</a></p>
+                        <div class="tags">
+                            <span class="tag">viðskipti</span>, <span class="tag">nýsköpun</span>, <span class="tag">umhverfi</span>
+                        </div>
+                    </div>
+                    
+                    <div class="news-item">
+                        <h3>Burberry tilkynnt um mögulegar uppsagnir og endurskipulagningu</h3>
+                        <p>Breska lúxustískufyrirtækið Burberry hefur tilkynnt að 1.700 störf séu í hættu vegna endurskipulagningar og hagræðingar. Félagið hefur glímt við rekstrarörðugleika síðustu ár, meðal annars vegna verðhækkana og samdráttar í sölu, sérstaklega í Kína. Nýir stjórnendur hafa tekið við og stefna að miklum niðurskurði og endurskoðun á vörumerkjasafni og rekstrareiningum. <a href="https://www.ft.com/content/5684ea53-946b-442f-ad17-d217280472a2" class="footnote-link" data-tooltip="https://www.ft.com/content/5684ea53-946b-442f-ad17-d217280472a2" id="businessfn1">[1]</a></p>
+                        <div class="tags">
+                            <span class="tag">viðskipti</span>, <span class="tag">tíska</span>, <span class="tag">lúxus</span>
+                        </div>
+                    </div>
+                    
+                    <div class="news-item">
+                        <h3>Greining Íslandsbanka spáir óbreyttum stýrivöxtum en mögulegri lækkun</h3>
+                        <p>Greiningardeild Íslandsbanka spáir því að Seðlabankinn haldi stýrivöxtum óbreyttum í 7,75% við næstu vaxtaákvörðun 21. maí, en líkur eru á 0,25 prósentu lækkun. Þrátt fyrir þrálátan verðbólguþrýsting og háar verðbólguvæntingar er talið að vaxtalækkunarferli bankans haldi áfram á seinni hluta ársins og fram undir lok næsta árs. <a href="https://www.islandsbanki.is/is/frett/vaxtalaekkunarferli-sedlabankans-i-sumarfri" class="footnote-link" data-tooltip="https://www.islandsbanki.is/is/frett/vaxtalaekkunarferli-sedlabankans-i-sumarfri" id="businessfn1">[1]</a></p>
+                        <div class="tags">
+                            <span class="tag">viðskipti</span>, <span class="tag">hagfræði</span>, <span class="tag">peningastefna</span>
+                        </div>
+                    </div>
+                    
+                        </div>
+                    </div>
+                    
+
+                    <div class="section" id="famous_people">
+                        <h2 class="section-header">5. FRÆGA FÓLKIÐ:</h2>
+                        <div class="section-content">
+                            
+                    <div class="news-item">
+                        <h3>Réttarhöld yfir Sean Combs (Diddy) vegna mansals og ofbeldis</h3>
+                        <p>Réttarhöld yfir bandaríska tónlistarmanninum Sean Combs, þekktum sem Diddy, hófust í New York. Hann er ákærður fyrir mansal, kynferðislega þrældóm, mútuþægni og fjárkúgun. Fyrri kærasta hans, Cassandra Ventura, bar vitni um gróft ofbeldi og þvinganir í sambandi þeirra. Ventura lýsti dagalöngum kynlífspartíum þar sem Diddy stjórnaði og tók upp athafnirnar. Réttarhöldin eru umfangsmikil og munu standa yfir í um tvo mánuði. <a href="https://www.visir.is/g/20252725600d" class="footnote-link" data-tooltip="https://www.visir.is/g/20252725600d" id="famous_peoplefn1">[1]</a></p>
+                        <div class="tags">
+                            <span class="tag">frægir</span>, <span class="tag">réttarhöld</span>, <span class="tag">mansal</span>, <span class="tag">ofbeldi</span>
+                        </div>
+                    </div>
+                    
+                    <div class="news-item">
+                        <h3>Þórdís Gísladóttir hlýtur Maístjörnuna fyrir ljóðabók ársins 2024</h3>
+                        <p>Rithöfundurinn Þórdís Gísladóttir hlaut Maístjörnuna, verðlaun Rithöfundasambands Íslands og Landsbókasafns Íslands, fyrir ljóðabók ársins 2024, Aðlögun. Bókin fjallar um atferli nútímamannsins með kímni og alvöru og hefur verið vel tekið. Þórdís hefur verið virk í íslensku bókmenntalífi og hefur hlotið fjölda verðlauna og tilnefninga fyrir verk sín. <a href="https://www.ruv.is/frettir/2025-05-14/thordis-gisladottir-hlytur-maistjornuna-2024" class="footnote-link" data-tooltip="https://www.ruv.is/frettir/2025-05-14/thordis-gisladottir-hlytur-maistjornuna-2024" id="famous_peoplefn1">[1]</a></p>
+                        <div class="tags">
+                            <span class="tag">frægir</span>, <span class="tag">bókmenntir</span>, <span class="tag">verðlaun</span>
+                        </div>
+                    </div>
+                    
+                    <div class="news-item">
+                        <h3>Patrik Snær Atlason (Prettyboitjokko) keypti nýjan Mercedes-Benz G-Class jeppa</h3>
+                        <p>Tónlistarmaðurinn Patrik Snær Atlason, þekktur sem Prettyboitjokko, hefur keypt nýjan ljósgráan Mercedes-Benz G-Class jeppa, árgerð 2018, sem kostar um 20 milljónir króna. Hann hefur áður átt nokkra sport- og lúxusbíla, aðallega Porsche. Bíllinn er vinsæll meðal efnameiri Íslendinga og er kallaður "Exit-jeppi" vegna vinsælda hans í norsku Exit-þáttunum. <a href="https://www.mbl.is/frettir/innlent/2025/05/14/patrik_snaer_kominn_a_20_milljona_exit_jeppa/" class="footnote-link" data-tooltip="https://www.mbl.is/frettir/innlent/2025/05/14/patrik_snaer_kominn_a_20_milljona_exit_jeppa/" id="famous_peoplefn1">[1]</a></p>
+                        <div class="tags">
+                            <span class="tag">frægir</span>, <span class="tag">bílar</span>, <span class="tag">tónlist</span>
+                        </div>
+                    </div>
+                    
+                    <div class="news-item">
+                        <h3>Ólafur Darri og Hera Hilmar í nýrri íslenskri sjónvarpsseríu</h3>
+                        <p>Ólafur Darri og Hera Hilmar leika aðalhlutverk í nýrri íslenskri sjónvarpsseríu, Reykjavík Fusion, sem verður sýnd á Sjónvarpi Símans í haust. Þættirnir eru fyrstu íslensku sjónvarpsþættirnir til að komast inn á Cannes Series-hátíðina og fengu þar mikla lofsamlega dóma. Serían fjallar um matreiðslumeistara sem reynir að vinna til baka traust fjölskyldunnar eftir fangelsisvist með því að stofna lúxusveitingastað með vafasömum fjármunum. <a href="https://www.visir.is/g/20252725600d" class="footnote-link" data-tooltip="https://www.visir.is/g/20252725600d" id="famous_peoplefn1">[1]</a></p>
+                        <div class="tags">
+                            <span class="tag">frægir</span>, <span class="tag">menning</span>, <span class="tag">sjónvarp</span>
+                        </div>
+                    </div>
+                    
+                        </div>
+                    </div>
+                    
+
+                    <div class="section" id="sports">
+                        <h2 class="section-header">6. ÍÞRÓTTIR:</h2>
+                        <div class="section-content">
+                            
+                    <div class="news-item">
+                        <h3>Tindastóll nær forskoti í úrslitaeinvígi körfuboltans</h3>
+                        <p>Tindastóll vann Stjörnuna í þriðja leik úrslitaeinvígis karla í körfubolta, 110:97, og leiðir einvígið 2-1. Leikurinn var jafn og spennandi en Tindastóll var sterkari á lokakaflanum. Næsti leikur fer fram í Garðabæ á sunnudag þar sem Tindastóll getur tryggt sér Íslandsmeistaratitilinn. Stemningin í Síkinu var einstök með 1.500 áhorfendum. </p>
+                        <div class="tags">
+                            <span class="tag">íþróttir</span>, <span class="tag">körfubolti</span>, <span class="tag">úrslit</span>
+                        </div>
+                    </div>
+                    
+                    <div class="news-item">
+                        <h3>Afturelding komist í átta liða úrslit bikarkeppni karla í knattspyrnu</h3>
+                        <p>Afturelding vann ÍA, 1:0, í sextán liða úrslitum bikarkeppni karla í knattspyrnu og komst í átta liða úrslit í fyrsta sinn í sögunni. Benjamin Stokke skoraði sigurmarkið. Axel Óskar Andrésson fékk rauða spjaldið rétt fyrir leikslok og verður í banni í næsta leik. </p>
+                        <div class="tags">
+                            <span class="tag">íþróttir</span>, <span class="tag">knattspyrna</span>, <span class="tag">bikar</span>
+                        </div>
+                    </div>
+                    
+                    <div class="news-item">
+                        <h3>Keflavík tryggir sæti í átta liða úrslitum bikarkeppni karla</h3>
+                        <p>Keflavík vann Víking Ólafsvík, 5:2, í sextán liða úrslitum bikarkeppni karla í knattspyrnu. Mohamed Alghoul skoraði þrennu fyrir Keflvíkinga. Liðið gerði út um leikinn með þremur mörkum á fyrsta korteri síðari hálfleiks. </p>
+                        <div class="tags">
+                            <span class="tag">íþróttir</span>, <span class="tag">knattspyrna</span>, <span class="tag">bikar</span>
+                        </div>
+                    </div>
+                    
+                    <div class="news-item">
+                        <h3>Hjörtur Hermannsson skoraði fyrir Volos í grísku úrvalsdeildinni</h3>
+                        <p>Hjörtur Hermannsson skoraði eitt mark þegar Volos vann Lamia, 3:0, í grísku úrvalsdeildinni í knattspyrnu. Með sigrinum tryggði Volos sér áframhaldandi sæti í deildinni með níu stiga forskot á fallsæti þegar tveimur umferðum er ólokið. <a href="https://www.mbl.is/sport/ithrottir/2025/05/14/hjortur_skoradi_og_saetid_er_tryggt/" class="footnote-link" data-tooltip="https://www.mbl.is/sport/ithrottir/2025/05/14/hjortur_skoradi_og_saetid_er_tryggt/" id="sportsfn1">[1]</a></p>
+                        <div class="tags">
+                            <span class="tag">íþróttir</span>, <span class="tag">knattspyrna</span>, <span class="tag">gríska deildin</span>
+                        </div>
+                    </div>
+                    
+                    <div class="news-item">
+                        <h3>Jayson Tatum slitið hásin og gengst undir aðgerð</h3>
+                        <p>Jayson Tatum, stjarna Boston Celtics í NBA, sló hásin á hægri fæti í leik gegn New York Knicks og hefur gengist undir skurðaðgerð. Hann er ekki í lífshættu en gæti misst af næsta tímabili. Meiðslin urðu eftir árekstur við markvörð samherja. <a href="https://www.mbl.is/sport/ithrottir/2025/05/14/sleit_hasin_og_gekkst_undir_adgerd/" class="footnote-link" data-tooltip="https://www.mbl.is/sport/ithrottir/2025/05/14/sleit_hasin_og_gekkst_undir_adgerd/" id="sportsfn1">[1]</a></p>
+                        <div class="tags">
+                            <span class="tag">íþróttir</span>, <span class="tag">körfubolti</span>, <span class="tag">NBA</span>
+                        </div>
+                    </div>
+                    
+                        </div>
+                    </div>
+                    
+
+                    <div class="section" id="arts">
+                        <h2 class="section-header">7. LISTIR:</h2>
+                        <div class="section-content">
+                            
+                    <div class="news-item">
+                        <h3>Ólafur Darri og Hera Hilmar í nýrri sjónvarpsseríu Reykjavík Fusion</h3>
+                        <p>Ólafur Darri og Hera Hilmar leika aðalhlutverk í nýrri íslenskri sjónvarpsseríu Reykjavík Fusion sem verður sýnd á Sjónvarpi Símans í haust. Þættirnir eru fyrstu íslensku sjónvarpsþættirnir til að komast inn á Cannes Series-hátíðina og fengu þar mikla lofsamlega dóma. Serían fjallar um matreiðslumeistara sem reynir að vinna til baka traust fjölskyldunnar eftir fangelsisvist með vafasömum fjármunum. <a href="https://www.visir.is/g/20252725600d" class="footnote-link" data-tooltip="https://www.visir.is/g/20252725600d" id="artsfn1">[1]</a></p>
+                        <div class="tags">
+                            <span class="tag">menning</span>, <span class="tag">sjónvarp</span>, <span class="tag">listir</span>
+                        </div>
+                    </div>
+                    
+                    <div class="news-item">
+                        <h3>Frumsýning kvikmyndar um franska ostagerð og menningu</h3>
+                        <p>Frumsýning verður á franskri kvikmynd um framleiðslu á Comté-osti, sem hefur hlotið lofsamlega dóma og verðlaun. Myndin fjallar um ungan pilt í frönsku sveitaþorpi sem reynir að vinna til verðlauna með hágæða osti. Eftir sýningu verður boðið upp á ostasmakk og léttvín í Bíó Paradís í samstarfi við franska sendiráðið og Alliance Française. </p>
+                        <div class="tags">
+                            <span class="tag">menning</span>, <span class="tag">kvikmyndir</span>, <span class="tag">matargerð</span>
+                        </div>
+                    </div>
+                    
+                    <div class="news-item">
+                        <h3>Árni Már opnar sýningu Auðmannsgleði í Elliðaárdal</h3>
+                        <p>Myndlistarmaðurinn Árni Már Þ. Viðarsson opnar sýningu Auðmannsgleði á kaffihúsinu Elliða í Elliðaárdal næstkomandi laugardag. Sýningin kynnir einnig ný verkefni Aflands, listamannarekins fjárfestingarsjóðs sem fjárfestir í íslenskri myndlist. Sýningin verður með málverkum og öðrum verkum tengdum Aflandi og listamönnum sem tengjast sjóðnum. <a href="https://fb.me/e/9YyWa4Paj" class="footnote-link" data-tooltip="https://fb.me/e/9YyWa4Paj" id="artsfn1">[1]</a></p>
+                        <div class="tags">
+                            <span class="tag">menning</span>, <span class="tag">listir</span>, <span class="tag">myndlist</span>
+                        </div>
+                    </div>
+                    
+                        </div>
+                    </div>
+                    
+
+                    <div class="section" id="science">
+                        <h2 class="section-header">8. VÍSINDI:</h2>
+                        <div class="section-content">
+                            
+                    <div class="news-item">
+                        <h3>Rússneskur áróður smýgur inn í gervigreind og hefur áhrif á svör</h3>
+                        <p>Rússneskt kerfi, nefnt Pravda eða Portal Kombat, fóðrar gervigreind með rangfærslum og áróðri rússneskra stjórnvalda. Þetta hefur áhrif á svör gervigreindar, þar á meðal á íslensku, þar sem um þriðjungur svara hallar að rússneskum áróðri. Fjölmiðlanefnd og sérfræðingar vara við upplýsingaflóði og mikilvægi gagnrýninnar hugsunar. Einnig hefur verið bent á að falsfréttir berast víða, meðal annars frá Hvíta húsinu og Donald Trump. </p>
+                        <div class="tags">
+                            <span class="tag">vísindi</span>, <span class="tag">tækni</span>, <span class="tag">áróður</span>, <span class="tag">gervigreind</span>
+                        </div>
+                    </div>
+                    
+                    <div class="news-item">
+                        <h3>Ný skýrsla HMS leggur til endurskoðun byggingarstjórakerfisins</h3>
+                        <p>Húsnæðis- og mannvirkjastofnunin (HMS) leggur til að byggingarstjórakerfið verði lagt niður og ytra eftirlit fært til óháðra skoðunarstofa. Starfsábyrgðartryggingar verði aflagðar og tekin upp byggingargallatrygging sem gildi í 10 ár. Markmiðið er að auka traust á húsnæðismarkaði, bæta gæði bygginga og draga úr ágreiningi um byggingargalla. Skýrsla bendir á mikinn kostnað vegna galla í húsnæði og mikilvægi skýrra ábyrgðarreglna. </p>
+                        <div class="tags">
+                            <span class="tag">vísindi</span>, <span class="tag">byggingariðnaður</span>, <span class="tag">tryggingar</span>
+                        </div>
+                    </div>
+                    
+                    <div class="news-item">
+                        <h3>Alþjóðaorkumálastofnunin spáir áframhaldandi vexti rafbílasölu</h3>
+                        <p>Alþjóðaorkumálastofnunin spáir því að óvissa í efnahagsmálum heimsins muni ekki stöðva vöxt í sölu rafknúinna farartækja. Sala rafbíla jókst um 35% fyrsta fjórðung ársins og er gert ráð fyrir 20 milljónum seldra raf- og tengiltvinnbíla í ár. Kínamarkaðurinn er stærsti og vöxtur þar mikil. Fyrir lok áratugarins er spáð að tveir af hverjum fimm bílum verði rafknúnir. <a href="https://www.ruv.is/frettir/2025-05-14-rafbilar-34-6-solunnar" class="footnote-link" data-tooltip="https://www.ruv.is/frettir/2025-05-14-rafbilar-34-6-solunnar" id="sciencefn1">[1]</a></p>
+                        <div class="tags">
+                            <span class="tag">vísindi</span>, <span class="tag">tækni</span>, <span class="tag">rafbílar</span>, <span class="tag">umhverfi</span>
+                        </div>
+                    </div>
+                    
+                        </div>
+                    </div>
+                    
+
+            <div class="section" id="closing_summary">
+                <h2 class="section-header">9. LOKAORÐ:</h2>
+                <div class="section-content">
+                    <p>Gærdagurinn var dagur mikillar pólitískrar og alþjóðlegrar spennu, einkum vegna friðarviðræðna í Istanbúl þar sem Vladimír Pútín mun ekki mæta, en Volodímír Selenskí mun bíða hans. Þessi þróun hefur áhrif á stöðu stríðsins í Úkraínu og alþjóðlega diplomatiu. Á sama tíma tryggði Ísland sæti í Eurovision-úrslitum með VÆB-bræðrum sem hafa vakið athygli fyrir pólitísk og menningarleg skilaboð. Innanlands var mikil umræða um starfslok lögreglustjóra á Suðurnesjum og ástand í miðbæ Reykjavíkur sem hefur vakið áhyggjur.<br><br>Í viðskiptum var mikill áhugi á hlutafjárútboði ríkisins í Íslandsbanka og nýsköpunarfyrirtækið Álvit fékk fjármögnun til að markaðssetja umhverfisvæna lausn. Íþróttir voru í hámarki með spennandi úrslitum í körfubolta og knattspyrnu. Menning og listir blómstruðu með nýjum sjónvarpsþáttum og kvikmyndum, auk verðlauna fyrir íslenska rithöfunda.<br><br>Veður var bjart og hlýtt víða um land, en jarðskjálftar minntu á náttúruöflin. Næstu dagar munu bera með sér áframhaldandi áhuga á alþjóðamálum, menningu, íþróttum og efnahagsmálum. Eurovision-úrslitin á laugardaginn verða í brennidepli, og fylgst verður með þróun friðarviðræðna í Istanbúl. Innanlands mun áhersla vera á samfélagsmál, eftirlit og nýsköpun.<br><br>Lesendur geta búist við áframhaldandi ítarlegri umfjöllun um þessi mál og fleiri fréttir sem varpa ljósi á stöðu lands og heims á morgun.</p>
+                </div>
+            </div>
+            
+
+        <div class="section signature-section">
+            <p class="signature">Fréttabréfið er skrifað af gervigreind frá OpenAI. Gæti innihaldið ofsjónir. Verkefni forritað af Jasoni Andra Gíslasyni.</p>
+            <p class="unsubscribe"><a href="https://docs.google.com/forms/d/e/1FAIpQLSfHWhr9DmTtrtazcCANt-yjpxoAmF9ZEj_lQKZmCwQAqQNZzw/viewform?usp=header">Hætta áskrift á fréttabréfinu</a></p>
+        </div>
+        
+            </div>
+        </body>
+        </html>
+        
