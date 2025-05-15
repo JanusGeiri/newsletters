@@ -57,9 +57,9 @@ def setup_logger(name='NO_NAME_PROVIDED', log_file_base=None, configure_debug=Fa
         _root_logger_configured = True
 
     # Get the named logger
-    logger = logging.getLogger(name)
-    logger.propagate = True  # Ensure messages propagate to root logger
-    return logger
+    nl_logger = logging.getLogger(name)
+    nl_logger.propagate = True  # Ensure messages propagate to root logger
+    return nl_logger
 
 
 def get_logger(name='newsletter'):
@@ -71,9 +71,9 @@ def get_logger(name='newsletter'):
     Returns:
         logging.Logger: Configured logger instance
     """
-    logger = logging.getLogger(name)
-    logger.propagate = True  # Ensure messages propagate to root logger
-    return logger
+    nl_logger = logging.getLogger(name)
+    nl_logger.propagate = True  # Ensure messages propagate to root logger
+    return nl_logger
 
 
 if __name__ == '__main__':

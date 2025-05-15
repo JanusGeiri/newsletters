@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-from logger_config import get_logger
+from scripts.nl_utils.logger_config import get_logger
 import os
 from pathlib import Path
 from dotenv import load_dotenv

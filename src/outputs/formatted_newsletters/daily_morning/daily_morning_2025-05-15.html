@@ -1,0 +1,623 @@
+
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <style>
+                    
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            line-height: 1.6;
+            color: #2c3e50;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f8f9fa;
+        }
+        .section {
+            background-color: #ffffff;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: transform 0.2s ease;
+        }
+        .section:hover {
+            transform: translateY(-2px);
+        }
+        .title-section {
+            text-align: center;
+            background: linear-gradient(135deg, #2c3e50, #3498db);
+            color: white;
+            padding: 40px 20px;
+            border-radius: 12px;
+        }
+        .newsletter-title {
+            font-size: 2.4em;
+            margin: 0;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+        .newsletter-date {
+            font-size: 1.2em;
+            margin: 10px 0 0;
+            opacity: 0.9;
+        }
+        .main-headline {
+            color: #2c3e50;
+            font-size: 1.8em;
+            margin-top: 0;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #3498db;
+        }
+        .section-header {
+            color: #2c3e50;
+            font-size: 1.5em;
+            margin-top: 0;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e9ecef;
+        }
+        .section-content {
+            color: #444;
+        }
+        .news-item {
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #e9ecef;
+        }
+        .news-item:last-child {
+            border-bottom: none;
+        }
+        .news-item h3 {
+            color: #2c3e50;
+            margin-top: 0;
+            margin-bottom: 12px;
+            font-size: 1.3em;
+        }
+        .impact {
+            font-style: italic;
+            color: #666;
+            margin: 12px 0;
+            padding: 10px;
+            background-color: #f8f9fa;
+            border-left: 4px solid #3498db;
+        }
+        .tags {
+            margin-top: 12px;
+        }
+        .tag {
+            display: inline-block;
+            background-color: #e9ecef;
+            color: #495057;
+            padding: 4px 10px;
+            border-radius: 20px;
+            margin-right: 8px;
+            font-size: 0.9em;
+            transition: background-color 0.2s ease;
+        }
+        .tag:hover {
+            background-color: #3498db;
+            color: white;
+        }
+        .signature-section {
+            text-align: center;
+            font-style: italic;
+            color: #666;
+            border-top: 2px solid #e9ecef;
+            margin-top: 40px;
+            padding-top: 20px;
+        }
+        .signature {
+            margin: 0;
+            font-size: 0.9em;
+        }
+        .unsubscribe {
+            margin-top: 15px;
+            font-size: 0.9em;
+        }
+        .unsubscribe a {
+            color: #666;
+            text-decoration: none;
+            border-bottom: 1px solid #666;
+            transition: color 0.2s ease;
+        }
+        .unsubscribe a:hover {
+            color: #3498db;
+            border-bottom-color: #3498db;
+        }
+        .footnote-link {
+            color: #3498db;
+            text-decoration: none;
+            font-size: 0.8em;
+            vertical-align: super;
+            position: relative;
+        }
+        .footnote-link:hover {
+            color: #2980b9;
+        }
+        .footnote-link[data-tooltip]:hover::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 8px;
+            background-color: #2c3e50;
+            color: white;
+            border-radius: 4px;
+            font-size: 0.9em;
+            white-space: nowrap;
+            z-index: 1000;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        .toc-section {
+            background-color: #f8f9fa;
+            border: 1px solid #e9ecef;
+        }
+        .toc-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            padding: 10px;
+        }
+        .toc-item {
+            display: inline-block;
+            padding: 8px 15px;
+            background-color: #e9ecef;
+            color: #2c3e50;
+            text-decoration: none;
+            border-radius: 20px;
+            font-size: 0.9em;
+            transition: all 0.2s ease;
+        }
+        .toc-item:hover {
+            background-color: #3498db;
+            color: white;
+            transform: translateY(-2px);
+        }
+        @media only screen and (max-width: 600px) {
+            body {
+                padding: 10px;
+            }
+            .section {
+                padding: 15px;
+            }
+            .newsletter-title {
+                font-size: 1.8em;
+            }
+            .main-headline {
+                font-size: 1.5em;
+            }
+            .section-header {
+                font-size: 1.3em;
+            }
+            .footnote-link[data-tooltip]:hover::after {
+                display: none;
+            }
+            .toc-container {
+                flex-direction: column;
+            }
+            .toc-item {
+                width: 100%;
+                text-align: center;
+            }
+        }
+        
+                </style>
+            </head>
+            <body>
+                <div class="newsletter-container">
+                    
+            <div class="section title-section">
+                <h1 class="newsletter-title">Fréttir Gærdagsins</h1>
+                <h2 class="newsletter-date">2025-05-15</h2>
+            </div>
+            
+
+            <div class="section" id="summary">
+                <h2 class="main-headline">Ríkið selur allan eignarhlut sinn í Íslandsbanka í sögulegu útboði – Friðarviðræður milli Rússlands og Úkraínu hefjast í Tyrklandi</h2>
+                <div class="section-content">
+                    <p>Gærdagurinn einkenndist af stórum og áhrifamiklum atburðum bæði innanlands og á alþjóðavettvangi. Íslenska ríkið ákvað að selja allan eignarhlut sinn í Íslandsbanka, eða 45,2%, í útboði sem vakti mikla eftirspurn og er talið vera stærsta eignasala ríkissjóðs frá upphafi. Fjármálaráðuneytið virkjaði heimild til að stækka útboðið vegna fordæmalausrar eftirspurnar innanlands, og verður niðurstaðan kynnt á morgun. Verðbréfaverð bankans hækkaði við opnun markaða og áhugi almennings var mikill.<br><br>Á alþjóðavettvangi hófust að nýju friðarviðræður milli sendinefnda Rússlands og Úkraínu í Tyrklandi, í fyrsta sinn síðan 2022. Úkraínski forsetinn Volodimír Selenskí mætir til fundar með Recep Tayyip Erdogan, forseta Tyrklands, en Vladimír Pútín Rússlandsforseti mun ekki mæta sjálfur og sendi lágt setta erindreka. Spennan er mikil og ummæli rússneskra ráðamanna um Selenskí hafa verið hörð. Bandaríkin og NATO-ríki undirbúa aukin framlög til varnarmála og nýja öryggisstefnu, meðal annars með tilliti til átaka í Úkraínu og á Gasasvæðinu.<br><br>Á innlendum vettvangi var mikil umræða um skipan og stjórnsýslu, þar á meðal um málefni Flokks fólksins og styrkveitingar, auk deilna á Alþingi milli ráðherra og þingmanna. Þá var samþykkt að fjölga leikskólaplássum í Reykjavík um 162 og bæta aðstöðu starfsfólks. Íþróttir og menning voru einnig í brennidepli, með úrslitum í handbolta og knattspyrnu, auk tónlistar- og kvikmyndaviðburða.<br><br>Veður var með hlýjasta móti í maí, með nýju hitameti á Egilsstöðum, og sumarstemning ríkjandi víða. Á sama tíma vakti athygli að íslenskir fiskútflytjendur standa frammi fyrir mikilli óvissu vegna tollamála í Bandaríkjunum og stríðsins í Úkraínu. Í vísindum var fjallað um hnattræna útbreiðslu hitabeltissjúkdóma í Evrópu og áhrif loftslagsbreytinga á jökla í Patagóníu.<br><br>Þetta var dagur mikilla breytinga og viðburða sem munu hafa áhrif á íslenskt samfélag og alþjóðastjórnmál næstu misseri. <a href="https://www.ruv.is/frettir/innlent/2025-05-15/rikid-selur-alla-eignarhlut-sinn-i-islandsbanka" class="footnote-link" data-tooltip="https://www.ruv.is/frettir/innlent/2025-05-15/rikid-selur-alla-eignarhlut-sinn-i-islandsbanka" id="summaryfn1">[1]</a> <a href="https://www.ruv.is/frettir/erlent/2025-05-15/friardsvidraedur-gætu-hafist-i-kvold" class="footnote-link" data-tooltip="https://www.ruv.is/frettir/erlent/2025-05-15/friardsvidraedur-gætu-hafist-i-kvold" id="summaryfn2">[2]</a> <a href="https://www.visir.is/g/20252726392d/hvorki-putin-ne-trump-aetla-a-fund-selenski" class="footnote-link" data-tooltip="https://www.visir.is/g/20252726392d/hvorki-putin-ne-trump-aetla-a-fund-selenski" id="summaryfn3">[3]</a> <a href="https://www.visir.is/g/20252724678d" class="footnote-link" data-tooltip="https://www.visir.is/g/20252724678d" id="summaryfn4">[4]</a> <a href="https://www.stjornarradid.is/verkefni/rekstur-og-eignir-rikisins/eignir-rikisins/sala-a-eftirstandandi-hlutum-i-islandsbanka/frett/2025/05/15/Tilkynning-um-utbod-almennra-hluta-i-Islandsbanka-hf.-magn-aukid-i-allan-eignarhlut-rikisins/" class="footnote-link" data-tooltip="https://www.stjornarradid.is/verkefni/rekstur-og-eignir-rikisins/eignir-rikisins/sala-a-eftirstandandi-hlutum-i-islandsbanka/frett/2025/05/15/Tilkynning-um-utbod-almennra-hluta-i-Islandsbanka-hf.-magn-aukid-i-allan-eignarhlut-rikisins/" id="summaryfn5">[5]</a></p>
+                    <p class="impact"><strong>Áhrif:</strong>  </p>
+                </div>
+            </div>
+            
+
+        <div class="section toc-section">
+            <h2 class="section-header">Efnisyfirlit</h2>
+            <div class="toc-container">
+                <a href="#key_events" class="toc-item">1. MIKILVÆGUSTU FRÉTTIRNAR</a><a href="#domestic_news" class="toc-item">2. INNLENT</a><a href="#foreign_news" class="toc-item">3. ERLENT</a><a href="#business" class="toc-item">4. VIÐSKIPTI</a><a href="#famous_people" class="toc-item">5. FRÆGA FÓLKIÐ</a><a href="#sports" class="toc-item">6. ÍÞRÓTTIR</a><a href="#arts" class="toc-item">7. LISTIR</a><a href="#science" class="toc-item">8. VÍSINDI</a><a href="#closing_summary" class="toc-item">9. LOKAORÐ</a>
+            </div>
+        </div>
+        
+
+        <div class="section" id="key_events">
+            <h2 class="section-header">1. MIKILVÆGUSTU FRÉTTIRNAR</h2>
+            <div class="section-content">
+                
+        <div class="news-item">
+            <h3>Ríkið selur allan eignarhlut sinn í Íslandsbanka í sögulegu útboði</h3>
+            <p>Íslenska ríkið hefur ákveðið að selja allan eignarhlut sinn í Íslandsbanka, sem nemur 45,2% af hlutafé bankans, í útboði sem hófst 13. maí og lauk í gær. Útboðið var upphaflega ætlað að ná til 20% eignarhlutar en vegna mikillar eftirspurnar innanlands var heimild virkjað til að stækka útboðið og selja allan hlutinn. Fjármálaráðuneytið tilkynnti að útboðshlutirnir verði samtals 850.000.007 almennir hlutir. Verðbréfaverð bankans hækkaði við opnun markaða og var gengi bankans 115,5 krónur á hlut í lok dags. Útboðið vakti mikla athygli og er talið stærsta eignasala ríkissjóðs frá upphafi. Niðurstöður úthlutunar verða kynntar fjárfestum 16. maí og möguleg aukning í útboðsmagni verður kynnt 21. maí. <a href="https://www.stjornarradid.is/verkefni/rekstur-og-eignir-rikisins/eignir-rikisins/sala-a-eftirstandandi-hlutum-i-islandsbanka/frett/2025/05/15/Tilkynning-um-utbod-almennra-hluta-i-Islandsbanka-hf.-magn-aukid-i-allan-eignarhlut-rikisins/" class="footnote-link" data-tooltip="https://www.stjornarradid.is/verkefni/rekstur-og-eignir-rikisins/eignir-rikisins/sala-a-eftirstandandi-hlutum-i-islandsbanka/frett/2025/05/15/Tilkynning-um-utbod-almennra-hluta-i-Islandsbanka-hf.-magn-aukid-i-allan-eignarhlut-rikisins/" id="fn1">[1]</a></p>
+            
+            <div class="tags">
+                <span class="tag">viðskipti</span>, <span class="tag">fjármál</span>, <span class="tag">íslensk efnahagsmál</span>
+            </div>
+        </div>
+        
+        <div class="news-item">
+            <h3>Friðarviðræður milli Rússlands og Úkraínu hefjast í Tyrklandi</h3>
+            <p>Sendinefndir Rússlands og Úkraínu hófu að nýju friðarviðræður í Tyrklandi, í fyrsta sinn síðan 2022. Úkraínski forsetinn Volodimír Selenskí mætir til fundar með Recep Tayyip Erdogan, forseta Tyrklands, en Vladimír Pútín Rússlandsforseti mun ekki mæta sjálfur og sendi lágt setta erindreka. Spennan er mikil og ummæli rússneskra ráðamanna um Selenskí hafa verið hörð, þar á meðal að kalla hann "aumkunarverðan" og "trúð". Selenskí gagnrýndi rússnesku sendinefndina fyrir að vera til skrauts og sagði að Pútín væri ekki alvara með friðarviðræðurnar. Bandaríkin og NATO-ríki undirbúa aukin framlög til varnarmála og nýja öryggisstefnu, meðal annars með tilliti til átaka í Úkraínu og á Gasasvæðinu. <a href="https://www.visir.is/g/20252726392d/hvorki-putin-ne-trump-aetla-a-fund-selenski" class="footnote-link" data-tooltip="https://www.visir.is/g/20252726392d/hvorki-putin-ne-trump-aetla-a-fund-selenski" id="fn1">[1]</a> <a href="https://www.visir.is/g/20252724678d" class="footnote-link" data-tooltip="https://www.visir.is/g/20252724678d" id="fn2">[2]</a></p>
+            
+            <div class="tags">
+                <span class="tag">alþjóðamál</span>, <span class="tag">stríð</span>, <span class="tag">Úkraína</span>, <span class="tag">Rússland</span>
+            </div>
+        </div>
+        
+        <div class="news-item">
+            <h3>Fjölgun leikskólaplássa og bætt aðstaða starfsfólks í Reykjavík</h3>
+            <p>Borgarráð Reykjavíkur samþykkti umfangsmikið átak til að fjölga leikskólaplássum í borginni um 162. Framkvæmdir munu fela í sér byggingu fjórtán nýrra kennslustofa við sex leikskóla víðs vegar um borgina, auk tengibygginga og lóðaframkvæmda. Með þessum breytingum verður eldri og minni kennslustofum tekið úr notkun en heildarfjölgun leikskólaplássa verður veruleg. Leikskólarnir sem fá nýja kennslustofu eru Grandaborg, Hólaborg, Árborg, Jörfi, Maríuborg og Vesturborg. Heildarkostnaður við framkvæmdirnar er áætlaður 2,1 milljarður króna, þar af 150 milljónir í lóðaframkvæmdir. Verkefnið er hluti af áframhaldandi vinnu við að bæta leikskólastarf í Reykjavík. </p>
+            
+            <div class="tags">
+                <span class="tag">innlent</span>, <span class="tag">menntamál</span>, <span class="tag">Reykjavík</span>
+            </div>
+        </div>
+        
+        <div class="news-item">
+            <h3>Nýtt hitamet í maímánuði slegið á Egilsstöðum</h3>
+            <p>Nýtt landshitamet í maímánuði var slegið á Egilsstaðaflugvelli þegar hiti mældist 26,3°C. Fyrra metið var 25,6°C og hafði staðið síðan 26. maí 1992 á Vopnafirði. Veðurfræðingar staðfesta að þetta sé hæsti hiti sem mælst hefur á landinu í maí. Hitinn er hluti af áframhaldandi hitabylgju sem hefur verið á landinu síðustu daga, með hlýjasta veðri sem sést hefur í maí áratugum saman. Veðurspár gera ráð fyrir áframhaldandi hlýindum næstu daga, sérstaklega á Norður- og Austurlandi. <a href="https://www.visir.is/g/20252726453d/gaeti-nad-24-stigum-thar-sem-best-laetur" class="footnote-link" data-tooltip="https://www.visir.is/g/20252726453d/gaeti-nad-24-stigum-thar-sem-best-laetur" id="fn1">[1]</a> <a href="https://www.ruv.is/frettir/innlent/2025-05-15/nytt-hitamet-slegid-a-egilsstodum" class="footnote-link" data-tooltip="https://www.ruv.is/frettir/innlent/2025-05-15/nytt-hitamet-slegid-a-egilsstodum" id="fn2">[2]</a></p>
+            
+            <div class="tags">
+                <span class="tag">innlent</span>, <span class="tag">veður</span>, <span class="tag">hitamet</span>
+            </div>
+        </div>
+        
+        <div class="news-item">
+            <h3>Aukin varnarframlög og ný öryggisstefna í mótun innan NATO</h3>
+            <p>Á óformlegum fundi utanríkisráðherra NATO-ríkja í Tyrklandi var rætt um mikilvægi aukinna framlaga til varnarmála, áframhaldandi stuðning við varnarbaráttu Úkraínu og undirbúning fyrir leiðtogafund bandalagsins í Haag í sumar. Þorgerður Katrín Gunnarsdóttir, utanríkisráðherra Íslands, tók þátt í fundinum og sagði góða samstöðu og samheldni hafa einkennt umræðurnar. Ísland mun auka verulega framlög til varnarmála og stuðning við Úkraínu og er ný öryggis- og varnarstefna í mótun. Fundurinn tók einnig fyrir málefni Mið-Austurlanda og stöðu á Gaza-svæðinu, sem hefur verið skelfileg. <a href="https://www.stjornarradid.is/efst-a-baugi/frettir/stok-frett/2025/05/15/Aukin-framlog-til-varnarmala-og-ny-oryggisstefna-i-motun/" class="footnote-link" data-tooltip="https://www.stjornarradid.is/efst-a-baugi/frettir/stok-frett/2025/05/15/Aukin-framlog-til-varnarmala-og-ny-oryggisstefna-i-motun/" id="fn1">[1]</a></p>
+            
+            <div class="tags">
+                <span class="tag">alþjóðamál</span>, <span class="tag">varnarmál</span>, <span class="tag">NATO</span>, <span class="tag">Úkraína</span>
+            </div>
+        </div>
+        
+            </div>
+        </div>
+        
+
+        <div class="section" id="domestic_news">
+            <h2 class="section-header">2. INNLENT</h2>
+            <div class="section-content">
+                
+        <div class="news-item">
+            <h3>Deilur á Alþingi um styrkveitingar og stjórnsýslu Flokks fólksins</h3>
+            <p>Á Alþingi var harðlega deilt um styrkveitingar til Flokks fólksins og stjórnsýslu mála sem tengjast þeim. Hildur Sverrisdóttir, þingmaður Sjálfstæðisflokksins, sakaði ráðherra um tvískinnung og krafðist endurgreiðslu styrkja sem flokkurinn fékk án formlegra reglna. Ráðherra Inga Sæland svaraði með harðri ræðu og vísaði til afsagnar Sigríðar Á. Andersen, fyrrverandi ráðherra. Málið hefur vakið mikla athygli og umræður um pólitíska ábyrgð og lögmæti styrkveitinga. </p>
+            
+            <div class="tags">
+                <span class="tag">innlent</span>, <span class="tag">stjórnmál</span>, <span class="tag">Alþingi</span>
+            </div>
+        </div>
+        
+        <div class="news-item">
+            <h3>Lögreglustjórastaða á Austurlandi auglýst eftir að Úlfari var boðin staða</h3>
+            <p>Dómsmálaráðherra bauð Úlfari Lúðvíkssyni, fyrrverandi lögreglustjóra á Suðurnesjum, stöðu lögreglustjóra á Austurlandi á fundi þeirra í byrjun vikunnar. Úlfar afþakkaði stöðuna og lét af störfum sem lögreglustjóri. Staðan var laus eftir að Margrét María Sigurðardóttir var skipuð framkvæmdastjóri Mannréttindastofnunar Íslands. Ráðherra tók fram að ákvörðunin um að auglýsa stöðuna tengdist ekki frammistöðu Úlfars. Starfslokasamningur var gerður við hann daginn eftir. <a href="https://www.mbl.is/frettir/innlent/2025/05/15/var_bodid_embaetti_logreglustjorans_a_austurlandi/" class="footnote-link" data-tooltip="https://www.mbl.is/frettir/innlent/2025/05/15/var_bodid_embaetti_logreglustjorans_a_austurlandi/" id="fn1">[1]</a></p>
+            
+            <div class="tags">
+                <span class="tag">innlent</span>, <span class="tag">lögregla</span>, <span class="tag">stjórnsýsla</span>
+            </div>
+        </div>
+        
+        <div class="news-item">
+            <h3>Þrír með stöðu sakbornings vegna eldsvoða á Stuðlum</h3>
+            <p>Rannsókn lögreglu á bruna á meðferðarheimilinu Stuðlum, þar sem sautján ára piltur lést, er langt komin. Þrír eru með stöðu sakbornings í málinu, en ekki hefur verið gefið upp hvort þeir séu börn eða starfsfólk. Eldur kom upp snemma morguns 19. október 2024 og pilturinn lést skömmu síðar. Rannsóknin hefur verið umfangsmikil og lögregla bíður eftir gögnum til að ljúka henni og senda málið til ákæru. <a href="https://nyr.ruv.is/frettir/innlent/2025-05-15-thrir-med-stodu-sakbornings-vegna-eldsvodans-a-studlum-443904" class="footnote-link" data-tooltip="https://nyr.ruv.is/frettir/innlent/2025-05-15-thrir-med-stodu-sakbornings-vegna-eldsvodans-a-studlum-443904" id="fn1">[1]</a></p>
+            
+            <div class="tags">
+                <span class="tag">innlent</span>, <span class="tag">lögregla</span>, <span class="tag">rannsókn</span>
+            </div>
+        </div>
+        
+        <div class="news-item">
+            <h3>Fjölgun lausa starfa á íslenskum vinnumarkaði</h3>
+            <p>Laus störf á íslenskum vinnumarkaði voru 4.770 á fyrsta ársfjórðungi 2025, sem er 800 fleiri en á fyrri ársfjórðungi. Hlutfall lausra starfa var 2%, en hefur minnkað um 0,9 prósentustig frá fyrra ári. Meirihluti fasteignasala telur virkni á fasteignamarkaði vera litla miðað við árstíma, sérstaklega á höfuðborgarsvæðinu. Laus störf hafa fækkað um 2.120 frá fyrra ári, en aukningin milli ársfjórðunga er talin tímabundin. <a href="https://hagstofa.is/utgafur/frettasafn/vinnumarkadur/laus-storf-a-4-arsfjordungi-2024/" class="footnote-link" data-tooltip="https://hagstofa.is/utgafur/frettasafn/vinnumarkadur/laus-storf-a-4-arsfjordungi-2024/" id="fn1">[1]</a></p>
+            
+            <div class="tags">
+                <span class="tag">innlent</span>, <span class="tag">vinnumarkaður</span>, <span class="tag">hagfræði</span>
+            </div>
+        </div>
+        
+        <div class="news-item">
+            <h3>Fjölgun leikskólaplássa í Reykjavík og bætt aðstaða starfsfólks</h3>
+            <p>Borgarráð samþykkti að fjölga leikskólaplássum um 162 með byggingu nýrra kennslustofa við sex leikskóla víðs vegar um borgina. Verkefnið mun einnig bæta aðstöðu starfsfólks og felur í sér endurnýjun eldri kennslustofa. Heildarkostnaður er áætlaður 2,1 milljarður króna. Þetta er hluti af áframhaldandi vinnu við að bæta leikskólastarf í Reykjavík og mætti teljast stórt átak í menntamálum borgarinnar. </p>
+            
+            <div class="tags">
+                <span class="tag">innlent</span>, <span class="tag">menntamál</span>, <span class="tag">Reykjavík</span>
+            </div>
+        </div>
+        
+            </div>
+        </div>
+        
+
+        <div class="section" id="foreign_news">
+            <h2 class="section-header">3. ERLENT</h2>
+            <div class="section-content">
+                
+        <div class="news-item">
+            <h3>Friðarviðræður milli Rússlands og Úkraínu hefjast í Tyrklandi</h3>
+            <p>Sendinefndir Rússlands og Úkraínu hófu að nýju friðarviðræður í Tyrklandi, í fyrsta sinn síðan 2022. Úkraínski forsetinn Volodimír Selenskí mætir til fundar með Recep Tayyip Erdogan, forseta Tyrklands, en Vladimír Pútín Rússlandsforseti mun ekki mæta sjálfur og sendi lágt setta erindreka. Spennan er mikil og ummæli rússneskra ráðamanna um Selenskí hafa verið hörð, þar á meðal að kalla hann "aumkunarverðan" og "trúð". Selenskí gagnrýndi rússnesku sendinefndina fyrir að vera til skrauts og sagði að Pútín væri ekki alvara með friðarviðræðurnar. Bandaríkin og NATO-ríki undirbúa aukin framlög til varnarmála og nýja öryggisstefnu, meðal annars með tilliti til átaka í Úkraínu og á Gasasvæðinu. <a href="https://www.visir.is/g/20252726392d/hvorki-putin-ne-trump-aetla-a-fund-selenski" class="footnote-link" data-tooltip="https://www.visir.is/g/20252726392d/hvorki-putin-ne-trump-aetla-a-fund-selenski" id="fn1">[1]</a> <a href="https://www.visir.is/g/20252724678d" class="footnote-link" data-tooltip="https://www.visir.is/g/20252724678d" id="fn2">[2]</a></p>
+            
+            <div class="tags">
+                <span class="tag">alþjóðamál</span>, <span class="tag">stríð</span>, <span class="tag">Úkraína</span>, <span class="tag">Rússland</span>
+            </div>
+        </div>
+        
+        <div class="news-item">
+            <h3>Aukin varnarframlög og ný öryggisstefna í mótun innan NATO</h3>
+            <p>Á óformlegum fundi utanríkisráðherra NATO-ríkja í Tyrklandi var rætt um mikilvægi aukinna framlaga til varnarmála, áframhaldandi stuðning við varnarbaráttu Úkraínu og undirbúning fyrir leiðtogafund bandalagsins í Haag í sumar. Þorgerður Katrín Gunnarsdóttir, utanríkisráðherra Íslands, tók þátt í fundinum og sagði góða samstöðu og samheldni hafa einkennt umræðurnar. Ísland mun auka verulega framlög til varnarmála og stuðning við Úkraínu og er ný öryggis- og varnarstefna í mótun. Fundurinn tók einnig fyrir málefni Mið-Austurlanda og stöðu á Gaza-svæðinu, sem hefur verið skelfileg. <a href="https://www.stjornarradid.is/efst-a-baugi/frettir/stok-frett/2025/05/15/Aukin-framlog-til-varnarmala-og-ny-oryggisstefna-i-motun/" class="footnote-link" data-tooltip="https://www.stjornarradid.is/efst-a-baugi/frettir/stok-frett/2025/05/15/Aukin-framlog-til-varnarmala-og-ny-oryggisstefna-i-motun/" id="fn1">[1]</a></p>
+            
+            <div class="tags">
+                <span class="tag">alþjóðamál</span>, <span class="tag">varnarmál</span>, <span class="tag">NATO</span>, <span class="tag">Úkraína</span>
+            </div>
+        </div>
+        
+        <div class="news-item">
+            <h3>Minnismerki til heiðurs Stalín endurreist í Moskvu</h3>
+            <p>Minnismerki af Jósef Stalín hefur verið endurreist á Tagaskaya-lestarstöðinni í Moskvu. Verkið er eftirlíking af eldri styttu sem var eyðilögð á sjöunda áratugnum sem hluti af af-stalíníseringu Sovétríkjanna. Endurreisn minnismerkisins er hluti af breyttri stefnu í Rússlandi þar sem Stalín er sýndur sem hetja seinni heimsstyrjaldar. Andstaða við þetta hefur komið fram, meðal annars frá stjórnarandstöðuflokknum Jabloko sem kallar eftir fjarlægingu styttunnar. <a href="https://www.mbl.is/frettir/erlent/2025/05/15/minnismerki_til_heidurs_stalin_endurreist/" class="footnote-link" data-tooltip="https://www.mbl.is/frettir/erlent/2025/05/15/minnismerki_til_heidurs_stalin_endurreist/" id="fn1">[1]</a></p>
+            
+            <div class="tags">
+                <span class="tag">alþjóðamál</span>, <span class="tag">Rússland</span>, <span class="tag">saga</span>
+            </div>
+        </div>
+        
+        <div class="news-item">
+            <h3>ESB tapar máli um samskipti von der Leyen og Pfizer-forstjóra</h3>
+            <p>Dómstóll Evrópusambandsins felldi áfellisdóm yfir framkvæmdastjórn ESB vegna þess hvernig hún hafnaði að afhenda skilaboð milli forseta framkvæmdastjórnarinnar, Ursulu von der Leyen, og forstjóra Pfizer í kórónuveirufaraldrinum. Dómstóllinn sagði að framkvæmdastjórnin hefði ekki sýnt trúverðugar skýringar á því að gögnin væru ekki til eða hafi verið eytt. Málið varðar gagnsæi og upplýsingarétti almennings um mikilvæga samninga ESB við lyfjafyrirtæki. <a href="https://www.visir.is/g/20252725121d/esb-tapar-mali-um-samskipti-von-der-leyen-og-pfizer-forstjora" class="footnote-link" data-tooltip="https://www.visir.is/g/20252725121d/esb-tapar-mali-um-samskipti-von-der-leyen-og-pfizer-forstjora" id="fn1">[1]</a></p>
+            
+            <div class="tags">
+                <span class="tag">alþjóðamál</span>, <span class="tag">ESB</span>, <span class="tag">heilbrigðismál</span>
+            </div>
+        </div>
+        
+        <div class="news-item">
+            <h3>Hnattræn hlýnun hefur áhrif á Perito Moreno-skriðjökul í Patagóníu</h3>
+            <p>Perito Moreno-skriðjökullinn í Patagóníu, sem er vinsæll ferðamannastaður, kelfir nú hraðar en áður og hefur hnattræn hlýnun haft áhrif á hann. Jöklafræðingar segja að jökullinn hafi haldið velli í áratugi en hafi nú byrjað að hörfa og missa massa. Þetta vekur áhyggjur um framtíð jökulsins og áhrif á lífríki svæðisins. Hlýnun og minni úrkoma hafa raskað jafnvægi jökulsins og hann tapar bæði massa og flatarmáli. <a href="https://www.visir.is/g/20252726453d/hnattran-hlynun-naer-i-skottid-a-einni-af-perlum-patagoniu" class="footnote-link" data-tooltip="https://www.visir.is/g/20252726453d/hnattran-hlynun-naer-i-skottid-a-einni-af-perlum-patagoniu" id="fn1">[1]</a></p>
+            
+            <div class="tags">
+                <span class="tag">vísindi</span>, <span class="tag">loftslagsbreytingar</span>, <span class="tag">umhverfi</span>
+            </div>
+        </div>
+        
+            </div>
+        </div>
+        
+
+        <div class="section" id="business">
+            <h2 class="section-header">4. VIÐSKIPTI</h2>
+            <div class="section-content">
+                
+        <div class="news-item">
+            <h3>Landsvirkjun gefur út græn skuldabréf fyrir 20 milljarða</h3>
+            <p>Landsvirkjun gaf út græn skuldabréf á bandarískum skuldabréfamarkaði að fjárhæð 150 milljónir dala, sem samsvarar um 20 milljörðum íslenskra króna. Fjármagnið verður nýtt til virkjanaframkvæmda, þar á meðal fyrsta vindorkuvers landsins, Vaðölduvers, og Hvammsvirkjunar. Útgáfan var stækkuð vegna mikils áhuga fjárfesta og skuldabréfin bera fasta og fljótandi vexti. Þetta er hluti af áherslum Landsvirkjunar á sjálfbærni og græna fjármögnun. </p>
+            
+            <div class="tags">
+                <span class="tag">viðskipti</span>, <span class="tag">fjármál</span>, <span class="tag">sjálfbærni</span>
+            </div>
+        </div>
+        
+        <div class="news-item">
+            <h3>Sjóvá tapar hálfum milljarði á fyrsta ársfjórðungi</h3>
+            <p>Sjóvá vátryggingafélag tapaði 540 milljónum króna á fyrsta ársfjórðungi 2025, aðallega vegna taps af fjárfestingastarfsemi. Tap af fjárfestingum fyrir skatta nam 1.126 milljónum króna, en hagnaður af vátryggingasamningum var 821 milljón króna. Samsett hlutfall var 90,2%, lægra en 97% á sama tíma í fyrra. Forstjóri Sjóvá segir að erfiður árangur á verðbréfamörkuðum hafi haft áhrif á afkomuna, en vátryggingastarfsemin hafi gengið vel. </p>
+            
+            <div class="tags">
+                <span class="tag">viðskipti</span>, <span class="tag">fjármál</span>, <span class="tag">vátryggingar</span>
+            </div>
+        </div>
+        
+        <div class="news-item">
+            <h3>Jón Ólafur Halldórsson kjörinn formaður Samtaka atvinnulífsins</h3>
+            <p>Jón Ólafur Halldórsson var kjörinn nýr formaður Samtaka atvinnulífsins á aðalfundi samtakanna með tæplega 98% atkvæða. Hann tekur við af Eyjólfi Árna Rafnssyni sem gegnt hefur stöðunni frá 2017. Jón Ólafur hefur starfað í stjórn samtakanna frá 2015 og í framkvæmdastjórn frá 2018. Hann hefur víðtæka reynslu af stjórnunarstörfum í íslensku atvinnulífi og hefur lokið MBA- og MS-námi í viðskiptafræði. <a href="https://www.visir.is/g/20252720524d/jon-olafur-halldorsson-kjorinn-formadur-samtaka-atvinnulifsins" class="footnote-link" data-tooltip="https://www.visir.is/g/20252720524d/jon-olafur-halldorsson-kjorinn-formadur-samtaka-atvinnulifsins" id="fn1">[1]</a></p>
+            
+            <div class="tags">
+                <span class="tag">viðskipti</span>, <span class="tag">stjórnun</span>, <span class="tag">atvinnulíf</span>
+            </div>
+        </div>
+        
+        <div class="news-item">
+            <h3>Fasteignasalar segja litla virkni á fasteignamarkaði</h3>
+            <p>Samkvæmt spurningakönnun HMS telja fasteignasalar að virkni á fasteignamarkaði sé lítil miðað við árstíma, sérstaklega á höfuðborgarsvæðinu. Um 62% svarenda segja virkni vera frekar lítil eða mjög lítil. Á landsbyggðinni er virkni meiri, sérstaklega á Akureyri. Meirihluti fasteignasala telur markaðinn hvorki vera á valdi kaupenda né seljenda. Þetta endurspeglar stöðugleika en einnig ákveðna tregðu á markaðnum. <a href="https://hms.is/frettir/fasteignasalar-segja-litla-virkni-vera-a-fasteigna" class="footnote-link" data-tooltip="https://hms.is/frettir/fasteignasalar-segja-litla-virkni-vera-a-fasteigna" id="fn1">[1]</a></p>
+            
+            <div class="tags">
+                <span class="tag">viðskipti</span>, <span class="tag">fasteignir</span>, <span class="tag">hagfræði</span>
+            </div>
+        </div>
+        
+            </div>
+        </div>
+        
+
+        <div class="section" id="famous_people">
+            <h2 class="section-header">5. FRÆGA FÓLKIÐ</h2>
+            <div class="section-content">
+                
+        <div class="news-item">
+            <h3>Kim Kardashian sendi ræningjum skýr skilaboð þakin demöntum</h3>
+            <p>Kim Kardashian mætti í dómsal í París þakin demöntum að andvirði sjö milljón dollara í máli gegn tíu mönnum sem rændu hana vopnaðir árið 2016. Hún klæddist svörtum vintage-jakkakjól og glæsilegum skartgripum frá virtum hönnuðum. Réttarhöldin eru til 23. maí og fjalla um umfangsmikla vopnaðra rán og áhrif þeirra á Kardashian sem lýsti því að hún hefði verið sannfærð um að hún myndi deyja í atvikinu. <a href="https://www.visir.is/g/20252720524d/kim-kardashian-sendir-raenningjunum-skyr-skilabod-thakin-demontum" class="footnote-link" data-tooltip="https://www.visir.is/g/20252720524d/kim-kardashian-sendir-raenningjunum-skyr-skilabod-thakin-demontum" id="fn1">[1]</a></p>
+            
+            <div class="tags">
+                <span class="tag">frægir</span>, <span class="tag">réttarhöld</span>, <span class="tag">Kim Kardashian</span>
+            </div>
+        </div>
+        
+        <div class="news-item">
+            <h3>Tyler Henry gekkst undir aðgerð til að fjarlægja æxli í heila</h3>
+            <p>Tyler Henry, bandarískur miðill og sjónvarpsmaður, tilkynnti á Instagram að hann hefði gengist undir aðgerð til að fjarlægja æxli í miðjum heilanum. Aðgerðin heppnaðist vel og hann þakkaði heilbrigðisstarfsfólki og fjölskyldu sinni. Þetta er ekki í fyrsta sinn sem Henry gengst undir heilaskurðaðgerð, en hann hefur áður fjallað opinberlega um heilaskaða sem hann glímdi við frá unglingsaldri. </p>
+            
+            <div class="tags">
+                <span class="tag">frægir</span>, <span class="tag">heilsa</span>, <span class="tag">Tyler Henry</span>
+            </div>
+        </div>
+        
+        <div class="news-item">
+            <h3>Jón Ólafur Halldórsson kjörinn formaður Samtaka atvinnulífsins</h3>
+            <p>Jón Ólafur Halldórsson var kjörinn nýr formaður Samtaka atvinnulífsins með tæplega 98% atkvæða á aðalfundi samtakanna. Hann hefur starfað í stjórn samtakanna frá 2015 og í framkvæmdastjórn frá 2018. Jón Ólafur hefur víðtæka reynslu af stjórnunarstörfum í íslensku atvinnulífi og hefur lokið MBA- og MS-námi í viðskiptafræði. Hann tekur við af Eyjólfi Árna Rafnssyni sem gegnt hefur stöðunni frá 2017. <a href="https://www.visir.is/g/20252720524d/jon-olafur-halldorsson-kjorinn-formadur-samtaka-atvinnulifsins" class="footnote-link" data-tooltip="https://www.visir.is/g/20252720524d/jon-olafur-halldorsson-kjorinn-formadur-samtaka-atvinnulifsins" id="fn1">[1]</a></p>
+            
+            <div class="tags">
+                <span class="tag">frægir</span>, <span class="tag">viðskipti</span>, <span class="tag">stjórnun</span>
+            </div>
+        </div>
+        
+        <div class="news-item">
+            <h3>Sara Davíðsdóttir flutt heim eftir dvöl í Barein</h3>
+            <p>Sara Davíðsdóttir, einkaþjálfari og samfélagsmiðlastjarna, hefur flutt aftur heim til Íslands eftir ævintýralega dvöl í Barein. Hún rifjaði upp góðar stundir í færslu á Instagram og lýsti dvölinni sem bestu átta mánuðum lífs síns. Sara hyggst koma fjölskyldu sinni til Íslands í sumar og hefur verið virk í samfélagsmiðlum með áherslu á heilsu og lífsstíl. <a href="https://www.instagram.com/p/DJrdlyyI9hy/" class="footnote-link" data-tooltip="https://www.instagram.com/p/DJrdlyyI9hy/" id="fn1">[1]</a></p>
+            
+            <div class="tags">
+                <span class="tag">frægir</span>, <span class="tag">samfélagsmiðlar</span>, <span class="tag">heilsa</span>
+            </div>
+        </div>
+        
+            </div>
+        </div>
+        
+
+        <div class="section" id="sports">
+            <h2 class="section-header">6. ÍÞRÓTTIR</h2>
+            <div class="section-content">
+                
+        <div class="news-item">
+            <h3>Framarar slógu bikarmeistara KA út í 16-liða úrslitum</h3>
+            <p>Fram tryggði sér sæti í átta liða úrslitum bikarkeppni karla með sigri á ríkjandi bikarmeisturum KA, 4:2, á Akureyri. Leikurinn hófst með látum og KA komst yfir snemma en Fram snéri taflinu við og komst í 3:1 fyrir hálfleik. KA minnkaði muninn en Fram skoraði aftur og tryggði sér sigurinn. Fram er nú í hópi liða sem komist hafa áfram í átta liða úrslit, þar á meðal Stjarnan, Valur og Keflavík. </p>
+            
+            <div class="tags">
+                <span class="tag">íþróttir</span>, <span class="tag">knattspyrna</span>, <span class="tag">bikar</span>
+            </div>
+        </div>
+        
+        <div class="news-item">
+            <h3>Íslenska kvennalandsliðið á að vígja nýjan Laugardalsvöll</h3>
+            <p>KSÍ stefnir á að íslenska kvennalandsliðið í fótbolta vígi nýjan Laugardalsvöll í leik gegn Frakklandi 3. júní. Völlurinn verður með blendigrasi sem þolir betur frost og álag. Glódís Perla Viggósdóttir snýr aftur í hópinn eftir meiðsli og Agla María Albertsdóttir kemur einnig inn. Leikurinn gegn Noregi fer fram 30. maí í Þrándheimi. Þorsteinn Halldórsson, þjálfari liðsins, ræddi undirbúning og markmið fyrir leikina í Þjóðadeildinni. <a href="https://www.ruv.is/frettir/ithrottir/2025-05-15/ksi-stefnir-a-ad-vigja-nyjan-laugardalsvoll-i-leik-gegn-frakkum" class="footnote-link" data-tooltip="https://www.ruv.is/frettir/ithrottir/2025-05-15/ksi-stefnir-a-ad-vigja-nyjan-laugardalsvoll-i-leik-gegn-frakkum" id="fn1">[1]</a></p>
+            
+            <div class="tags">
+                <span class="tag">íþróttir</span>, <span class="tag">fótbolti</span>, <span class="tag">kvennalandslið</span>
+            </div>
+        </div>
+        
+        <div class="news-item">
+            <h3>Minnst 27 íslensk mörk í þýsku handknattleikslögum</h3>
+            <p>Íslenskir leikmenn skoruðu samtals 27 mörk í þýsku 1. deildinni í handknattleik karla í kvöld. Magdeburg vann Gummersbach 32:31 þar sem Ómar Ingi Magnússon skoraði sex mörk og lagði upp fjögur. Gísli Þorgeir Kristjánsson og Teitur Örn Einarsson voru einnig öflugir. Leipzig vann Erlangen 23:21 með sex mörk frá Andra Má Rúnarssyni. Viggó Kristjánsson skoraði þrjú mörk fyrir Erlangen. <a href="https://www.mbl.is/sport/handbolti/2025/05/15/markaregn_i_tveimur_islendingaslogum/" class="footnote-link" data-tooltip="https://www.mbl.is/sport/handbolti/2025/05/15/markaregn_i_tveimur_islendingaslogum/" id="fn1">[1]</a></p>
+            
+            <div class="tags">
+                <span class="tag">íþróttir</span>, <span class="tag">handknattleikur</span>, <span class="tag">íslenskir leikmenn</span>
+            </div>
+        </div>
+        
+        <div class="news-item">
+            <h3>Fram leiðir í úrslitaeinvígi gegn Val</h3>
+            <p>Fram vann fyrsta leik úrslitaeinvígisins í handbolta gegn Val, 37:33, á Hlíðarenda. Leikurinn var hraður og spennandi með mikilli skoru. Fram komst í 7 marka forskot en Valur minnkaði muninn undir lokin. Fram hélt forskotinu og er komið í 1:0 í einvíginu. Annar leikurinn fer fram í Úlfarsárdal næstkomandi mánudag. </p>
+            
+            <div class="tags">
+                <span class="tag">íþróttir</span>, <span class="tag">handbolti</span>, <span class="tag">úrslit</span>
+            </div>
+        </div>
+        
+        <div class="news-item">
+            <h3>Lamine Yamal tryggði Barcelona spænska meistaratitilinn</h3>
+            <p>Lamine Yamal, 17 ára gamall varnarmaður, skoraði og lagði upp í 2:0 sigri Barcelona á Espanyol sem tryggði Barcelona spænska meistaratitilinn. Barcelona er með sjö stiga forskot á toppnum þegar tvær umferðir eru eftir. Yamal kom Barcelona yfir með glæsilegu skoti og lagði upp annað markið á lokamínútum leiksins eftir að Espanyol missti leikmann af velli með rautt spjald. <a href="https://www.mbl.is/sport/fotbolti/2025/05/15/yamal_tryggdi_barcelona_titilinn/" class="footnote-link" data-tooltip="https://www.mbl.is/sport/fotbolti/2025/05/15/yamal_tryggdi_barcelona_titilinn/" id="fn1">[1]</a></p>
+            
+            <div class="tags">
+                <span class="tag">íþróttir</span>, <span class="tag">knattspyrna</span>, <span class="tag">Barcelona</span>
+            </div>
+        </div>
+        
+            </div>
+        </div>
+        
+
+        <div class="section" id="arts">
+            <h2 class="section-header">7. LISTIR</h2>
+            <div class="section-content">
+                
+        <div class="news-item">
+            <h3>Nýtt þjóðhátíðarlag 2025: Stuðlabandið með lagið „Við eldana“</h3>
+            <p>Hljómsveitin Stuðlabandið hefur samið og flutt þjóðhátíðarlagið fyrir árið 2025 sem ber heitið „Við eldana“. Lagið var frumflutt í Brennslunni á FM957 og einkennist af fjörugri sviðsframkomu og persónulegum texta. Meðlimir sveitarinnar lýsa því að lagið hafi komið náttúrulega og sé unnið alfarið af þeim sjálfum, frá upphafi til enda. Lagið er ætlað að fanga stemningu þjóðhátíðarinnar og hefur þegar fengið góðar viðtökur. <a href="https://www.visir.is/g/20252726453d/nytt-thjodhatiidarlag-2025-studlabandidid-med-lagid-vid-eldana" class="footnote-link" data-tooltip="https://www.visir.is/g/20252726453d/nytt-thjodhatiidarlag-2025-studlabandidid-med-lagid-vid-eldana" id="fn1">[1]</a></p>
+            
+            <div class="tags">
+                <span class="tag">listir</span>, <span class="tag">tónlist</span>, <span class="tag">menning</span>
+            </div>
+        </div>
+        
+        <div class="news-item">
+            <h3>GusGus og fleiri með ný lög í Undiröldinni</h3>
+            <p>Tónlistarfólk eins og GusGus, HúbbaBúbba, Ástrós Sigurjónsdóttir og fleiri hafa sent frá sér ný lög sem eru hluti af tónlistarviðburðinum Undiraldan. Lögin spanna fjölbreyttar tónlistarstefnur, allt frá poppi og rokk til indie og latin. Viðburðurinn hefur verið haldinn síðustu daga og hefur vakið mikla athygli fyrir fjölbreytileika og gæði tónlistarinnar. <a href="https://www.ruv.is/frettir/listir/2025-05-15/undiraldan-med-fullfermi-af-fjolbreyttri-tonlist" class="footnote-link" data-tooltip="https://www.ruv.is/frettir/listir/2025-05-15/undiraldan-med-fullfermi-af-fjolbreyttri-tonlist" id="fn1">[1]</a></p>
+            
+            <div class="tags">
+                <span class="tag">listir</span>, <span class="tag">tónlist</span>, <span class="tag">viðburðir</span>
+            </div>
+        </div>
+        
+        <div class="news-item">
+            <h3>Heidi Klum braut nýjar reglur á rauða dreglinum í Cannes</h3>
+            <p>Ofurfyrirsætan Heidi Klum braut nýjar klæðaburðarreglur á rauða dreglinum á kvikmyndahátíðinni í Cannes þar sem hún klæddist kjól með langa slóða sem var talinn of fyrirferðarmikill. Reglurnar voru nýlega settar fram og banna alla nekt og fyrirferðarmiklar flíkur sem hindra flæði gesta. Klum mætti í ljósbleikum kjól frá Elie Saab og vakti mikla athygli fyrir fataval sitt, þrátt fyrir að brjóta reglurnar. </p>
+            
+            <div class="tags">
+                <span class="tag">listir</span>, <span class="tag">tíska</span>, <span class="tag">kvikmyndahátíð</span>
+            </div>
+        </div>
+        
+            </div>
+        </div>
+        
+
+        <div class="section" id="science">
+            <h2 class="section-header">8. VÍSINDI</h2>
+            <div class="section-content">
+                
+        <div class="news-item">
+            <h3>Hnattræn útbreiðsla hitabeltissjúkdóma í Evrópu eykst</h3>
+            <p>Ný rannsókn sýnir að hitabeltissjúkdómarnir beinbrunasótt og chikungunya gætu orðið landlægir í Evrópu vegna þess að tígrísflugur sem bera veirurnar eru að flytjast norður vegna loftslagsbreytinga. Um helmingur mannkyns gæti komist í snertingu við sjúkdómana sem áður voru eingöngu á hitabeltissvæðum. Rannsakendur benda á að tilfellum hafi fjölgað og að sjúkdómarnir valdi miklum hita og geti verið banvænir í einstaka tilfellum. <a href="https://www.ruv.is/frettir/vísindi/2025-05-15/hnattræn-útbreiðsla-hitabeltissjúkdóma-í-evrópu-eykst" class="footnote-link" data-tooltip="https://www.ruv.is/frettir/vísindi/2025-05-15/hnattræn-útbreiðsla-hitabeltissjúkdóma-í-evrópu-eykst" id="fn1">[1]</a></p>
+            
+            <div class="tags">
+                <span class="tag">vísindi</span>, <span class="tag">heilsa</span>, <span class="tag">loftslagsbreytingar</span>
+            </div>
+        </div>
+        
+        <div class="news-item">
+            <h3>Norsk-íslenska síldin hefur breytt hrygningarsvæðum</h3>
+            <p>Norsk-íslenska vorgotssíldin, stærsti síldarstofn í heimi, hefur flutt hrygningarsvæði sín norður til Lófót. Rannsókn vísindamanna bendir til að ofveiði á eldri síld hafi valdið því að sameiginlegt minni stofnsins hafi glatast og yngri síld hafi tekið við. Þetta gæti haft neikvæð áhrif á lífríki og veiðiráðgjöf. Vísindamenn kalla eftir breytingum á veiðiráðgjöf til að vernda eldri og reynslumeiri síld. <a href="https://www.ruv.is/frettir/vísindi/2025-05-15/norsk-islenska-sildin-hefur-breytt-hrygningarsvodum" class="footnote-link" data-tooltip="https://www.ruv.is/frettir/vísindi/2025-05-15/norsk-islenska-sildin-hefur-breytt-hrygningarsvodum" id="fn1">[1]</a></p>
+            
+            <div class="tags">
+                <span class="tag">vísindi</span>, <span class="tag">sjávarútvegur</span>, <span class="tag">umhverfi</span>
+            </div>
+        </div>
+        
+        <div class="news-item">
+            <h3>Sundferðir Ross Edgley um Ísland og vísindarannsóknir</h3>
+            <p>Breski ofursjósundmaðurinn Ross Edgley mun synda hringinn í kringum Ísland, um 1.000 mílur á 100 dögum, og safna lífsýnum til vísindarannsókna. Hann vinnur með Hafrannsóknastofnun, Matís og Háskóla Íslands í verkefni sem stuðlar að aukinni þátttöku almennings í vísindastarfi. Ferðin hefst 16. maí frá Reykjavík og er hluti af alþjóðlegu samstarfi til að vernda hafið og líffræðilegan fjölbreytileika. <a href="https://www.hafogvatn.is/is/midlun/frettir-og-tilkynningar/visindasundferdin-mikla-kringum-island" class="footnote-link" data-tooltip="https://www.hafogvatn.is/is/midlun/frettir-og-tilkynningar/visindasundferdin-mikla-kringum-island" id="fn1">[1]</a></p>
+            
+            <div class="tags">
+                <span class="tag">vísindi</span>, <span class="tag">umhverfi</span>, <span class="tag">vísindarannsóknir</span>
+            </div>
+        </div>
+        
+            </div>
+        </div>
+        
+
+        <div class="section" id="closing_summary">
+            <h2 class="section-header">9. LOKAORÐ</h2>
+            <div class="section-content">
+                <p>Gærdagurinn var merkilegur í íslensku samfélagi og á alþjóðavettvangi. Stórt skref var stigið með sölu ríkisins á öllum hlut sínum í Íslandsbanka, sem markar nýtt tímabil í eignarhaldi bankans og efnahagslífi landsins. Á sama tíma hófust friðarviðræður milli Rússlands og Úkraínu í Tyrklandi, sem gætu haft víðtæk áhrif á öryggi og stöðugleika í Evrópu og víðar. Innanlands var áhersla á menntamál með fjölgun leikskólaplássa og bættum aðbúnaði, auk þess sem veðurblíðan og sumarstemningin einkenndu daginn.<br><br>Íþróttir og menning héldu áfram að skara fram úr með spennandi úrslitum og nýjum tónlistarlögum sem fanga athygli þjóðarinnar. Vísindarannsóknir og umhverfismál voru einnig í brennidepli, með áherslu á áhrif loftslagsbreytinga og mikilvægi sjálfbærni.<br><br>Á morgun má búast við áframhaldandi fréttum af sölu Íslandsbanka, þróun friðarviðræðna, auknum viðbrögðum við loftárásum á Gaza, og áframhaldandi umræðum um stjórnmál og samfélagsmál innanlands. Veðurspár benda til áframhaldandi hlýinda og sumarblíðu, sem mun örugglega laða fólk út í náttúruna og á viðburði. Við fylgjumst áfram með þróun mála og áhrifum þeirra á daglegt líf landsmanna og alþjóðasamfélagsins.</p>
+            </div>
+        </div>
+        
+
+            <div class="section signature-section">
+                <p class="signature">Fréttabréfið er skrifað af gervigreind frá OpenAI. Gæti innihaldið ofsjónir. Verkefni forritað af Jasoni Andra Gíslasyni.</p>
+                <p class="unsubscribe"><a href="https://docs.google.com/forms/d/e/1FAIpQLSfHWhr9DmTtrtazcCANt-yjpxoAmF9ZEj_lQKZmCwQAqQNZzw/viewform?usp=header">Hætta áskrift á fréttabréfinu</a></p>
+            </div>
+            
+                </div>
+            </body>
+            </html>
+            

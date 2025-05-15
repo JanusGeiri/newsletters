@@ -1,0 +1,3 @@
+"""
+Newsletter formatting functionality package.
+"""

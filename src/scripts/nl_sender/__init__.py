@@ -1,0 +1,3 @@
+"""
+Newsletter sending functionality package.
+"""

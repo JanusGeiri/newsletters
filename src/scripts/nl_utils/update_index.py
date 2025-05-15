@@ -7,7 +7,7 @@ import json
 from datetime import datetime, timedelta
 import re
 from bs4 import BeautifulSoup
-from logger_config import get_logger
+from scripts.nl_utils.logger_config import get_logger
 
 # Load environment variables
 load_dotenv()
