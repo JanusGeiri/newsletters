@@ -1,6 +1,6 @@
 # Automated Newsletter Generation System
 
-This project is an automated system for generating and sending newsletters based on news articles. It includes functionality for scraping news, generating newsletters using AI, formatting them, and sending them to subscribers.
+This project is an automated system for generating and sending newsletters based on news articles. It includes functionality for scraping news, generating newsletters using AI, formatting them, and sending them to subscribers. The system also maintains a static website for newsletter archives and subscriptions.
 
 ## Features
 
@@ -13,47 +13,9 @@ This project is an automated system for generating and sending newsletters based
 - Unsubscribe management
 - Index page generation for newsletter archives
 - Automated daily newsletter generation via GitHub Actions
+- Static website for newsletter archives and subscriptions
 
-## Prerequisites
-
-- Python 3.8 or higher
-- OpenAI API key
-- Gmail account with app password for automation
-- Google Sheets API access (for subscriber management)
-
-## Installation
-
-1. Clone the repository:
-```bash
-git clone [repository-url]
-cd newsletters
-```
-
-2. Create and activate a virtual environment:
-```bash
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-```
-
-3. Install dependencies:
-```bash
-pip install -r requirements.txt
-```
-
-4. Set up environment variables:
-Create a `.env` file in the root directory with the following variables:
-```
-OPENAI_API_KEY=your_openai_api_key
-NEWSLETTER_EMAIL=your_gmail_address
-NEWSLETTER_PASSWORD=your_16_character_gmail_app_password
-GOOGLE_SHEET_ID=your_google_sheet_id
-GOOGLE_SHEET_ID_UNSUB=your_unsubscribe_sheet_id
-GOOGLE_SHEET_API_KEY=your_google_sheet_api_key
-private_key_id=your_private_key_id
-private_key=your_private_key
-```
-
-## Project Structure and Data Flow
+## Project Overview
 
 The system follows a modular pipeline architecture where each component processes data and passes it to the next stage. The pipeline ensures data consistency and allows for easy testing and modification of individual components. Each stage produces structured JSON outputs that are consumed by the next stage, making the system highly maintainable and extensible.
 
@@ -110,7 +72,27 @@ The system follows a modular pipeline architecture where each component processe
    - `SubscriberManager`: Manages subscriber list and unsubscribes
    - Sends newsletters to active subscribers
 
-### Data Flow
+### Website Components
+
+1. **Landing Page (`index.html`)**
+   - Static HTML page serving as the main entry point
+   - Features:
+     - Newsletter subscription form
+     - Latest newsletter preview
+     - Archive of all past newsletters
+     - Unsubscribe form
+   - Styled with responsive CSS for all devices
+
+2. **Index Updates (`update_index.py`)**
+   - Automatically updates the website's index page
+   - Runs as part of the newsletter generation pipeline
+   - Updates:
+     - Latest newsletter link
+     - Newsletter archive list
+     - Maintains chronological order of newsletters
+   - Ensures the website stays current with new content
+
+## Data Flow
 
 1. **News Collection**
    - Scrapers collect news from multiple sources
@@ -142,6 +124,45 @@ The system follows a modular pipeline architecture where each component processe
    - Analytics are collected
    - Delivery status is tracked
    - Unsubscribe requests are processed
+
+## Prerequisites
+
+- Python 3.8 or higher
+- OpenAI API key
+- Gmail account with app password for automation
+- Google Sheets API access (for subscriber management)
+
+## Installation
+
+1. Clone the repository:
+```bash
+git clone [repository-url]
+cd newsletters
+```
+
+2. Create and activate a virtual environment:
+```bash
+python -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+```
+
+3. Install dependencies:
+```bash
+pip install -r requirements.txt
+```
+
+4. Set up environment variables:
+Create a `.env` file in the root directory with the following variables:
+```
+OPENAI_API_KEY=your_openai_api_key
+NEWSLETTER_EMAIL=your_gmail_address
+NEWSLETTER_PASSWORD=your_16_character_gmail_app_password
+GOOGLE_SHEET_ID=your_google_sheet_id
+GOOGLE_SHEET_ID_UNSUB=your_unsubscribe_sheet_id
+GOOGLE_SHEET_API_KEY=your_google_sheet_api_key
+private_key_id=your_private_key_id
+private_key=your_private_key
+```
 
 ## Usage
 
@@ -182,6 +203,18 @@ The system supports a development mode that can be enabled in `automate_newslett
 ## Automation
 
 The system is configured to automatically generate and send newsletters daily using GitHub Actions. The `automate_newsletter.py` script handles this automation process.
+
+### Website Automation
+
+- The website is automatically updated via GitHub Actions
+- Updates are triggered by:
+  - New newsletter generation
+  - Direct pushes to the repository
+- The process ensures that:
+  - The latest newsletter is always prominently displayed
+  - The archive is kept up to date
+  - All links remain functional
+  - The website stays in sync with the newsletter generation pipeline
 
 ## Contributing
 
