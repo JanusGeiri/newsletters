@@ -4,10 +4,12 @@ This project is an automated system for generating and sending newsletters based
 
 ## Features
 
-- News scraping and aggregation from multiple sources
+- News scraping and aggregation from multiple sources (visir, mbl, vb, ruv)
 - AI-powered newsletter generation using GPT-4
-- Automated newsletter formatting and sending via Gmail API
-- Web interface for viewing newsletters
+- Article grouping and similarity analysis
+- Impact analysis for news items
+- Automated newsletter formatting with responsive HTML templates
+- Newsletter distribution via email
 - Unsubscribe management
 - Index page generation for newsletter archives
 - Automated daily newsletter generation via GitHub Actions
@@ -17,7 +19,7 @@ This project is an automated system for generating and sending newsletters based
 - Python 3.8 or higher
 - OpenAI API key
 - Gmail account with app password for automation
-- Google Sheets API access
+- Google Sheets API access (for subscriber management)
 
 ## Installation
 
@@ -51,26 +53,95 @@ private_key_id=your_private_key_id
 private_key=your_private_key
 ```
 
-## Project Structure
+## Project Structure and Data Flow
 
-### Main Scripts
-- `src/scripts/main.py`: Main entry point for running the newsletter system
-- `src/scripts/automate_newsletter.py`: Automated newsletter generation script (used by GitHub Actions)
-- `src/scripts/news_scraper.py`: Scrapes news articles from various sources
-- `src/scripts/newsletter_generator.py`: Generates newsletters using AI
-- `src/scripts/newsletter_formatter.py`: Formats newsletters for email and web display
-- `src/scripts/send_newsletter.py`: Handles newsletter distribution via Gmail API
-- `src/scripts/process_unsubscribes.py`: Manages unsubscribe requests
-- `src/scripts/update_index.py`: Updates the index.html file with new newsletters
-- `src/scripts/serve.py`: Web server for viewing newsletters (development only)
-- `src/scripts/newsletter_schemas.py`: Defines newsletter types and schemas
-- `src/scripts/logger_config.py`: Configures logging for the application
+The system follows a modular pipeline architecture where each component processes data and passes it to the next stage. The pipeline ensures data consistency and allows for easy testing and modification of individual components. Each stage produces structured JSON outputs that are consumed by the next stage, making the system highly maintainable and extensible.
 
-### Directories
-- `src/prompts/`: Contains prompt templates for different newsletter types
-- `src/outputs/`: Stores generated newsletters and news articles
-- `src/logs/`: Contains log files
-- `src/style/`: Contains styling templates for newsletters
+### Core Components
+
+1. **News Scraping (`nl_scraper/`)**
+   - `MasterScraper`: Orchestrates scraping from multiple news sources
+   - Supports multiple news sources (visir, mbl, vb, ruv)
+   - Outputs article data in a structured JSON format containing:
+     - Article metadata (title, date, source)
+     - Article content
+     - URLs and references
+     - Source-specific attributes
+     - Timestamps and processing information
+     - Article lemmas (extracted using Greynir, an Icelandic NLP parser)
+       - Text is cleaned and processed to extract lemmas
+       - Common words and stopwords are filtered out
+       - Lemmas are used for article similarity comparison
+
+2. **Article Processing (`nl_article_processor/`)**
+   - `ArticleGroupProcessor`: Groups similar articles using various similarity strategies
+     - Uses lemmas extracted from article text to compare articles
+     - Currently uses Jaccard similarity as the default strategy
+     - Supports pluggable similarity strategies:
+       - Jaccard: Basic set-based similarity
+       - Enhanced Jaccard: TF-IDF weighted similarity
+       - LSA (Latent Semantic Analysis): Dimensionality reduction for better semantic matching
+     - Multiple strategies are being tested and evaluated for better accuracy
+     - Each strategy can be configured with different parameters
+   - Processes and organizes articles into meaningful groups
+   - Outputs structured article groups with:
+     - Group metadata and statistics
+     - Member articles and their relationships
+     - Similarity scores and confidence metrics
+
+3. **Newsletter Generation (`nl_generator/`)**
+   - `NewsletterGenerator`: Main orchestrator for newsletter creation
+   - `PromptGenerator`: Creates AI prompts for newsletter generation
+   - `RawNLGenerator`: Generates raw newsletter content using GPT-4.1-mini
+   - `NLProcessor`: Processes newsletters with article matching and impact generation
+     - Matches AI-generated news items with original article groups
+     - Ensures correct URL attribution for each news item
+     - Maintains data consistency between generated content and source articles
+     - Adds impact analysis to news items
+   - Outputs unprocessed and processed newsletters
+
+4. **Newsletter Formatting (`nl_formatter/`)**
+   - `NewsletterFormatter`: Formats newsletters for email and web display
+   - `NewsletterTemplate`: Provides HTML templates and styling
+   - Outputs formatted HTML newsletters
+
+5. **Newsletter Distribution (`nl_sender/`)**
+   - `NewsletterSender`: Handles email distribution
+   - `SubscriberManager`: Manages subscriber list and unsubscribes
+   - Sends newsletters to active subscribers
+
+### Data Flow
+
+1. **News Collection**
+   - Scrapers collect news from multiple sources
+   - Articles are stored in raw format
+   - Data is validated and cleaned
+   - Timestamps and metadata are added
+   - Articles are deduplicated
+   - Source-specific processing is applied
+
+2. **Article Processing**
+   - Articles are grouped by similarity
+   - Groups are analyzed for impact and relevance
+   - Similarity scores are calculated
+   - Cross-source relationships are identified
+   - Group metadata is enriched
+
+3. **Newsletter Generation**
+   - AI generates newsletter content based on article groups
+   - Content is processed with article matching
+   - Impact analysis is added to news items
+   - Content is structured into sections
+   - Headlines and summaries are generated
+   - Cross-references are added
+
+4. **Formatting and Distribution**
+   - Newsletter is formatted into responsive HTML
+   - Email is sent to active subscribers
+   - Web version is archived
+   - Analytics are collected
+   - Delivery status is tracked
+   - Unsubscribe requests are processed
 
 ## Usage
 
@@ -78,47 +149,35 @@ private_key=your_private_key
 
 1. To run the complete newsletter generation and sending process:
 ```bash
-python src/scripts/main.py
-```
-
-2. To run automated newsletter generation (used by GitHub Actions):
-```bash
 python src/scripts/automate_newsletter.py
 ```
 
-### Individual Components
+2. To run individual components:
 
-1. Scrape news articles:
 ```bash
-python src/scripts/news_scraper.py
+# Scrape news articles
+python src/scripts/nl_scraper/master_scraper.py
+
+# Generate a newsletter
+python src/scripts/nl_generator/newsletter_generator.py --date YYYY-MM-DD
+
+# Format a newsletter
+python src/scripts/nl_formatter/newsletter_formatter.py --date YYYY-MM-DD
+
+# Send a newsletter
+python src/scripts/nl_sender/send_newsletter.py --date YYYY-MM-DD
+
+# Process unsubscribes
+python src/scripts/nl_sender/process_unsubscribes.py
 ```
 
-2. Generate a newsletter:
-```bash
-python src/scripts/newsletter_generator.py --type DAILY_MORNING --date YYYY-MM-DD
-```
+### Development Mode
 
-Available newsletter types:
-- `DAILY_MORNING` (Currently Active)
-- `DAILY_NOON` (In Progress)
-- `DAILY_EVENING` (In Progress)
-- `WEEKLY` (In Progress)
-
-3. Send a generated newsletter:
-```bash
-python src/scripts/send_newsletter.py --type DAILY_MORNING --date YYYY-MM-DD
-```
-
-4. View newsletters locally:
-```bash
-python src/scripts/serve.py
-```
-Then visit `http://localhost:5000` in your browser.
-
-5. Process unsubscribe requests:
-```bash
-python src/scripts/process_unsubscribes.py
-```
+The system supports a development mode that can be enabled in `automate_newsletter.py`. This mode:
+- Uses a fixed date for testing
+- Allows selective running of components
+- Disables email sending
+- Provides detailed logging
 
 ## Automation
 
