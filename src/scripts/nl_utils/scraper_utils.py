@@ -6,10 +6,10 @@ from pathlib import Path
 from typing import List, Dict, Optional
 from datetime import datetime
 import json
-from .logger_config import get_logger
+from .logger_config import get_logger, get_module_name
 
 # Get logger
-logger = get_logger('scraper_utils')
+logger = get_logger(get_module_name(__name__))
 
 
 def save_debug_html(html_content: str, url: str, debug_dir: str) -> Optional[Path]:

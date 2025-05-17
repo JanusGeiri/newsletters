@@ -6,6 +6,18 @@ from datetime import datetime
 _root_logger_configured = False
 
 
+def get_module_name(name):
+    """Extract the module name from __name__.
+
+    Args:
+        name (str): The __name__ value from the module
+
+    Returns:
+        str: The last part of the module name after splitting by '.'
+    """
+    return name.split('.')[-1]
+
+
 def setup_logger(name='NO_NAME_PROVIDED', log_file_base=None, configure_debug=False):
     """Set up and return a logger instance.
 

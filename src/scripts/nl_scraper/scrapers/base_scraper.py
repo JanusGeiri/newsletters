@@ -7,7 +7,7 @@ from pathlib import Path
 from typing import Dict, List, Optional, Set
 
 from nl_utils.logger_config import get_logger
-from nl_utils import ensure_output_dirs
+from nl_utils.file_handler import FileHandler
 from ..rss_handler import RSSFeedHandler
 
 
@@ -23,7 +23,7 @@ class NewsScraper(ABC):
         """
         self.debug_mode = debug_mode
         self.debug_article_count = 0
-        self.output_dir = Path("src/outputs/news/json")
+        self.file_handler = FileHandler()
         self.debug_dir = Path("debug")
         self.source_name = source_name
         self.rss_handler = RSSFeedHandler()
@@ -31,10 +31,8 @@ class NewsScraper(ABC):
 
     def ensure_output_dir(self) -> None:
         """Ensure the output directories exist."""
-        ensure_output_dirs(
-            self.output_dir,
-            self.debug_dir if self.debug_mode else None
-        )
+        if self.debug_mode:
+            self.debug_dir.mkdir(parents=True, exist_ok=True)
 
     @abstractmethod
     def get_article_content(self, url: str) -> Optional[str]:
@@ -46,7 +44,6 @@ class NewsScraper(ABC):
         Returns:
             Optional[str]: The article content if successful, None otherwise
         """
-        pass
 
     def format_date(self, date_str: str) -> Optional[str]:
         """Format date string to YYYY-MM-DD format.
@@ -64,7 +61,7 @@ class NewsScraper(ABC):
             ("%Y-%m-%d", "Date only format")
         ]
 
-        for date_format, format_name in date_formats:
+        for date_format, _ in date_formats:
             try:
                 date_obj = datetime.strptime(date_str, date_format)
                 return date_obj.strftime("%Y-%m-%d")

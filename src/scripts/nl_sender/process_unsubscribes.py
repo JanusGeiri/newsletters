@@ -7,12 +7,12 @@ from google.oauth2 import service_account
 from googleapiclient.discovery import build, Resource
 from googleapiclient.errors import HttpError
 
-from nl_utils.logger_config import get_logger
+from nl_utils.logger_config import get_logger, get_module_name
 # Load environment variables from .env file
 load_dotenv()
 
 # Get logger
-logger = get_logger('process_unsubscribes')
+logger = get_logger(get_module_name(__name__))
 
 # Google Sheets API configuration
 ACTIVE_SHEET_ID = os.getenv('GOOGLE_SHEET_ID')
@@ -234,8 +234,8 @@ def process_unsubscribes(ignore: bool = False) -> None:
     Args:
         ignore (bool): If True, skip processing and return immediately
     """
-    manager = SubscriberManager()
-    manager.process_unsubscribes(ignore=ignore)
+    nl_subscriber_manager = SubscriberManager()
+    nl_subscriber_manager.process_unsubscribes(ignore=ignore)
 
 
 if __name__ == "__main__":
@@ -246,5 +246,5 @@ if __name__ == "__main__":
                         help='Ignore unsubscribe processing')
     args = parser.parse_args()
 
-    manager = SubscriberManager()
-    manager.process_unsubscribes(ignore=args.ignore)
+    subscriber_manager = SubscriberManager()
+    subscriber_manager.process_unsubscribes(ignore=args.ignore)

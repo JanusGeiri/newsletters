@@ -3,16 +3,18 @@ RSS feed handler for fetching and processing RSS feeds from various news sources
 """
 from datetime import datetime
 import feedparser
-from nl_utils.logger_config import get_logger
+from nl_utils.logger_config import get_logger, get_module_name
+from nl_utils.file_handler import FileHandler
 
 # Get logger
-logger = get_logger('rss_handler')
+logger = get_logger(get_module_name(__name__))
 
 
 class RSSFeedHandler:
     """Handles fetching and processing of RSS feeds from various news sources"""
 
     def __init__(self):
+        self.file_handler = FileHandler()
         self.feed_links = {
             'visir': [
                 'https://www.visir.is/rss/frettir',

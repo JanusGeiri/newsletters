@@ -16,16 +16,9 @@ NEWS_ITEM_SCHEMA = {
                 "type": "string"
             },
             "description": "Tags categorizing the news item"
-        },
-        "urls": {
-            "type": "array",
-            "items": {
-                "type": "string"
-            },
-            "description": "URLs to the news item"
         }
     },
-    "required": ["title", "description", "tags", "urls"],
+    "required": ["title", "description", "tags"],
     "additionalProperties": False
 }
 
@@ -45,33 +38,15 @@ KEY_EVENT_ITEM_SCHEMA = {
             "type": "string",
             "description": "A detailed summary of the news item (5-7 paragraphs). Make sure to include all the details of the news item. If it is long, make sure to break it into paragraphs."
         },
-        "impact": {
-            "type": "string",
-            "description": "NULL"
-        },
-        "impact_urls": {
-            "type": "array",
-            "items": {
-                "type": "string"
-            },
-            "description": "URLs to the articles that are mentioned in the impact"
-        },
         "tags": {
             "type": "array",
             "items": {
                 "type": "string"
             },
             "description": "Tags categorizing the news item"
-        },
-        "urls": {
-            "type": "array",
-            "items": {
-                "type": "string"
-            },
-            "description": "URLs to the news item"
         }
     },
-    "required": ["title", "description", "impact", "impact_urls", "tldr", "tags", "urls"],
+    "required": ["title", "description", "tldr", "tags"],
     "additionalProperties": False
 }
 
@@ -90,24 +65,6 @@ DAILY_MORNING_SCHEMA = {
                 "summary": {
                     "type": "string",
                     "description": "A comprehensive summary of the day's events (SAMANTEKT)"
-                },
-                "summary_urls": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    },
-                    "description": "URLs to the articles that are mentioned in the summary. Make sure to include all the urls of the articles that are mentioned in the summary. DO DUPLICATE URLS"
-                },
-                "summary_impact": {
-                    "type": "string",
-                    "description": "NULL"
-                },
-                "summary_impact_urls": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    },
-                    "description": "NULL"
                 },
                 "key_events": {
                     "type": "array",
@@ -154,7 +111,7 @@ DAILY_MORNING_SCHEMA = {
                     "description": "A closing summary of the day's events and preview of tomorrow (LOKAORÐ)"
                 }
             },
-            "required": ["main_headline", "summary", "summary_urls", "summary_impact", "summary_impact_urls", "key_events", "domestic_news", "foreign_news", "business", "famous_people", "sports", "arts", "science", "closing_summary"],
+            "required": ["main_headline", "summary", "key_events", "domestic_news", "foreign_news", "business", "famous_people", "sports", "arts", "science", "closing_summary"],
             "additionalProperties": False
         },
         "strict": True

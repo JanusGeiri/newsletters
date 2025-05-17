@@ -3,7 +3,7 @@ Visir news scraper implementation.
 """
 import requests
 from bs4 import BeautifulSoup
-from nl_utils import save_debug_html
+from nl_utils.file_handler import FileType
 from .base_scraper import NewsScraper
 
 
@@ -25,7 +25,12 @@ class VisirScraper(NewsScraper):
 
             # Save raw HTML for debugging
             if self.debug_mode:
-                save_debug_html(response.text, url, self.debug_dir)
+                self.file_handler.save_file(
+                    response.text,
+                    FileType.TEXT,
+                    base_name=f"debug_visir_{self.debug_article_count}"
+                )
+                self.debug_article_count += 1
 
             # Parse with html.parser and handle HTML entities
             soup = BeautifulSoup(response.text, 'html.parser')

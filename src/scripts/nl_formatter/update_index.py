@@ -8,6 +8,7 @@ from bs4 import BeautifulSoup
 from dotenv import load_dotenv
 
 from nl_utils.logger_config import get_logger
+from nl_utils.file_handler import FileHandler, FileType
 
 # Load environment variables
 load_dotenv()
@@ -19,36 +20,40 @@ logger = get_logger('update_index')
 class NewsletterIndexUpdater:
     """Class to handle newsletter index updates."""
 
-    def __init__(self, newsletter_dir: str = 'src/outputs/formatted_newsletters/daily_morning',
-                 index_path: str = 'index.html'):
+    def __init__(self, index_path: str = 'index.html'):
         """Initialize the NewsletterIndexUpdater.
 
         Args:
-            newsletter_dir (str): Path to newsletter directory
             index_path (str): Path to index.html file
         """
-        self.newsletter_dir = Path(newsletter_dir)
+        self.file_handler = FileHandler()
         self.index_path = Path(index_path)
         self.logger = logger
 
     def get_newsletter_files(self) -> List[Path]:
-        """Get all newsletter files from the daily_morning directory.
+        """Get all newsletter files from the formatted newsletters directory.
 
         Returns:
             List[Path]: List of newsletter file paths sorted by date (newest first)
         """
-        if not self.newsletter_dir.exists():
-            self.logger.warning(
-                "Newsletter directory not found: %s", self.newsletter_dir)
-            return []
+        try:
+            directory = Path(
+                self.file_handler.DIRECTORIES[FileType.FORMATTED_NEWSLETTER])
+            if not directory.exists():
+                self.logger.warning(
+                    "Newsletter directory not found: %s", directory)
+                return []
 
-        # Get all HTML files and sort by date (newest first)
-        files = list(self.newsletter_dir.glob('daily_morning_*.html'))
-        # Sort by filename date instead of modification time for more reliable ordering
-        files.sort(key=lambda x: self._extract_date_from_filename(x)
-                   or '', reverse=True)
-        self.logger.info("Found %d newsletter files", len(files))
-        return files
+            # Get all HTML files and sort by date (newest first)
+            files = list(directory.glob('newsletter_formatted_*.html'))
+            # Sort by filename date instead of modification time for more reliable ordering
+            files.sort(key=lambda x: self._extract_date_from_filename(x)
+                       or '', reverse=True)
+            self.logger.info("Found %d newsletter files", len(files))
+            return files
+        except Exception as e:
+            self.logger.error("Error getting newsletter files: %s", str(e))
+            return []
 
     @staticmethod
     def _extract_date_from_filename(filename: Path) -> Optional[str]:
@@ -61,7 +66,7 @@ class NewsletterIndexUpdater:
             Optional[str]: Extracted date string or None if not found
         """
         match = re.search(
-            r'daily_morning_(\d{4}-\d{2}-\d{2})\.html', filename.name)
+            r'newsletter_formatted_(\d{4}-\d{2}-\d{2})\.html', filename.name)
         return match.group(1) if match else None
 
     def _format_newsletter_title(self, date_str: str) -> str:
@@ -97,7 +102,7 @@ class NewsletterIndexUpdater:
             return
 
         latest_link[
-            'href'] = f'/newsletters/src/outputs/formatted_newsletters/daily_morning/{latest_file.name}'
+            'href'] = f'/newsletters/src/outputs/newsletters/formatted/{latest_file.name}'
         latest_title = latest_link.find('h3')
         if latest_title:
             latest_title.string = self._format_newsletter_title(latest_date)
@@ -125,7 +130,7 @@ class NewsletterIndexUpdater:
                 continue
 
             link = soup.new_tag('a',
-                                href=f'/newsletters/src/outputs/formatted_newsletters/daily_morning/{file.name}',
+                                href=f'/newsletters/src/outputs/newsletters/formatted/{file.name}',
                                 attrs={'class': 'newsletter-link'})
             card = soup.new_tag('div', attrs={'class': 'newsletter-card'})
             title = soup.new_tag('h3')

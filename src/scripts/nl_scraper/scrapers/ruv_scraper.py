@@ -5,6 +5,7 @@ import json
 import re
 import requests
 from bs4 import BeautifulSoup
+from nl_utils.file_handler import FileType
 from .base_scraper import NewsScraper
 
 
@@ -23,6 +24,15 @@ class RUVScraper(NewsScraper):
                 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
             }, timeout=10000)
             response.raise_for_status()
+
+            # Save raw HTML for debugging
+            if self.debug_mode:
+                self.file_handler.save_file(
+                    response.text,
+                    FileType.TEXT,
+                    base_name=f"debug_ruv_{self.debug_article_count}"
+                )
+                self.debug_article_count += 1
 
             # Parse the HTML
             soup = BeautifulSoup(response.text, 'html.parser')

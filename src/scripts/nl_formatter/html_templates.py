@@ -50,7 +50,10 @@ class NewsletterTemplate:
         """Create HTML for a section."""
         return f"""
         <div class="section" id="{section_id}">
-            <h2 class="section-header">{section_title}</h2>
+            <div class="section-header-container">
+                <h2 class="section-header">{section_title}</h2>
+                <a href="#toc" class="back-to-toc">← Efnisyfirlit</a>
+            </div>
             <div class="section-content">
                 {content}
             </div>
@@ -58,22 +61,77 @@ class NewsletterTemplate:
         """
 
     @staticmethod
-    def create_news_item_html(title: str, description: str, urls: List[str], tags: List[str], impact: Optional[str] = None, impact_urls: Optional[List[str]] = None) -> str:
-        """Create HTML for a news item."""
+    def create_news_item_html(title: str, description: str, urls: List[str], tags: List[str], impact: Optional[str] = None, impact_urls: Optional[List[str]] = None, match: Optional[Dict] = None) -> str:
+        """Create HTML for a news item.
+
+        Args:
+            title (str): The news item title
+            description (str): The news item description
+            urls (List[str]): List of article URLs
+            tags (List[str]): List of tags
+            impact (Optional[str]): Impact description
+            impact_urls (Optional[List[str]]): List of impact-related URLs
+            match (Optional[Dict]): Match information containing group_id and similarity
+
+        Returns:
+            str: HTML for the news item
+        """
+        # Create footnote links for article URLs
         item_urls = NewsletterTemplate.create_footnote_links(urls)
+
+        # Add impact section if available
         impact_html = ""
         if impact:
             impact_urls_html = NewsletterTemplate.create_footnote_links(
                 impact_urls or [], 'impact')
-            impact_html = f'<p class="impact"><strong>Áhrif:</strong> {NewsletterTemplate.format_text(impact)} {impact_urls_html}</p>'
+            impact_html = f'<div class="impact-section"><strong>Áhrif:</strong> {NewsletterTemplate.format_text(impact)} {impact_urls_html}</div>'
+
+        # Add match information if available
+        match_html = ""
+        if match and match.get('group_id'):
+            similarity = match.get('similarity', 0.0)
+            match_html = f'<div class="match-info" data-tooltip="Match: {match["group_id"]} (similarity: {similarity:.2f})">⚡</div>'
 
         return f"""
         <div class="news-item">
             <h3>{title}</h3>
             <p>{NewsletterTemplate.format_text(description)} {item_urls}</p>
             {impact_html}
+            {match_html}
             <div class="tags">
-                {', '.join(f'<span class="tag">{tag}</span>' for tag in tags)}
+                {' '.join(f'<span class="tag">{tag}</span>' for tag in tags)}
+            </div>
+        </div>
+        """
+
+    @staticmethod
+    def create_summary_html(main_headline: str, summary: str, summary_impact: Optional[str] = None, summary_impact_urls: Optional[List[str]] = None) -> str:
+        """Create HTML for the summary section.
+
+        Args:
+            main_headline (str): The main headline
+            summary (str): The summary text
+            summary_impact (Optional[str]): Impact description for the summary
+            summary_impact_urls (Optional[List[str]]): List of impact-related URLs for the summary
+
+        Returns:
+            str: HTML for the summary section
+        """
+        impact_html = ""
+        if summary_impact:
+            impact_urls_html = NewsletterTemplate.create_footnote_links(
+                summary_impact_urls or [], 'summary-impact')
+            impact_html = f'<div class="impact-section"><strong>Áhrif:</strong> {NewsletterTemplate.format_text(summary_impact)} {impact_urls_html}</div>'
+
+        return f"""
+        <div class="section" id="summary">
+            <div class="section-header-container">
+                <h2 class="main-headline">{main_headline}</h2>
+                <a href="#toc" class="back-to-toc">← Efnisyfirlit</a>
+            </div>
+            <div class="section-content">
+                <p>{NewsletterTemplate.format_text(summary)}</p>
+                {impact_html}
             </div>
         </div>
         """
@@ -87,7 +145,7 @@ class NewsletterTemplate:
                 f'<a href="#{section_id}" class="toc-item">{section_title}</a>')
 
         return f"""
-        <div class="section toc-section">
+        <div class="section toc-section" id="toc">
             <h2 class="section-header">Efnisyfirlit</h2>
             <div class="toc-container">
                 {''.join(toc_items)}
@@ -119,6 +177,25 @@ class NewsletterTemplate:
         .section:hover {
             transform: translateY(-2px);
         }
+        .section-header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .back-to-toc {
+            color: #666;
+            text-decoration: none;
+            font-size: 0.9em;
+            padding: 5px 10px;
+            border-radius: 15px;
+            background-color: #f8f9fa;
+            transition: all 0.2s ease;
+        }
+        .back-to-toc:hover {
+            background-color: #3498db;
+            color: white;
+        }
         .title-section {
             text-align: center;
             background: linear-gradient(135deg, #2c3e50, #3498db);
@@ -140,16 +217,14 @@ class NewsletterTemplate:
         .main-headline {
             color: #2c3e50;
             font-size: 1.8em;
-            margin-top: 0;
-            margin-bottom: 20px;
+            margin: 0;
             padding-bottom: 15px;
             border-bottom: 3px solid #3498db;
         }
         .section-header {
             color: #2c3e50;
             font-size: 1.5em;
-            margin-top: 0;
-            margin-bottom: 20px;
+            margin: 0;
             padding-bottom: 10px;
             border-bottom: 2px solid #e9ecef;
         }
@@ -160,6 +235,7 @@ class NewsletterTemplate:
             margin-bottom: 25px;
             padding-bottom: 20px;
             border-bottom: 1px solid #e9ecef;
+            position: relative;
         }
         .news-item:last-child {
             border-bottom: none;
@@ -170,13 +246,34 @@ class NewsletterTemplate:
             margin-bottom: 12px;
             font-size: 1.3em;
         }
-        .impact {
+        .impact-section {
             font-style: italic;
             color: #666;
             margin: 12px 0;
             padding: 10px;
             background-color: #f8f9fa;
             border-left: 4px solid #3498db;
+        }
+        .match-info {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 1.2em;
+            cursor: help;
+        }
+        .match-info[data-tooltip]:hover::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            top: 100%;
+            right: 0;
+            padding: 8px;
+            background-color: #2c3e50;
+            color: white;
+            border-radius: 4px;
+            font-size: 0.9em;
+            white-space: nowrap;
+            z-index: 1000;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
         }
         .tags {
             margin-top: 12px;
@@ -296,6 +393,9 @@ class NewsletterTemplate:
             .toc-item {
                 width: 100%;
                 text-align: center;
+            }
+            .back-to-toc {
+                display: none;
             }
         }
         """

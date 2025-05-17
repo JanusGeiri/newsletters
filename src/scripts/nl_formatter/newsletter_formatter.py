@@ -1,16 +1,16 @@
 #!/usr/bin/env python3
-from pathlib import Path
 from datetime import datetime
 import argparse
 import sys
 import logging
 from typing import Tuple, Optional, Dict, Any
-from nl_utils.logger_config import get_logger
-from nl_utils import load_newsletter_file, save_formatted_newsletter, extract_date_from_filename
+
+from nl_utils.logger_config import get_logger, get_module_name
+from nl_utils.file_handler import FileHandler, FileType
 from .html_templates import NewsletterTemplate
 
 # Get logger
-logger = get_logger('newsletter_formatter')
+logger = get_logger(get_module_name(__name__))
 
 
 class NewsletterFormatter:
@@ -18,18 +18,48 @@ class NewsletterFormatter:
 
     def __init__(self):
         """Initialize the newsletter formatter."""
-        self.logger = get_logger('newsletter_formatter')
+        self.logger = get_logger(get_module_name(__name__))
         self.template = NewsletterTemplate()
+        self.file_handler = FileHandler()
 
     def get_date_from_filename(self, filename: str) -> Tuple[Optional[str], Optional[int]]:
         """Extract date and increment from newsletter filename."""
-        return extract_date_from_filename(filename)
+        return self.file_handler.extract_date_from_filename(filename)
 
-    def read_newsletter_file(self, date_str: Optional[str] = None, file_path: Optional[str] = None) -> Tuple[Dict[str, Any], str, Path]:
-        """Read a newsletter file and return its content."""
+    def read_newsletter_file(self, date_str: Optional[str] = None, file_path: Optional[str] = None) -> Tuple[Dict[str, Any], str, str]:
+        """Read a newsletter file and return its content.
+
+        Args:
+            date_str (Optional[str]): Date string in YYYY-MM-DD format
+            file_path (Optional[str]): Path to the newsletter file
+
+        Returns:
+            Tuple[Dict[str, Any], str, str]: Content, date string, and input file path
+        """
         try:
             self.logger.debug("Reading newsletter file for date: %s", date_str)
-            return load_newsletter_file(date_str=date_str, file_path=file_path)
+
+            if file_path:
+                # If file path is provided, load from that specific file
+                content = self.file_handler.load_file(
+                    FileType.PROCESSED_NEWSLETTER,
+                    base_name=file_path
+                )
+                date_str, _ = self.get_date_from_filename(file_path)
+            else:
+                # Otherwise, load the most recent file for the given date
+                content = self.file_handler.load_file(
+                    FileType.PROCESSED_NEWSLETTER,
+                    date_str=date_str,
+                    base_name="newsletter_processed"
+                )
+
+            if not content:
+                raise FileNotFoundError(
+                    f"No newsletter found for date: {date_str}")
+
+            return content, date_str, file_path or f"newsletter_processed_{date_str}.json"
+
         except Exception as e:
             self.logger.error("Error reading newsletter file: %s", str(e))
             raise
@@ -63,21 +93,13 @@ class NewsletterFormatter:
             </div>
             """)
 
-            # Add main headline and summary section
-            summary_urls = self.template.create_footnote_links(
-                content.get('summary_urls', []), 'summary')
-            summary_impact_urls = self.template.create_footnote_links(
-                content.get('summary_impact_urls', []), 'impact')
-
-            html_sections.append(f"""
-            <div class="section" id="summary">
-                <h2 class="main-headline">{content.get('main_headline', '')}</h2>
-                <div class="section-content">
-                    <p>{self.template.format_text(content.get('summary', ''))} {summary_urls}</p>
-                    <p class="impact"><strong>Áhrif:</strong> {self.template.format_text(content.get('summary_impact', ''))} {summary_impact_urls}</p>
-                </div>
-            </div>
-            """)
+            # Add main headline and summary section with impact
+            html_sections.append(self.template.create_summary_html(
+                main_headline=content.get('main_headline', ''),
+                summary=content.get('summary', ''),
+                summary_impact=content.get('summary_impact'),
+                summary_impact_urls=content.get('summary_impact_urls')
+            ))
 
             # Create table of contents
             toc_items = []
@@ -91,64 +113,42 @@ class NewsletterFormatter:
                 html_sections.append(self.template.create_toc_html(
                     {k: v for k, v in self.template.TEXT_CONFIG['sections'].items() if k in content and content[k]}))
 
-            # Add key events section
-            if 'key_events' in content and content['key_events']:
-                key_events_html = []
-                for event in content['key_events']:
-                    if not isinstance(event, dict):
-                        self.logger.warning(
-                            "Skipping invalid key event: %s", event)
-                        continue
-
-                    key_events_html.append(self.template.create_news_item_html(
-                        title=event.get('title', ''),
-                        description=event.get('description', ''),
-                        urls=event.get('urls', []),
-                        tags=event.get('tags', []),
-                        impact=event.get('impact', ''),
-                        impact_urls=event.get('impact_urls', [])
-                    ))
-
-                if key_events_html:
-                    html_sections.append(self.template.create_section_html(
-                        'key_events',
-                        self.template.TEXT_CONFIG['sections']['key_events'],
-                        ''.join(key_events_html)
-                    ))
-
-            # Add other sections
+            # Process all sections except closing_summary
             for section_key, section_header in self.template.TEXT_CONFIG['sections'].items():
-                if section_key in ['key_events', 'closing_summary']:
+                if section_key == 'closing_summary' or section_key not in content or not content[section_key]:
                     continue
 
-                if section_key in content and content[section_key]:
-                    section_items = []
-                    for item in content[section_key]:
-                        if not isinstance(item, dict):
-                            self.logger.warning(
-                                "Skipping invalid item in %s: %s", section_key, item)
-                            continue
+                section_items = []
+                for item in content[section_key]:
+                    if not isinstance(item, dict):
+                        self.logger.warning(
+                            "Skipping invalid item in %s: %s", section_key, item)
+                        continue
 
-                        section_items.append(self.template.create_news_item_html(
-                            title=item.get('title', ''),
-                            description=item.get('description', ''),
-                            urls=item.get('urls', []),
-                            tags=item.get('tags', [])
-                        ))
+                    # Create news item HTML with the new structure
+                    section_items.append(self.template.create_news_item_html(
+                        title=item.get('title', ''),
+                        description=item.get('description', ''),
+                        urls=item.get('article_urls', []),
+                        tags=item.get('tags', []),
+                        impact=item.get('impact'),
+                        impact_urls=item.get('impact_urls', []),
+                        match=item.get('match')
+                    ))
 
-                    if section_items:
-                        html_sections.append(self.template.create_section_html(
-                            section_key,
-                            section_header,
-                            ''.join(section_items)
-                        ))
+                if section_items:
+                    html_sections.append(self.template.create_section_html(
+                        section_key,
+                        section_header,
+                        ''.join(section_items)
+                    ))
 
-            # Add closing summary section
+            # Add closing summary section if it exists
             if 'closing_summary' in content and content['closing_summary']:
                 html_sections.append(self.template.create_section_html(
                     'closing_summary',
                     self.template.TEXT_CONFIG['sections']['closing_summary'],
-                    f"<p>{self.template.format_text(content['closing_summary'])}</p>"
+                    f'<p>{self.template.format_text(content["closing_summary"])}</p>'
                 ))
 
             # Add signature section
@@ -188,10 +188,24 @@ class NewsletterFormatter:
             self.logger.error("Error formatting newsletter: %s", str(e))
             raise
 
-    def save_formatted_newsletter(self, html_content: str, date_str: str) -> Path:
-        """Save the formatted newsletter to a file."""
+    def save_formatted_newsletter(self, html_content: str, date_str: str) -> str:
+        """Save the formatted newsletter to a file.
+
+        Args:
+            html_content (str): The HTML content to save
+            date_str (str): Date string in YYYY-MM-DD format
+
+        Returns:
+            str: Path to the saved file
+        """
         try:
-            return save_formatted_newsletter(html_content, date_str)
+            file_path = self.file_handler.save_file(
+                content=html_content,
+                file_type=FileType.FORMATTED_NEWSLETTER,
+                date_str=date_str,
+                base_name="newsletter_formatted"
+            )
+            return str(file_path)
         except Exception as e:
             self.logger.error("Error saving formatted newsletter: %s", str(e))
             raise
@@ -201,7 +215,7 @@ class NewsletterFormatter:
         date_str: Optional[str] = None,
         file_path: Optional[str] = None,
         ignore: bool = False
-    ) -> Path:
+    ) -> str:
         """Format a newsletter and save it to a file.
 
         Args:
@@ -210,11 +224,11 @@ class NewsletterFormatter:
             ignore (bool): If True, skip formatting and return a dummy path
 
         Returns:
-            Path: Path to the formatted newsletter file
+            str: Path to the formatted newsletter file
         """
         if ignore:
             self.logger.info("Ignoring newsletter formatting operation")
-            return Path('src/outputs/formatted_newsletters/daily_morning/dummy.html')
+            return "src/outputs/newsletters/formatted/dummy.html"
 
         try:
             self.logger.info("Starting newsletter formatting...")
@@ -269,7 +283,7 @@ def run_formatter(args) -> None:
         # Format the newsletter
         output_file = formatter.format_newsletter(
             date_str=args.date,
-            file_path=None,  # Let it find the most recent file
+            file_path=args.file,
             ignore=args.ignore
         )
 

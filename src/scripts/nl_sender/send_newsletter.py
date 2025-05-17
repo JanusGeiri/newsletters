@@ -4,7 +4,6 @@ import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from datetime import datetime
-from pathlib import Path
 from typing import List, Optional, Dict, Any, cast
 
 from dotenv import load_dotenv
@@ -12,14 +11,14 @@ from google.oauth2 import service_account
 from googleapiclient.discovery import build, Resource
 from googleapiclient.errors import HttpError
 
-from nl_utils.logger_config import get_logger
-from nl_utils.load_file import load_formatted_newsletter
+from nl_utils.logger_config import get_logger, get_module_name
+from nl_utils.file_handler import FileHandler, FileType
 
 # Load environment variables
 load_dotenv()
 
 # Get logger
-logger = get_logger('send_newsletter')
+logger = get_logger(get_module_name(__name__))
 
 # Email configuration
 SMTP_SERVER = "smtp.gmail.com"
@@ -46,6 +45,7 @@ class NewsletterSender:
         """
         self.dev_mode = dev_mode
         self.logger = logger
+        self.file_handler = FileHandler()
         self._validate_config()
 
     def _validate_config(self) -> None:
@@ -81,7 +81,6 @@ class NewsletterSender:
         Returns:
             List[str]: List of subscriber email addresses
         """
-
         try:
             # Create credentials from environment variables
             credentials_dict = self._get_credentials_dict()
@@ -123,7 +122,7 @@ class NewsletterSender:
         date_str: Optional[str] = None,
         filename: Optional[str] = None
     ) -> Optional[str]:
-        """Get newsletter content using utility functions.
+        """Get newsletter content using FileHandler.
 
         Args:
             date_str (Optional[str]): Date string in YYYY-MM-DD format
@@ -135,20 +134,22 @@ class NewsletterSender:
         try:
             if filename:
                 # If filename is provided, use it directly
-                file_path = Path(
-                    'src/outputs/formatted_newsletters/daily_morning') / filename
-                if not file_path.exists():
-                    self.logger.error(
-                        "Newsletter file not found: %s", file_path)
-                    return None
-                return file_path.read_text(encoding='utf-8')
-            else:
-                # Use the utility function to load the newsletter
-                content, _, _ = load_formatted_newsletter(
-                    date_str=date_str,
-                    newsletter_type='daily_morning'
+                content = self.file_handler.load_file(
+                    file_type=FileType.FORMATTED_NEWSLETTER,
+                    base_name=filename
                 )
-                return content
+            else:
+                # Use FileHandler to load the most recent newsletter
+                content = self.file_handler.load_file(
+                    file_type=FileType.FORMATTED_NEWSLETTER,
+                    date_str=date_str
+                )
+
+            if not content:
+                self.logger.error("No newsletter content found")
+                return None
+
+            return content
 
         except Exception as e:
             self.logger.error("Error getting newsletter content: %s", str(e))
@@ -163,7 +164,6 @@ class NewsletterSender:
         Returns:
             str: HTML email template
         """
-
         return f"""
         <!DOCTYPE html>
         <html>
