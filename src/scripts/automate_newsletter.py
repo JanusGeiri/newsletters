@@ -34,27 +34,42 @@ def main():
     """Main automation function."""
     try:
         # Control which processes run
-        process_flags = {
-            'unsubscribes': True,
-            'scraping': True,
-            'article_groups': True,  # New flag for article group processing
-            'total_generation': False,
-            'generation': True,
-            'matching': True,
-            'impacts': False,
-            'formatting': True,
-            'index_update': True,
-            'sending': True
-        }
+
         dev_mode_flag = False
-        yesterday = get_yesterday_date()
-        yesterday = '2025-05-16'
+
+        if dev_mode_flag:
+            yesterday = '2025-05-16'
+            process_flags = {
+                'unsubscribes': False,
+                'scraping': False,
+                'article_groups': True,  # New flag for article group processing
+                'total_generation': False,
+                'generation': False,
+                'matching': False,
+                'impacts': False,
+                'formatting': False,
+                'index_update': False,
+                'sending': False
+            }
+        else:
+            yesterday = get_yesterday_date()
+            process_flags = {
+                'unsubscribes': True,
+                'scraping': True,
+                'article_groups': True,
+                'total_generation': True,
+                'generation': True,
+                'matching': True,
+                'impacts': False,
+                'formatting': True,
+                'index_update': True,
+                'sending': True
+            }
 
         args = type('Args', (), {
             'date': yesterday,
             'verbose': False,
             'sources': ['visir', 'mbl', 'vb', 'ruv'],
-            # 'sources': ['vb'],
         })
 
         logger.info("Starting newsletter automation pipeline")
