@@ -13,7 +13,7 @@ This project is an automated system for generating and sending newsletters based
 - Unsubscribe management
 - Index page generation for newsletter archives
 - Automated daily newsletter generation via GitHub Actions
-- Static website for newsletter archives and subscriptions
+- Static website for newsletter archives and subscriptions at https://janusgeiri.github.io/newsletters/
 
 ## Project Overview
 
