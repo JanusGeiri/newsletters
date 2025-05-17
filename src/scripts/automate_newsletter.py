@@ -38,7 +38,7 @@ def main():
             'unsubscribes': True,
             'scraping': True,
             'article_groups': True,  # New flag for article group processing
-            'total_generation': True,
+            'total_generation': False,
             'generation': True,
             'matching': True,
             'impacts': False,
@@ -46,7 +46,7 @@ def main():
             'index_update': True,
             'sending': True
         }
-        dev_mode_flag = True
+        dev_mode_flag = False
         yesterday = get_yesterday_date()
         yesterday = '2025-05-16'
 
