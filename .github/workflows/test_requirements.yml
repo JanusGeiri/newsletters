@@ -28,6 +28,11 @@ jobs:
           python -m pip install --upgrade pip
           # Create a temporary requirements file without macOS-specific packages
           grep -v "pyobjc" requirements.txt > requirements_linux.txt
+          # First install numpy with a compatible version
+          pip install "numpy>=2.0.0"
+          # Then install the rest of the requirements
+          pip install -r requirements_linux.txt --no-deps
+          # Finally install dependencies
           pip install -r requirements_linux.txt
 
       - name: execute py script with test flag
