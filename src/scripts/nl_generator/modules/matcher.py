@@ -2,14 +2,13 @@
 """
 Module for matching news items with article groups.
 """
-from typing import Dict, Set, Tuple, Optional
+from typing import Dict, Set, Tuple, List
+import numpy as np
 
 from nl_utils.logger_config import get_logger, get_module_name
 from nl_utils.file_handler import FileHandler, FileType
 from nl_article_processor.text_processor import TextProcessor
-from nl_article_processor.similarity_strategies import (
-    JaccardSimilarity
-)
+from nl_article_processor.similarity_strategies import LSASimilarity
 
 
 class Matcher:
@@ -25,12 +24,45 @@ class Matcher:
         self.debug_mode = debug_mode
         self.file_handler = FileHandler()
         self.text_processor = TextProcessor(debug_mode=debug_mode)
-        self.similarity_strategy = JaccardSimilarity()
+        self.similarity_strategy = LSASimilarity(params={'n_components': 100})
 
         # Initialize article storage
         self.articles = None
         self.articles_dict = None
         self.current_date = None
+        self.corpus_fitted = False
+
+    def _prepare_corpus(self, article_groups: Dict) -> None:
+        """Prepare and fit the corpus for LSA similarity.
+
+        Args:
+            article_groups (Dict): The article groups containing the corpus.
+        """
+        if self.corpus_fitted and self.current_date == article_groups.get('date'):
+            return
+
+        self.logger.info("Preparing corpus for LSA similarity")
+
+        # Load articles if needed
+        self._load_articles(article_groups.get('date'))
+
+        # Collect all article lemmas
+        corpus = []
+        for article in self.articles:
+            lemmas = article.get('article_lemmas', [])
+            if lemmas:
+                corpus.append(' '.join(lemmas))
+
+        if not corpus:
+            self.logger.error(
+                "No lemmas found in articles for corpus preparation")
+            return
+
+        # Set and fit the corpus
+        self.similarity_strategy.set_corpus(corpus)
+        self.similarity_strategy.fit()
+        self.corpus_fitted = True
+        self.logger.info("Corpus prepared with %d documents", len(corpus))
 
     def _load_articles(self, date_str: str) -> None:
         """Load articles for a specific date.
@@ -84,202 +116,122 @@ class Matcher:
 
         return ' '.join(text_parts)
 
-    def _process_news_items(self, newsletter: Dict) -> Dict[str, Set[str]]:
-        """Process all news items in the newsletter to extract lemmas.
+    def _get_group_lemmas(self, group: Dict) -> Set[str]:
+        """Extract all lemmas from articles in a group.
 
         Args:
-            newsletter (Dict): The newsletter content.
+            group (Dict): The article group to process.
 
         Returns:
-            Dict[str, Set[str]]: Dictionary mapping news item keys to their lemmas.
+            Set[str]: Set of lemmas from all articles in the group.
         """
-        news_item_lemmas = {}
+        group_lemmas = set()
+        article_ids = group.get('article_ids', [])
 
-        # Process main headline
-        if 'main_headline' in newsletter:
-            lemmas = self.text_processor.extract_lemmas(
-                newsletter['main_headline'], 'newsletter')
-            news_item_lemmas['main_headline'] = set(lemmas)
+        for article_id in article_ids:
+            article = self.articles_dict.get(article_id)
+            if article:
+                article_lemmas = article.get('article_lemmas', [])
+                if article_lemmas:
+                    group_lemmas.update(article_lemmas)
 
-        # Process summary
-        if 'summary' in newsletter:
-            lemmas = self.text_processor.extract_lemmas(
-                newsletter['summary'], 'newsletter')
-            news_item_lemmas['summary'] = set(lemmas)
+        return group_lemmas
 
-        # Process key events
-        if 'key_events' in newsletter:
-            for i, event in enumerate(newsletter['key_events']):
-                text = self._extract_news_item_text(event)
-                lemmas = self.text_processor.extract_lemmas(text, 'newsletter')
-                news_item_lemmas[f'key_event_{i}'] = set(lemmas)
-
-        # Process other categories
-        categories = [
-            'domestic_news', 'foreign_news', 'business',
-            'famous_people', 'sports', 'arts', 'science'
-        ]
-
-        for category in categories:
-            if category in newsletter:
-                for i, item in enumerate(newsletter[category]):
-                    text = self._extract_news_item_text(item)
-                    lemmas = self.text_processor.extract_lemmas(
-                        text, 'newsletter')
-                    news_item_lemmas[f'{category}_{i}'] = set(lemmas)
-
-        return news_item_lemmas
-
-    def _find_best_matching_group(
+    def _calculate_group_probabilities(
         self,
         news_item_lemmas: Set[str],
         article_groups: Dict,
-        similarity_threshold: float = 0.3
-    ) -> Tuple[Optional[str], float]:
-        """Find the best matching article group for a news item.
+        temperature: float = 0.10
+    ) -> List[Tuple[str, float]]:
+        """Calculate probabilities for each group using softmax.
 
         Args:
             news_item_lemmas (Set[str]): Lemmas from the news item.
             article_groups (Dict): The article groups to match against.
-            similarity_threshold (float): Minimum similarity score to consider a match.
+            temperature (float): Temperature parameter for softmax.
 
         Returns:
-            Tuple[Optional[str], float]: Best matching group ID and similarity score.
+            List[Tuple[str, float]]: List of (group_id, probability) tuples.
         """
-        best_match = None
-        best_score = 0.0
+        similarities = []
+        group_ids = []
 
         # Get the groups list from the article_groups dictionary
         groups = article_groups.get('groups', [])
         if not isinstance(groups, list):
             self.logger.error(
                 "Article groups 'groups' is not a list: %s", type(groups))
-            return None, 0.0
-
-        self.logger.debug("Found %d groups to match against", len(groups))
+            return []
 
         # Load articles if needed
         self._load_articles(article_groups.get('date'))
-        self.logger.debug("Loaded %d articles", len(
-            self.articles) if self.articles else 0)
 
+        # Calculate similarities for all groups
         for group in groups:
-            if not isinstance(group, dict):
-                self.logger.warning(
-                    "Group is not a dictionary: %s", type(group))
+            group_lemmas = self._get_group_lemmas(group)
+            if not group_lemmas:
                 continue
 
-            group_lemmas = set()
+            similarity = self.similarity_strategy.calculate_similarity(
+                news_item_lemmas, group_lemmas)
 
-            # Collect all lemmas from articles in the group
-            article_ids = group.get('article_ids', [])
-            if not isinstance(article_ids, list):
-                self.logger.warning(
-                    "Group article_ids is not a list: %s", type(article_ids))
-                continue
+            group_id = group.get('details', {}).get('group_number')
+            if group_id:
+                similarities.append(similarity)
+                group_ids.append(group_id)
 
+        if not similarities:
+            return []
+
+        # Apply softmax to get probabilities
+        similarities = np.array(similarities)
+        exp_similarities = np.exp(similarities / temperature)
+        probabilities = exp_similarities / np.sum(exp_similarities)
+
+        # Sort by probability in descending order
+        sorted_indices = np.argsort(probabilities)[::-1]
+        # log.debug the loop through the top 10 groups and output the group id and probability
+        self.logger.debug("Top 10 groups and their probabilities for news item")
+        for i in sorted_indices[:10]:
             self.logger.debug(
-                "Processing group with %d article IDs", len(article_ids))
+                "Group %s has probability %f", group_ids[i], probabilities[i])
+        return [(group_ids[i], float(probabilities[i])) for i in sorted_indices]
 
-            for article_id in article_ids:
-                article = self.articles_dict.get(article_id)
-                if article:
-                    article_lemmas = article.get('article_lemmas', [])
-                    if article_lemmas:
-                        group_lemmas.update(article_lemmas)
-                    else:
-                        self.logger.debug(
-                            "Article %s has no lemmas", article_id)
-                else:
-                    self.logger.debug(
-                        "Article %s not found in articles dictionary", article_id)
-
-            # Calculate similarity
-            if group_lemmas:
-                self.logger.debug("Group has %d lemmas", len(group_lemmas))
-                similarity = self.similarity_strategy.calculate_similarity(
-                    news_item_lemmas, group_lemmas)
-                self.logger.debug("Similarity score: %.2f", similarity)
-
-                if similarity > best_score and similarity >= similarity_threshold:
-                    best_score = similarity
-                    group_details = group.get('details', {})
-                    best_match = group_details.get('group_number')
-                    self.logger.debug(
-                        "New best match: group %s with score %.2f", best_match, best_score)
-            else:
-                self.logger.debug("Group has no lemmas to compare")
-
-        if best_match is None:
-            self.logger.debug(
-                "No match found above threshold %.2f", similarity_threshold)
-        else:
-            self.logger.debug(
-                "Final best match: group %s with score %.2f", best_match, best_score)
-
-        return best_match, best_score
-
-    def _insert_group_info(self, matched_newsletter: Dict, article_groups: Dict) -> Dict:
-        """Insert article group information and URLs into matched news items.
+    def _select_matching_groups(
+        self,
+        group_probabilities: List[Tuple[str, float]]
+    ) -> List[Tuple[str, float]]:
+        """Select matching groups based on probability distribution.
 
         Args:
-            matched_newsletter (Dict): The newsletter with matched items.
-            article_groups (Dict): The article groups containing URLs.
+            group_probabilities (List[Tuple[str, float]]): List of (group_id, probability) tuples.
 
         Returns:
-            Dict: Newsletter with inserted group information and URLs.
+            List[Tuple[str, float]]: Selected matching groups.
         """
-        # Load articles if needed
-        self._load_articles(article_groups.get('date'))
+        if not group_probabilities:
+            return []
 
-        # Create a dictionary for quick group lookup
-        groups_dict = {
-            group.get('details', {}).get('group_number'): group
-            for group in article_groups.get('groups', [])
-        }
+        # Get the highest probability
+        max_prob = group_probabilities[0][1]
 
-        # Define categories to process
-        categories = [
-            'key_events',  # Key stories
-            'domestic_news',
-            'foreign_news',
-            'business',
-            'famous_people',
-            'sports',
-            'arts',
-            'science'
-        ]
+        # If the highest probability is very high (>0.7), only take that one
+        if max_prob > 0.7:
+            return [group_probabilities[0]]
 
-        for category in categories:
-            if category not in matched_newsletter:
-                continue
+        # If the highest probability is moderate (0.4-0.7), take groups that are close to it
+        if max_prob > 0.4:
+            threshold = max_prob * 0.5  # Take groups with at least 50% of max probability
+            return [g for g in group_probabilities if g[1] >= threshold]
 
-            for item in matched_newsletter[category]:
-                if 'match' not in item:
-                    continue
-
-                group_id = item['match'].get('group_id')
-                if not group_id:
-                    item['article_urls'] = []
-                    continue
-
-                # Get the group from our lookup dictionary
-                group = groups_dict.get(group_id)
-
-                # Get article URLs for this group
-                article_urls = group.get('urls', [])
-
-                # Insert group information and URLs
-                item['article_urls'] = article_urls
-
-                self.logger.debug(
-                    "Inserted group info for %s item with group %s (%d URLs)",
-                    category, group_id, len(article_urls))
-
-        return matched_newsletter
+        # If the highest probability is low (<0.4), take groups that are significantly above average
+        mean_prob = np.mean([p for _, p in group_probabilities])
+        std_prob = np.std([p for _, p in group_probabilities])
+        threshold = mean_prob + 0.5 * std_prob
+        return [g for g in group_probabilities if g[1] >= threshold]
 
     def match_news_items(self, newsletter: Dict, article_groups: Dict) -> Dict:
-        """Match news items with article groups.
+        """Match news items with article groups using LSA similarity and softmax probabilities.
 
         Args:
             newsletter (Dict): The newsletter content.
@@ -291,13 +243,16 @@ class Matcher:
         try:
             self.logger.info("Matching news items with article groups")
 
+            # Prepare corpus for LSA similarity
+            self._prepare_corpus(article_groups)
+
             # Create a copy of the newsletter to modify
             matched_newsletter = newsletter.copy()
 
             # Define categories to match
             categories = [
-                '', 'key_events'  # Key stories
-                , 'domestic_news', 'foreign_news', 'business', 'famous_people', 'sports', 'arts', 'science'
+                '', 'key_events', 'domestic_news', 'foreign_news',
+                'business', 'famous_people', 'sports', 'arts', 'science'
             ]
 
             # Match each category
@@ -316,22 +271,26 @@ class Matcher:
                     lemmas = self.text_processor.extract_lemmas(
                         text, 'newsletter')
 
-                    # Find best matching group
-                    group_id, similarity = self._find_best_matching_group(
+                    # Calculate probabilities for all groups
+                    group_probabilities = self._calculate_group_probabilities(
                         set(lemmas), article_groups)
 
-                    # Always add match information, even if no match was found
-                    matched_newsletter[category][i]['match'] = {
-                        'group_id': group_id,
-                        'similarity': similarity
-                    }
-                    self.logger.debug(
-                        "Added match info for %s item %d: group %s (similarity: %.2f)",
-                        category, i, group_id, similarity)
+                    # Select matching groups
+                    selected_groups = self._select_matching_groups(
+                        group_probabilities)
 
-            # Insert group information and URLs
-            matched_newsletter = self._insert_group_info(
-                matched_newsletter, article_groups)
+                    # Add match information
+                    matched_newsletter[category][i]['matches'] = [
+                        {
+                            'group_id': group_id,
+                            'probability': prob
+                        }
+                        for group_id, prob in selected_groups
+                    ]
+
+                    self.logger.debug(
+                        "Added match info for %s item %d: %d matches",
+                        category, i, len(selected_groups))
 
             return matched_newsletter
 

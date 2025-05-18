@@ -3,7 +3,7 @@ from datetime import datetime
 import argparse
 import sys
 import logging
-from typing import Tuple, Optional, Dict, Any
+from typing import Tuple, Optional, Dict, Any, List
 
 from nl_utils.logger_config import get_logger, get_module_name
 from nl_utils.file_handler import FileHandler, FileType
@@ -22,11 +22,28 @@ class NewsletterFormatter:
         self.template = NewsletterTemplate()
         self.file_handler = FileHandler()
 
+    def _create_group_urls_mapping(self, article_groups: Dict[str, Any]) -> Dict[str, List[str]]:
+        """Create a mapping of group IDs to their URLs.
+
+        Args:
+            article_groups (Dict[str, Any]): The article groups data
+
+        Returns:
+            Dict[str, List[str]]: Mapping of group IDs to their URLs
+        """
+        group_urls = {}
+        for group in article_groups.get('groups', []):
+            group_id = group['details']['group_number']
+            group_urls[group_id] = group.get('urls', [])
+        return group_urls
+
     def get_date_from_filename(self, filename: str) -> Tuple[Optional[str], Optional[int]]:
         """Extract date and increment from newsletter filename."""
         return self.file_handler.extract_date_from_filename(filename)
 
-    def read_newsletter_file(self, date_str: Optional[str] = None, file_path: Optional[str] = None) -> Tuple[Dict[str, Any], str, str]:
+    def read_newsletter_file(self, date_str: Optional[str] = None, file_path: Optional[str] = None) -> Tuple[Dict
+                                                                                                             [str, Any],
+                                                                                                             str, str]:
         """Read a newsletter file and return its content.
 
         Args:
@@ -64,10 +81,16 @@ class NewsletterFormatter:
             self.logger.error("Error reading newsletter file: %s", str(e))
             raise
 
-    def format_newsletter_html(self, content: Dict[str, Any]) -> str:
+    def format_newsletter_html(self, content: Dict[str, Any], date_str: str, article_groups: Dict[str, Any]) -> str:
         """Convert JSON newsletter content to HTML format."""
         try:
             self.logger.debug("Formatting newsletter as HTML")
+
+            # Create mappings for group names and URLs
+            article_group_names = {}
+            article_group_urls = self._create_group_urls_mapping(article_groups)
+            for group in article_groups['groups']:
+                article_group_names[group['details']['group_number']] = group['details']['group_name']
 
             # Validate required fields
             required_fields = ['main_headline', 'summary']
@@ -79,17 +102,41 @@ class NewsletterFormatter:
                 raise ValueError(
                     f"Missing required fields: {', '.join(missing_fields)}")
 
-            # Get date from content or use current date
-            date_str = content.get('date', datetime.now().strftime('%Y-%m-%d'))
+            # Get date from content
+            if not date_str:
+                self.logger.error("No date found in newsletter content")
+                raise ValueError("Date is required in newsletter content")
 
             # Start building HTML sections
             html_sections = []
+
+            def format_date_icelandic(date_str: str) -> str:
+                """Convert YYYY-MM-DD to Icelandic date format (e.g. '12. maí 2024')"""
+                dt = datetime.strptime(date_str, '%Y-%m-%d')
+                icelandic_months = {
+                    'January': 'janúar',
+                    'February': 'febrúar',
+                    'March': 'mars',
+                    'April': 'apríl',
+                    'May': 'maí',
+                    'June': 'júní',
+                    'July': 'júlí',
+                    'August': 'ágúst',
+                    'September': 'september',
+                    'October': 'október',
+                    'November': 'nóvember',
+                    'December': 'desember'
+                }
+                month = icelandic_months[dt.strftime('%B')]
+                return f"{dt.day}. {month} {dt.year}"
+
+            date_str_icelandic_format = format_date_icelandic(date_str)
 
             # Add title section
             html_sections.append(f"""
             <div class="section title-section">
                 <h1 class="newsletter-title">{self.template.TEXT_CONFIG['title']}</h1>
-                <h2 class="newsletter-date">{date_str}</h2>
+                <h2 class="newsletter-date">{date_str_icelandic_format}</h2>
             </div>
             """)
 
@@ -108,7 +155,7 @@ class NewsletterFormatter:
                     toc_items.append(
                         f'<a href="#{section_key}" class="toc-item">{section_title}</a>')
 
-            # Add table of contents section
+            # Add table of contents section after summary
             if toc_items:
                 html_sections.append(self.template.create_toc_html(
                     {k: v for k, v in self.template.TEXT_CONFIG['sections'].items() if k in content and content[k]}))
@@ -125,7 +172,6 @@ class NewsletterFormatter:
                             "Skipping invalid item in %s: %s", section_key, item)
                         continue
 
-                    # Create news item HTML with the new structure
                     section_items.append(self.template.create_news_item_html(
                         title=item.get('title', ''),
                         description=item.get('description', ''),
@@ -133,7 +179,9 @@ class NewsletterFormatter:
                         tags=item.get('tags', []),
                         impact=item.get('impact'),
                         impact_urls=item.get('impact_urls', []),
-                        match=item.get('match')
+                        matches=item.get('matches'),
+                        article_group_names=article_group_names,
+                        article_group_urls=article_group_urls
                     ))
 
                 if section_items:
@@ -169,12 +217,10 @@ class NewsletterFormatter:
             <head>
                 <meta charset="UTF-8">
                 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                <style>
-                    {self.template.get_css_styles()}
-                </style>
+                {self.template.get_css_styles()}
             </head>
             <body>
-                <div class="newsletter-container">
+                <div class="newsletter">
                     {html_content}
                 </div>
             </body>
@@ -242,9 +288,15 @@ class NewsletterFormatter:
             # Log the content structure for debugging
             self.logger.info("Processing newsletter from %s", input_file)
             self.logger.info("Content keys: %s", list(content.keys()))
+            article_groups = self.file_handler.load_file(
+                FileType.ARTICLE_GROUPS,
+                base_name="article_groups",
+                date_str=date_str
+            )
 
             # Format the content as HTML
-            html_content = self.format_newsletter_html(content)
+            html_content = self.format_newsletter_html(
+                content, date_str, article_groups)
 
             # Save the formatted newsletter
             output_file = self.save_formatted_newsletter(

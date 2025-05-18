@@ -1,0 +1,779 @@
+
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <style>
+                    
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            line-height: 1.6;
+            color: #2c3e50;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f8f9fa;
+        }
+        .section {
+            background-color: #ffffff;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: transform 0.2s ease;
+        }
+        .section:hover {
+            transform: translateY(-2px);
+        }
+        .section-header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .back-to-toc {
+            color: #666;
+            text-decoration: none;
+            font-size: 0.9em;
+            padding: 5px 10px;
+            border-radius: 15px;
+            background-color: #f8f9fa;
+            transition: all 0.2s ease;
+        }
+        .back-to-toc:hover {
+            background-color: #3498db;
+            color: white;
+        }
+        .title-section {
+            text-align: center;
+            background: linear-gradient(135deg, #2c3e50, #3498db);
+            color: white;
+            padding: 40px 20px;
+            border-radius: 12px;
+        }
+        .newsletter-title {
+            font-size: 2.4em;
+            margin: 0;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+        .newsletter-date {
+            font-size: 1.2em;
+            margin: 10px 0 0;
+            opacity: 0.9;
+        }
+        .main-headline {
+            color: #2c3e50;
+            font-size: 1.8em;
+            margin: 0;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #3498db;
+        }
+        .section-header {
+            color: #2c3e50;
+            font-size: 1.5em;
+            margin: 0;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e9ecef;
+        }
+        .section-content {
+            color: #444;
+        }
+        .news-item {
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #e9ecef;
+            position: relative;
+        }
+        .news-item:last-child {
+            border-bottom: none;
+        }
+        .news-item h3 {
+            color: #2c3e50;
+            margin-top: 0;
+            margin-bottom: 12px;
+            font-size: 1.3em;
+        }
+        .impact-section {
+            font-style: italic;
+            color: #666;
+            margin: 12px 0;
+            padding: 10px;
+            background-color: #f8f9fa;
+            border-left: 4px solid #3498db;
+        }
+        .match-info {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 1.2em;
+            cursor: help;
+        }
+        .match-info[data-tooltip]:hover::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            top: 100%;
+            right: 0;
+            padding: 8px;
+            background-color: #2c3e50;
+            color: white;
+            border-radius: 4px;
+            font-size: 0.9em;
+            white-space: nowrap;
+            z-index: 1000;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        .tags {
+            margin-top: 12px;
+        }
+        .tag {
+            display: inline-block;
+            background-color: #e9ecef;
+            color: #495057;
+            padding: 4px 10px;
+            border-radius: 20px;
+            margin-right: 8px;
+            font-size: 0.9em;
+            transition: background-color 0.2s ease;
+        }
+        .tag:hover {
+            background-color: #3498db;
+            color: white;
+        }
+        .signature-section {
+            text-align: center;
+            font-style: italic;
+            color: #666;
+            border-top: 2px solid #e9ecef;
+            margin-top: 40px;
+            padding-top: 20px;
+        }
+        .signature {
+            margin: 0;
+            font-size: 0.9em;
+        }
+        .unsubscribe {
+            margin-top: 15px;
+            font-size: 0.9em;
+        }
+        .unsubscribe a {
+            color: #666;
+            text-decoration: none;
+            border-bottom: 1px solid #666;
+            transition: color 0.2s ease;
+        }
+        .unsubscribe a:hover {
+            color: #3498db;
+            border-bottom-color: #3498db;
+        }
+        .footnote-link {
+            color: #3498db;
+            text-decoration: none;
+            font-size: 0.8em;
+            vertical-align: super;
+            position: relative;
+        }
+        .footnote-link:hover {
+            color: #2980b9;
+        }
+        .footnote-link[data-tooltip]:hover::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 8px;
+            background-color: #2c3e50;
+            color: white;
+            border-radius: 4px;
+            font-size: 0.9em;
+            white-space: nowrap;
+            z-index: 1000;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        .toc-section {
+            background-color: #f8f9fa;
+            border: 1px solid #e9ecef;
+        }
+        .toc-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            padding: 10px;
+        }
+        .toc-item {
+            display: inline-block;
+            padding: 8px 15px;
+            background-color: #e9ecef;
+            color: #2c3e50;
+            text-decoration: none;
+            border-radius: 20px;
+            font-size: 0.9em;
+            transition: all 0.2s ease;
+        }
+        .toc-item:hover {
+            background-color: #3498db;
+            color: white;
+            transform: translateY(-2px);
+        }
+        @media only screen and (max-width: 600px) {
+            body {
+                padding: 10px;
+            }
+            .section {
+                padding: 15px;
+            }
+            .newsletter-title {
+                font-size: 1.8em;
+            }
+            .main-headline {
+                font-size: 1.5em;
+            }
+            .section-header {
+                font-size: 1.3em;
+            }
+            .footnote-link[data-tooltip]:hover::after {
+                display: none;
+            }
+            .toc-container {
+                flex-direction: column;
+            }
+            .toc-item {
+                width: 100%;
+                text-align: center;
+            }
+            .back-to-toc {
+                display: none;
+            }
+        }
+        
+                </style>
+            </head>
+            <body>
+                <div class="newsletter-container">
+                    
+            <div class="section title-section">
+                <h1 class="newsletter-title">Fréttir Gærdagsins</h1>
+                <h2 class="newsletter-date">2025-05-18</h2>
+            </div>
+            
+
+        <div class="section" id="summary">
+            <div class="section-header-container">
+                <h2 class="main-headline">Austurríki sigrar Eurovision 2025 – VÆB-bræður í úrslitum þrátt fyrir neikvæð dómnefnd – Hernaðaraðgerðir Ísraels á Gaza og vopnahlésviðræður í Katar</h2>
+                <a href="#toc" class="back-to-toc">← Efnisyfirlit</a>
+            </div>
+            <div class="section-content">
+                <p>Í gærkvöldi fór fram úrslit Eurovision í Basel þar sem Austurríki sigraði með laginu „Wasted Love“ flutt af JJ. Ísland komst í úrslitin með VÆB-bræðrum sem fluttu lagið „RÓA“, en fengu engin stig frá dómnefndum og 33 stig frá almenningi. Stemning var mikil í Eurovision-veislum víða um land og stuðningsmenn VÆB bræður voru afar ánægðir með frammistöðuna. Íþróttir voru í hámarki með sigri Vals í Evrópubikarnum í handbolta kvenna, fyrsta íslenska liðið til að vinna titilinn, og stórsigri Crystal Palace í enska bikarnum.<br><br>Á alþjóðavettvangi héldu Ísraelsmenn og Hamas-samtökin áfram vopnahlésviðræðum í Katar þrátt fyrir hertar hernaðaraðgerðir Ísraels á Gaza sem hafa valdið miklum mannfalli og alþjóðlegri gagnrýni. Donald Trump Bandaríkjaforseti tilkynnti að hann myndi ræða við Vladímír Pútín og Volodymyr Zelensky um mögulegt vopnahlé í Úkraínustríðinu. Í Finnlandi urðu fimm manns úti í þyrluslysi þegar tvær þyrlur rákust saman.<br><br>Á innlendum vettvangi var Willum Þór Þórsson kjörinn nýr forseti ÍSÍ með afgerandi meirihluta. Félags- og húsnæðismálaráðherra styður róttækar breytingar á byggingareftirliti til að tryggja rétt kaupenda. Í Hafnarfirði eru yfir 1.000 íbúðir í byggingu og bæjarstjóri segir svigrúm til frekari uppbyggingar takmarkað. Þá var sprenging við frjósemisstöð í Kaliforníu sem talin er vera viljaverk og olli manntjóni.<br><br>Í viðskiptum var Controlant að sýna batamerki eftir hagræðingar og Alvotech lauk útboði í Svíþjóð með góðum árangri. Samkeppnishæfni íslensks kísiliðnaðar hefur versnað gagnvart erlendum framleiðendum. Í menningu og listum var Valur Evrópubikarmeistari í handbolta kvenna eftir spennandi úrslitaleik og nýtt lag með VÆB kom út. Í vísindum var FDA að heimila blóðpróf til greiningar á alzheimer sem gæti hraðað meðferð.<br><br>Veður var hlýtt víða á landinu með sólarblíðu og hætt var við gróðureldum á þurrum svæðum. Íþróttir voru í hámarki með úrslitum í knattspyrnu, körfubolta og handbolta. Á samfélagsmiðlum var mikill stuðningur við VÆB-bræður og umræða um Eurovision og áhrif samfélagsmiðla á börn vakti athygli. Fjöldi fólks tók þátt í samstöðugöngu fyrir Palestínu í Reykjavík.<br><br>Þetta var dagur mikilla átaka og gleði, bæði á sviði alþjóðamála, íþrótta og menningar. Í dag má búast við áframhaldandi umræðum um friðarmál í Miðausturlöndum, þróun í Eurovision og áframhaldandi uppbyggingu hér á landi.</p>
+                
+            </div>
+        </div>
+        
+
+        <div class="section toc-section" id="toc">
+            <h2 class="section-header">Efnisyfirlit</h2>
+            <div class="toc-container">
+                <a href="#key_events" class="toc-item">1. MIKILVÆGUSTU FRÉTTIRNAR</a><a href="#domestic_news" class="toc-item">2. INNLENT</a><a href="#foreign_news" class="toc-item">3. ERLENT</a><a href="#business" class="toc-item">4. VIÐSKIPTI</a><a href="#famous_people" class="toc-item">5. FRÆGA FÓLKIÐ</a><a href="#sports" class="toc-item">6. ÍÞRÓTTIR</a><a href="#arts" class="toc-item">7. LISTIR</a><a href="#science" class="toc-item">8. VÍSINDI</a><a href="#closing_summary" class="toc-item">9. LOKAORÐ</a>
+            </div>
+        </div>
+        
+
+        <div class="section" id="key_events">
+            <div class="section-header-container">
+                <h2 class="section-header">1. MIKILVÆGUSTU FRÉTTIRNAR</h2>
+                <a href="#toc" class="back-to-toc">← Efnisyfirlit</a>
+            </div>
+            <div class="section-content">
+                
+        <div class="news-item">
+            <h3>Austurríki sigrar Eurovision 2025 með laginu „Wasted Love“</h3>
+            <p>Austurríki tryggði sér sigur í Söngvakeppni evrópskra sjónvarpsstöðva árið 2025 með laginu „Wasted Love“ flutt af 24 ára söngvaranum JJ. Keppnin fór fram í St. Jakobshalle í Basel í Sviss og Austurríki hlaut 258 stig frá dómnefndum og 178 stig frá almenningi, alls 436 stig, sem var langt á undan næstu löndum. Ísrael varð í öðru sæti með 357 stig og Eistland í því þriðja með 356 stig. Ísland komst í úrslitin með VÆB-bræðrum sem fluttu lagið „RÓA“ en endaði í 25. sæti með 33 stig, öll frá almenningi þar sem dómnefndir gáfu engin stig. Sigur JJ er þriðji sigur Austurríkis í Eurovision, síðast vann Conchita Wurst árið 2015. Sigurinn var fagnaður með mikilli gleði í Basel og víða um Evrópu. <a href="https://www.visir.is/g/20252727753d/austurriki-sigurvegari-eurovision-2025" class="footnote-link" data-tooltip="https://www.visir.is/g/20252727753d/austurriki-sigurvegari-eurovision-2025" id="fn1">[1]</a></p>
+            
+            <div class="match-info" data-tooltip="Match: bd63e039 (similarity: 0.31)">⚡</div>
+            <div class="tags">
+                <span class="tag">Eurovision</span> <span class="tag">Austurríki</span> <span class="tag">Ísland</span> <span class="tag">VÆB</span> <span class="tag">Söngvakeppni</span>
+            </div>
+        </div>
+        
+        <div class="news-item">
+            <h3>VÆB-bræður komust í úrslit Eurovision þrátt fyrir neikvæða dómnefnd</h3>
+            <p>VÆB-bræður, Hálfdán Helgi og Matthías Davíð, stigu á svið í úrslitum Eurovision í Basel með lagið „RÓA“. Þrátt fyrir að fá engin stig frá dómnefndum, sem vegur helmingi úrslitanna, fengu þeir 33 stig frá almenningi og náðu að tryggja sér sæti í úrslitum. Flutningurinn var metinn sem besti þeirra hingað til og salurinn fagnaði þeim ákaft. Íslendingar fylgdust spenntir með og héldu Eurovision-veislur víða um land. VÆB-bræður eru þekktir fyrir kraftmikla og gleðilega framkomu og hafa lofað stórtónleikum á Íslandi. Þrátt fyrir neikvæða dóma frá dómnefndum var stuðningur almennings mikill og þeir fengu mikið lof fyrir frammistöðu sína. </p>
+            
+            
+            <div class="tags">
+                <span class="tag">Eurovision</span> <span class="tag">VÆB</span> <span class="tag">Ísland</span> <span class="tag">Söngvakeppni</span> <span class="tag">Menning</span>
+            </div>
+        </div>
+        
+        <div class="news-item">
+            <h3>Hernaðaraðgerðir Ísraels á Gaza og vopnahlésviðræður í Katar</h3>
+            <p>Ísraelski herinn tilkynnti um hertar hernaðaraðgerðir á Gaza sem ganga undir nafninu Aðgerð Vagnar Gídeons. Markmiðið er að buga hryðjuverkasamtökin Hamas og frelsa þá gísla sem eru enn í haldi samtakanna. Árásir hafa valdið miklu mannfalli og alþjóðlegri gagnrýni, þar á meðal frá Sameinuðu þjóðunum og ýmsum þjóðarleiðtogum. Samtímis standa yfir vopnahlésviðræður í Katar þar sem sendinefndir Ísraela og Hamas hafa sent fulltrúa sína. Þrátt fyrir að fyrri vopnahlé hafi verið rofið í mars hafa viðræður hafist að nýju með von um að ná samkomulagi um vopnahlé, fangaskipti og mannúðaraðstoð á Gaza. Árásirnar hafa verið kallaðar þjóðernishreinsun af mannréttindastjóra Sameinuðu þjóðanna. </p>
+            
+            
+            <div class="tags">
+                <span class="tag">Miðausturlönd</span> <span class="tag">Gaza</span> <span class="tag">Ísrael</span> <span class="tag">Hamas</span> <span class="tag">Vopnahlé</span>
+            </div>
+        </div>
+        
+        <div class="news-item">
+            <h3>Donald Trump ætlar að ræða við Pútín og Zelensky um frið í Úkraínu</h3>
+            <p>Donald Trump Bandaríkjaforseti greindi frá því að hann myndi á mánudag ræða við Vladímír Pútín Rússlandsforseta og Volodymyr Zelensky Úkraínuforseta um mögulegt vopnahlé og frið í Úkraínu. Hann sagðist vona að samtölin myndu leiða til stöðvunar á blóðbaði og enda stríðinu sem hefur staðið yfir í rúmt ár. Viðræður sendinefnda Rússa og Úkraínumanna í Istanbúl í vikunni voru skammvinnar og án árangurs, en samkomulag var gert um umfangsmikil fangaskipti. Trump bauðst til að vera viðstaddur fund með Pútín ef sá væri til í það, en Pútín hafnaði. Kreml staðfesti að undirbúningur væri hafinn fyrir símtal milli Pútíns og Trump. Trump hefur áður sagt að viðræður muni ekki skila árangri nema hann ræði beint við Pútín. <a href="https://www.visir.is/g/20252727740d/aetlar-ad-tala-vid-putin-um-ad-binda-enda-a-blodbadid-" class="footnote-link" data-tooltip="https://www.visir.is/g/20252727740d/aetlar-ad-tala-vid-putin-um-ad-binda-enda-a-blodbadid-" id="fn1">[1]</a></p>
+            
+            <div class="match-info" data-tooltip="Match: e33b730f (similarity: 0.34)">⚡</div>
+            <div class="tags">
+                <span class="tag">Úkraína</span> <span class="tag">Rússland</span> <span class="tag">Donald Trump</span> <span class="tag">Friðarviðræður</span>
+            </div>
+        </div>
+        
+        <div class="news-item">
+            <h3>Willum Þór Þórsson kjörinn nýr forseti ÍSÍ með afgerandi meirihluta</h3>
+            <p>Á íþróttaþingi ÍSÍ var Willum Þór Þórsson kjörinn nýr forseti sambandsins með afgerandi meirihluta atkvæða, 109 af 145. Hann tekur við af Lárusi Blöndal sem hefur verið forseti ÍSÍ í 12 ár. Willum Þór mun gegna embættinu næstu fjögur ár. Í framboði voru einnig Brynjar Karl Sigurðsson, Magnús Ragnarsson, Olga Bjarnadóttir og Valdimar Leó Friðriksson. Willum Þór þakkar fyrir traustið og segir að reynsla hans úr stjórnmálum og stjórnun muni nýtast í starfi forseta ÍSÍ. Hann leggur áherslu á að efla samvinnu og bæta þjónustu í íþróttahreyfingunni og vinna að auknum fjárstuðningi og forvörnum. <a href="https://www.mbl.is/frettir/innlent/2025/05/17/willum_nyr_forseti_isi/" class="footnote-link" data-tooltip="https://www.mbl.is/frettir/innlent/2025/05/17/willum_nyr_forseti_isi/" id="fn1">[1]</a></p>
+            
+            <div class="match-info" data-tooltip="Match: d400f738 (similarity: 0.46)">⚡</div>
+            <div class="tags">
+                <span class="tag">ÍSÍ</span> <span class="tag">Íþróttir</span> <span class="tag">Willum Þór Þórsson</span> <span class="tag">Stjórnmál</span>
+            </div>
+        </div>
+        
+        <div class="news-item">
+            <h3>Valur verður fyrsta íslenska kvennaliðið til að vinna Evrópubikarinn í handbolta</h3>
+            <p>Valur varð í dag fyrsta íslenska kvennaliðið til að vinna Evrópubikarinn í handbolta eftir að hafa unnið spænska liðið Porrino í seinni leik úrslitaeinvígisins á Hlíðarenda, 25:24. Fyrri leikurinn á Spáni lauk með jafntefli, 29:29, og vann Valur því einvígið með einu marki. Porrino byrjaði leikinn betur og komst í 6:3 en Valur svaraði með sjö marka áhlaupi og komst í 11:7. Munurinn var þrjú mörk í hálfleik, 12:9. Seinni hálfleikur var dramatískur þar sem Valur komst í sjö marka forskot, 21:14, en Porrino náði að minnka muninn í tvö mörk undir lokin. Valur hélt hins vegar út og fagnaði sögulegum sigri fyrir íslenskan kvennahandbolta. Stuðningsmenn troðfylltu Hlíðarenda og leikmenn voru hrærðir eftir leik. </p>
+            
+            
+            <div class="tags">
+                <span class="tag">Handbolti</span> <span class="tag">Valur</span> <span class="tag">Evrópubikar</span> <span class="tag">Íþróttir</span>
+            </div>
+        </div>
+        
+        <div class="news-item">
+            <h3>Fimm létust í þyrluslysi í Finnlandi þegar tvær þyrlur rákust saman</h3>
+            <p>Tvær þyrlur af tegundinni Robinson R44 rákust saman í nágrenni bæjarins Eura í vesturhluta Finnlands í dag. Fimm manns voru um borð í þyrlunum og allir létust í slysinu. Þyrlurnar brotlentu í skóglendi um hundrað metrum hvor frá annarri og kviknaði eldur í annarri þeirra. Þyrlurnar voru á leið frá Tallinn í Eistlandi til Piikajärvi í Finnlandi þar sem þær áttu að taka þátt í viðburði flugklúbbs. Tildrög slyssins eru óþekkt en rannsókn stendur yfir. Vitni lýsa því að þyrlurnar flugu nærri hvor annarri áður en önnur breytti um stefnu og flaug utan í hina. Viðbragðsaðilar voru fljótir á vettvang en slysið olli miklum harmi í Finnlandi og Eistlandi. <a href="https://www.mbl.is/frettir/erlent/2025/05/17/fimm_letust_i_thyrluslysinu/" class="footnote-link" data-tooltip="https://www.mbl.is/frettir/erlent/2025/05/17/fimm_letust_i_thyrluslysinu/" id="fn1">[1]</a> <a href="https://www.mbl.is/frettir/erlent/2025/05/17/nokkrir_latnir_i_thyrluslysi_i_finnlandi/" class="footnote-link" data-tooltip="https://www.mbl.is/frettir/erlent/2025/05/17/nokkrir_latnir_i_thyrluslysi_i_finnlandi/" id="fn2">[2]</a></p>
+            
+            <div class="match-info" data-tooltip="Match: e819c549 (similarity: 0.37)">⚡</div>
+            <div class="tags">
+                <span class="tag">Finnland</span> <span class="tag">Þyrluslys</span> <span class="tag">Alþjóðlegt</span> <span class="tag">Slys</span>
+            </div>
+        </div>
+        
+        <div class="news-item">
+            <h3>Fjölmenn samstöðuganga í Reykjavík til stuðnings Palestínu og mótmæli gegn Ísrael í Eurovision</h3>
+            <p>Í Reykjavík var haldin fjölmenn samstöðuganga undir yfirskriftinni „Aðgerðir fyrir Gaza – strax!“ þar sem fólk mótmælti þjóðarmorði á Gaza og krafðist tafarlausra aðgerða. Samkvæmt lögreglu tóku um 400 manns þátt en ábendingar bárust um að fjöldinn gæti hafa verið allt að 2.000. Gangan fór friðsamlega fram frá bandaríska sendiráðinu niður Laugaveg og að Austurvelli. Á sama tíma voru mótmæli gegn þátttöku Ísraels í Eurovision í Basel í Sviss þar sem átök brutust út milli mótmælenda og lögreglu. Ísraelska framlagið var flutt í keppninni þrátt fyrir mikla gagnrýni vegna ástandsins á Gaza. Félagið Ísland - Palestína stóð að skipulagningu viðburðanna og kallaði eftir að Ísrael yrði meinuð þátttaka í keppninni. </p>
+            
+            
+            <div class="tags">
+                <span class="tag">Palestína</span> <span class="tag">Mótmæli</span> <span class="tag">Eurovision</span> <span class="tag">Ísrael</span> <span class="tag">Reykjavík</span>
+            </div>
+        </div>
+        
+            </div>
+        </div>
+        
+
+        <div class="section" id="domestic_news">
+            <div class="section-header-container">
+                <h2 class="section-header">2. INNLENT</h2>
+                <a href="#toc" class="back-to-toc">← Efnisyfirlit</a>
+            </div>
+            <div class="section-content">
+                
+        <div class="news-item">
+            <h3>Willum Þór Þórsson kjörinn nýr forseti ÍSÍ</h3>
+            <p>Willum Þór Þórsson var kjörinn nýr forseti Íþrótta- og Ólympíusambands Íslands á íþróttaþingi í Reykjavík með afgerandi meirihluta atkvæða. Hann tekur við af Lárusi Blöndal sem gegndi embættinu í 12 ár. Willum Þór hefur reynslu úr stjórnmálum og íþróttum og leggur áherslu á að efla samvinnu og bæta þjónustu í íþróttahreyfingunni. Hann mun sinna embættinu næstu fjögur ár. </p>
+            
+            
+            <div class="tags">
+                <span class="tag">ÍSÍ</span> <span class="tag">Íþróttir</span> <span class="tag">Willum Þór</span>
+            </div>
+        </div>
+        
+        <div class="news-item">
+            <h3>Róttækar breytingar á byggingareftirliti til að tryggja rétt kaupenda</h3>
+            <p>Félags- og húsnæðismálaráðherra styður tillögur Húsnæðis- og mannvirkjastofnunar um róttækar breytingar á byggingareftirliti. Tillögurnar fela í sér að byggingareftirlit færist frá sveitarfélögum til óháðra skoðunarstofa og að sérstök byggingartrygging verði tekin upp í stað starfsábyrgðatryggingar. Markmiðið er að tryggja neytendum öryggi við kaup á nýbyggingum og bæta eftirlit með byggingum. </p>
+            
+            
+            <div class="tags">
+                <span class="tag">Byggingareftirlit</span> <span class="tag">Fasteignir</span> <span class="tag">Ráðherra</span>
+            </div>
+        </div>
+        
+        <div class="news-item">
+            <h3>1.062 íbúðir í byggingu í Hafnarfirði – svigrúm til frekari uppbyggingar takmarkað</h3>
+            <p>Í Hafnarfirði eru nú 1.062 íbúðir í byggingu, aðallega í fjölbýli, og framkvæmdir eru hafnar á nýjum byggingarsvæðum. Bæjarstjóri segir að svigrúm til frekari uppbyggingar sé að verða takmarkað og mikilvægt að endurskoða vaxtarmörk höfuðborgarsvæðisins. Nýtt hverfi, Vatnshlíð, er undirbúið en fullbygging þess tekur nokkur ár. Uppbygging leik- og grunnskóla er einnig áætluð í hverfinu. </p>
+            
+            
+            <div class="tags">
+                <span class="tag">Hafnarfjörður</span> <span class="tag">Fasteignir</span> <span class="tag">Bygging</span>
+            </div>
+        </div>
+        
+        <div class="news-item">
+            <h3>Sprenging við frjósemisstöð í Kaliforníu – einn látinn</h3>
+            <p>Sprenging varð í eða við bíl við frjósemisstöð í Palm Springs, Kaliforníu, sem talin er vera viljaverk. Einn maður lést og fimm særðust. Stöðin skemmdist en starfsfólk slasaðist ekki. Rannsókn stendur yfir og bandarísk alríkislögregla hefur tekið þátt í aðgerðum. Málið vekur athygli vegna umdeildra málefna um þungunarrof og tæknifrjóvgun í Bandaríkjunum. </p>
+            
+            
+            <div class="tags">
+                <span class="tag">Alþjóðlegt</span> <span class="tag">Frjósemisstöð</span> <span class="tag">Sprenging</span>
+            </div>
+        </div>
+        
+        <div class="news-item">
+            <h3>Willum Þór Þórsson tekur við sem nýr forseti ÍSÍ</h3>
+            <p>Willum Þór Þórsson var kjörinn nýr forseti ÍSÍ með afgerandi meirihluta atkvæða á íþróttaþingi í Reykjavík. Hann tekur við af Lárusi Blöndal sem gegndi embættinu í 12 ár. Willum Þór hefur reynslu úr stjórnmálum og íþróttum og leggur áherslu á að efla samvinnu og bæta þjónustu í íþróttahreyfingunni. Hann mun sinna embættinu næstu fjögur ár. </p>
+            
+            
+            <div class="tags">
+                <span class="tag">ÍSÍ</span> <span class="tag">Íþróttir</span> <span class="tag">Willum Þór</span>
+            </div>
+        </div>
+        
+        <div class="news-item">
+            <h3>Fimmmenningar ákærðir í stórfelldu fíkniefnamáli í Reykjavík</h3>
+            <p>Fimm einstaklingar hafa verið ákærðir fyrir stórfelld fíkniefnalagabrot sem tengjast ræktun og vörslu kannabisefna í Reykjavík. Málið varðar upptöku á umfangsmiklum búnaði og miklu magni kannabisefna. Einn ákærður fyrir stórfellt fíkniefnalagabrot og hinir fyrir hlutdeild. Málið varðar aðgerðir sem áttu sér stað árið 2021 og rannsókn stendur yfir. </p>
+            
+            
+            <div class="tags">
+                <span class="tag">Fíkniefni</span> <span class="tag">Réttarkerfi</span> <span class="tag">Reykjavík</span>
+            </div>
+        </div>
+        
+            </div>
+        </div>
+        
+
+        <div class="section" id="foreign_news">
+            <div class="section-header-container">
+                <h2 class="section-header">3. ERLENT</h2>
+                <a href="#toc" class="back-to-toc">← Efnisyfirlit</a>
+            </div>
+            <div class="section-content">
+                
+        <div class="news-item">
+            <h3>Fimm létust í þyrluslysi í Finnlandi þegar tvær þyrlur rákust saman</h3>
+            <p>Tvær þyrlur rákust saman í nágrenni bæjarins Eura í Finnlandi og brotlentu í skóglendi. Fimm manns voru um borð og allir létust. Þyrlurnar voru á leið frá Tallinn í Eistlandi til Piikajärvi í Finnlandi. Rannsókn stendur yfir um tildrög slyssins. Atvikið olli miklum harmi í Finnlandi og Eistlandi og hefur vakið athygli alþjóðlega. </p>
+            
+            
+            <div class="tags">
+                <span class="tag">Finnland</span> <span class="tag">Þyrluslys</span> <span class="tag">Alþjóðlegt</span>
+            </div>
+        </div>
+        
+        <div class="news-item">
+            <h3>Donald Trump ætlar að ræða við Pútín og Zelensky um frið í Úkraínu</h3>
+            <p>Donald Trump Bandaríkjaforseti tilkynnti að hann muni á mánudag ræða við Vladímír Pútín Rússlandsforseta og Volodymyr Zelensky Úkraínuforseta um mögulegt vopnahlé og frið í Úkraínu. Hann sagðist vona að samtölin myndu leiða til stöðvunar á blóðbaði og enda stríðinu sem hefur staðið yfir í rúmt ár. Viðræður sendinefnda Rússa og Úkraínumanna í Istanbúl í vikunni voru skammvinnar og án árangurs, en samkomulag var gert um umfangsmikil fangaskipti. <a href="https://nyr.ruv.is/frettir/erlent/2025-05-17-trump-aetlar-ad-raeda-vid-putin-og-zelensky-444133/" class="footnote-link" data-tooltip="https://nyr.ruv.is/frettir/erlent/2025-05-17-trump-aetlar-ad-raeda-vid-putin-og-zelensky-444133/" id="fn1">[1]</a></p>
+            
+            <div class="match-info" data-tooltip="Match: c3112d7c (similarity: 0.31)">⚡</div>
+            <div class="tags">
+                <span class="tag">Úkraína</span> <span class="tag">Rússland</span> <span class="tag">Donald Trump</span> <span class="tag">Friðarviðræður</span>
+            </div>
+        </div>
+        
+        <div class="news-item">
+            <h3>Austurríki sigrar Eurovision 2025 – JJ með magnaða rödd</h3>
+            <p>Austurríki vann Eurovision 2025 með laginu „Wasted Love“ flutt af JJ, 24 ára söngvara með ótrúlega rödd. Sigurinn var þriðji fyrir Austurríki í sögu keppninnar. JJ hefur tekið þátt í hæfileikaþáttum í Austurríki og Bretlandi og er talinn einn efnilegasti ungi söngvari Evrópu. Sigurinn var fagnaður með mikilli gleði í Basel og víða um Evrópu. </p>
+            
+            
+            <div class="tags">
+                <span class="tag">Eurovision</span> <span class="tag">Austurríki</span> <span class="tag">JJ</span> <span class="tag">Menning</span>
+            </div>
+        </div>
+        
+        <div class="news-item">
+            <h3>Fjöldi látinna eftir hvirfilbyl í Bandaríkjunum</h3>
+            <p>Minnst 21 manns hefur látið lífið eftir að hvirfilbylur gekk yfir ríkin Missouri og Kentucky í Bandaríkjunum. Fjórtán létust í Kentucky og sjö í Missouri, þar af fimm í St. Louis. Miklar skemmdir urðu á byggingum og rafmagnslaust var um tíma í þúsundum heimila. Yfirvöld hafa gefið út veðurviðvaranir og búist er við áframhaldandi óveðri á svæðinu. <a href="https://www.mbl.is/frettir/erlent/2025/05/17/21_sagdur_hafa_latid_lifid_i_ofsavedri/" class="footnote-link" data-tooltip="https://www.mbl.is/frettir/erlent/2025/05/17/21_sagdur_hafa_latid_lifid_i_ofsavedri/" id="fn1">[1]</a></p>
+            
+            <div class="match-info" data-tooltip="Match: 3d5d78f1 (similarity: 0.38)">⚡</div>
+            <div class="tags">
+                <span class="tag">Bandaríkin</span> <span class="tag">Veður</span> <span class="tag">Hvirfilbylur</span> <span class="tag">Slys</span>
+            </div>
+        </div>
+        
+        <div class="news-item">
+            <h3>Skoskur sjávarklasi stofnaður að íslenskri fyrirmynd</h3>
+            <p>Í Skotlandi var stofnaður sjávarklasi í marsmánuði, The Scottish Ocean Cluster, sem byggir á fyrirmynd Íslenska sjávarklasans. Markmið klasans er að efla verðmætasköpun úr sjávarafurðum með samstarfi fyrirtækja, rannsóknastofnana og stjórnvalda. Stofnunin hefur fengið mikinn stuðning og er hluti af alþjóðlegu neti sjávarklasa. Þetta er mikilvægt skref í átt að sjálfbærri og arðbærri framtíð sjávarútvegsins í Skotlandi. </p>
+            
+            
+            <div class="tags">
+                <span class="tag">Skotland</span> <span class="tag">Sjávarútvegur</span> <span class="tag">Nýsköpun</span> <span class="tag">Samstarf</span>
+            </div>
+        </div>
+        
+            </div>
+        </div>
+        
+
+        <div class="section" id="business">
+            <div class="section-header-container">
+                <h2 class="section-header">4. VIÐSKIPTI</h2>
+                <a href="#toc" class="back-to-toc">← Efnisyfirlit</a>
+            </div>
+            <div class="section-content">
+                
+        <div class="news-item">
+            <h3>Controlant stefnir á arðsemi undir lok árs 2025 eftir hagræðingar</h3>
+            <p>Tæknifyrirtækið Controlant hefur ráðist í umfangsmiklar hagræðingaraðgerðir vegna rekstrarerfiðleika síðustu misseri. Félagið telur nú að kjarnatekjur muni aukast um tugi prósenta á árinu 2025 og markmiðið er að reksturinn verði farinn að skila hagnaði undir árslok sama árs. Tveir stærstu hluthafar eru lífeyrissjóðir sem hafa varið eignarhlut sinn gegn þynningu í nýrri fjármögnun. <a href="https://www.visir.is/g/20252727555d/controlant-ser-fram-a-ad-skila-ardsemi-i-arslok-eftir-storar-hagraedingaradgerdir" class="footnote-link" data-tooltip="https://www.visir.is/g/20252727555d/controlant-ser-fram-a-ad-skila-ardsemi-i-arslok-eftir-storar-hagraedingaradgerdir" id="fn1">[1]</a></p>
+            
+            <div class="match-info" data-tooltip="Match: 2ab00427 (similarity: 0.62)">⚡</div>
+            <div class="tags">
+                <span class="tag">Controlant</span> <span class="tag">Tækni</span> <span class="tag">Hagræðing</span> <span class="tag">Viðskipti</span>
+            </div>
+        </div>
+        
+        <div class="news-item">
+            <h3>Alvotech klárar útboð í Svíþjóð með góðum árangri</h3>
+            <p>Alvotech lauk útboði á heimildarskírteinum (SDR) á Nasdaq Stokkhólmi þar sem öllum bréfum var úthlutað til yfir 3.000 einstaklinga. Gengi var 1.167,8 krónur og tekjur um 516 milljónir króna eftir sölukostnað. Þetta er fyrsta útboð félagsins í Svíþjóð og markar mikilvægan áfanga í stefnu þess að auka þátttöku norrænna og evrópskra fjárfesta. Félagið hefur sýnt jákvæða EBITDA-bata á fyrsta ársfjórðungi 2025. </p>
+            
+            
+            <div class="tags">
+                <span class="tag">Alvotech</span> <span class="tag">Fjárfesting</span> <span class="tag">Viðskipti</span> <span class="tag">Hugbúnaður</span>
+            </div>
+        </div>
+        
+        <div class="news-item">
+            <h3>Samkeppnishæfni íslensks kísiliðnaðar versnar gagnvart erlendum framleiðendum</h3>
+            <p>Útflutningstekjur kísiliðnaðar á Íslandi námu 40,2 milljörðum króna árið 2024 og hafa tvöfaldast á fimm árum. Samkeppnishæfni íslenskra framleiðenda gagnvart erlendum, einkum í Kína, Noregi og Kanada, hefur þó versnað vegna hærra flutningskostnaðar raforku og annarra rekstrarskilyrða. Stjórnvöld eru hvött til að móta iðnaðarstefnu til að efla samkeppnishæfni og nýta tækifæri í greininni. </p>
+            
+            
+            <div class="tags">
+                <span class="tag">Kísiliðnaður</span> <span class="tag">Útflutningur</span> <span class="tag">Viðskipti</span> <span class="tag">Iðnaður</span>
+            </div>
+        </div>
+        
+        <div class="news-item">
+            <h3>Strengur fjárfestingafélag hagnaðist um 2,6 milljarða króna árið 2024</h3>
+            <p>Fjárfestingafélagið Strengur, sem á helmingshlut í Skel fjárfestingafélagi, hagnaðist um 2,6 milljarða króna árið 2024. Virði eignarhlutar Strengs í Skel jókst um 3,5 milljarða og nam 21 milljarði króna í árslok. Skuldir félagsins voru 6,2 milljarðar króna. Skel hagnaðist um 6,75 milljarða króna og greiddi 6 milljarða króna í arð til hluthafa á árinu 2025. </p>
+            
+            
+            <div class="tags">
+                <span class="tag">Fjárfesting</span> <span class="tag">Strengur</span> <span class="tag">Skel</span> <span class="tag">Viðskipti</span>
+            </div>
+        </div>
+        
+        <div class="news-item">
+            <h3>Íslandsbanki og VÍS hefja samstarf um aukna þjónustu og vildarkerfi</h3>
+            <p>Íslandsbanki og tryggingafélagið VÍS hafa undirritað samstarfssamning sem gerir viðskiptavinum kleift að njóta aukins ávinnings í vildarkerfum beggja félaga. Bankastjóri Íslandsbanka segir samstarfið styrkja samkeppnishæfni bankans og opna möguleika á frekari samstarfi, jafnvel sameiningu. Félögin stefna að því að bæta þjónustu og auka viðskiptavinahóp með þessu samstarfi. </p>
+            
+            
+            <div class="tags">
+                <span class="tag">Íslandsbanki</span> <span class="tag">VÍS</span> <span class="tag">Viðskipti</span> <span class="tag">Fjárfesting</span>
+            </div>
+        </div>
+        
+            </div>
+        </div>
+        
+
+        <div class="section" id="famous_people">
+            <div class="section-header-container">
+                <h2 class="section-header">5. FRÆGA FÓLKIÐ</h2>
+                <a href="#toc" class="back-to-toc">← Efnisyfirlit</a>
+            </div>
+            <div class="section-content">
+                
+        <div class="news-item">
+            <h3>Willum Þór Þórsson kjörinn nýr forseti ÍSÍ</h3>
+            <p>Willum Þór Þórsson var kjörinn nýr forseti Íþrótta- og Ólympíusambands Íslands með afgerandi meirihluta á íþróttaþingi í Reykjavík. Hann tekur við af Lárusi Blöndal sem gegndi embættinu í 12 ár. Willum Þór hefur reynslu úr stjórnmálum og íþróttum og leggur áherslu á að efla samvinnu og bæta þjónustu í íþróttahreyfingunni. Hann mun sinna embættinu næstu fjögur ár. </p>
+            
+            
+            <div class="tags">
+                <span class="tag">Willum Þór</span> <span class="tag">ÍSÍ</span> <span class="tag">Íþróttir</span>
+            </div>
+        </div>
+        
+        <div class="news-item">
+            <h3>VÆB-bræður spenntir fyrir Eurovision-úrslitunum og nýju lagi</h3>
+            <p>VÆB-bræður, Hálfdán Helgi og Matthías Davíð, eru spenntir fyrir úrslitakvöldi Eurovision í Basel og hafa nýlega gefið út nýtt lag, „Dr. Saxophone“. Lagið er sumarlegt og stemningsríkt með saxófónn. Bræðurnir lofa stórtónleikum á Íslandi og eru þakklátir fyrir stuðninginn sem þeir hafa fengið. Þeir eru metnir fyrir frábæra framkomu og hafa fengið mikla athygli bæði í Basel og heima á Íslandi. </p>
+            
+            
+            <div class="tags">
+                <span class="tag">VÆB</span> <span class="tag">Eurovision</span> <span class="tag">Tónlist</span> <span class="tag">Menning</span>
+            </div>
+        </div>
+        
+        <div class="news-item">
+            <h3>Hildur Björnsdóttir, fyrirliði Vals, hrærð eftir Evrópubikarsigur</h3>
+            <p>Hildur Björnsdóttir, fyrirliði Vals í handbolta, var mjög hrærð eftir að liðið varð Evrópubikarmeistari með sigri á Porrino frá Spáni. Hún lýsti tilfinningunni sem einni bestu í heimi og þakkaði stuðningsmönnum fyrir mikinn stuðning á Hlíðarenda. Hildur mun leggja skóna á hilluna eftir tímabilið eftir langan og glæsilegan feril með 106 landsleiki og 124 mörk fyrir Ísland. <a href="https://www.mbl.is/sport/handbolti/2025/05/17/fekk_kvedju_fra_kollegum_i_logreglunni/" class="footnote-link" data-tooltip="https://www.mbl.is/sport/handbolti/2025/05/17/fekk_kvedju_fra_kollegum_i_logreglunni/" id="fn1">[1]</a></p>
+            
+            <div class="match-info" data-tooltip="Match: 67c903cc (similarity: 0.31)">⚡</div>
+            <div class="tags">
+                <span class="tag">Hildur Björnsdóttir</span> <span class="tag">Valur</span> <span class="tag">Handbolti</span> <span class="tag">Íþróttir</span>
+            </div>
+        </div>
+        
+        <div class="news-item">
+            <h3>Dave Grohl og Foo Fighters reka trommarann Josh Freese</h3>
+            <p>Dave Grohl og félagar í Foo Fighters hafa rekið trommarann Josh Freese úr sveitinni. Freese tók við sæti Taylor Hawkins árið 2023 og greindi sjálfur frá brottrekstrinum á samfélagsmiðlum. Hann sagði að liðsmenn Foo Fighters vildu fara í aðra átt og hann styddi þá ákvörðun. Engar frekari skýringar hafa borist um brottreksturinn. <a href="https://www.mbl.is/folk/frettir/2025/05/17/raku_trommarann/" class="footnote-link" data-tooltip="https://www.mbl.is/folk/frettir/2025/05/17/raku_trommarann/" id="fn1">[1]</a></p>
+            
+            <div class="match-info" data-tooltip="Match: 9f523f0c (similarity: 0.35)">⚡</div>
+            <div class="tags">
+                <span class="tag">Foo Fighters</span> <span class="tag">Josh Freese</span> <span class="tag">Tónlist</span> <span class="tag">Fræga fólkið</span>
+            </div>
+        </div>
+        
+        <div class="news-item">
+            <h3>Hreinn Líndal klæddi Vigdísi Finnbogadóttur forseta fyrstu árin</h3>
+            <p>Hreinn Líndal, óperusöngvari og fyrrverandi eigandi tískuhúss, klæddi Vigdísi Finnbogadóttur, fyrrverandi forseta Íslands, fyrstu árin hennar í embætti. Hann hafði samband við hana og sá um að velja og útvega fatnað sem hæfði stöðu hennar og persónuleika. Vinskapur þeirra hefur haldist í gegnum árin og Hreinn lýsir henni sem fallegri og virðulegri konu. Hann leggur áherslu á virðingu og fagmennsku í klæðaburði þjóðarleiðtoga. </p>
+            
+            
+            <div class="tags">
+                <span class="tag">Vigdís Finnbogadóttir</span> <span class="tag">Hreinn Líndal</span> <span class="tag">Fræga fólkið</span> <span class="tag">Tíska</span>
+            </div>
+        </div>
+        
+            </div>
+        </div>
+        
+
+        <div class="section" id="sports">
+            <div class="section-header-container">
+                <h2 class="section-header">6. ÍÞRÓTTIR</h2>
+                <a href="#toc" class="back-to-toc">← Efnisyfirlit</a>
+            </div>
+            <div class="section-content">
+                
+        <div class="news-item">
+            <h3>Valur verður fyrsta íslenska kvennaliðið til að vinna Evrópubikarinn í handbolta</h3>
+            <p>Valur vann Porrino frá Spáni í úrslitaleik Evrópubikars kvenna með 25:24 á heimavelli og tryggði sér titilinn í fyrsta sinn í sögu íslensks kvennahandbolta. Fyrri leikurinn á Spáni lauk með jafntefli, 29:29, og vann Valur því einvígið með einu marki. Leikurinn var dramatískur með mikilli spennu undir lokin en Valur hélt út og fagnaði sögulegum sigri. Stuðningsmenn troðfylltu Hlíðarenda og leikmenn voru hrærðir eftir leik. </p>
+            
+            
+            <div class="tags">
+                <span class="tag">Handbolti</span> <span class="tag">Valur</span> <span class="tag">Evrópubikar</span> <span class="tag">Íþróttir</span>
+            </div>
+        </div>
+        
+        <div class="news-item">
+            <h3>Crystal Palace bikarmeistari í fyrsta sinn eftir sigur á Manchester City</h3>
+            <p>Crystal Palace vann enska FA-bikarinn í fyrsta sinn eftir 1:0 sigur gegn Manchester City í úrslitaleik á Wembley. Eberechi Eze skoraði sigurmarkið á 16. mínútu. Manchester City fékk vítaspyrnu en Dean Henderson markvörður Palace varði frá Omar Marmoush. City-menn reyndu að jafna metin en Palace hélt út og fagnaði sögulegum sigri. Þetta var fyrsti bikartitill Palace í sögu félagsins. </p>
+            
+            
+            <div class="tags">
+                <span class="tag">Fótbolti</span> <span class="tag">Crystal Palace</span> <span class="tag">Manchester City</span> <span class="tag">Íþróttir</span>
+            </div>
+        </div>
+        
+        <div class="news-item">
+            <h3>Borussia Dortmund tryggir sér sæti í Meistaradeildinni með 3:0 sigri</h3>
+            <p>Borussia Dortmund vann öruggan 3:0 sigur gegn Holsten Kiel í lokaumferð þýsku 1. deildarinnar og tryggði sér sæti í Meistaradeild Evrópu á næstu leiktíð. Dortmund endar í fjórða sæti með 57 stig, tveimur stigum meira en Freiburg sem tapaði í lokaumferðinni. Markaskorar Dortmund voru Serhou Guirassy úr vítaspyrnu, Marcel Sabitzer og Felix Nmecha. Bayern München varð þýskur meistari með 82 stig. </p>
+            
+            
+            <div class="tags">
+                <span class="tag">Fótbolti</span> <span class="tag">Borussia Dortmund</span> <span class="tag">Meistaradeild</span> <span class="tag">Íþróttir</span>
+            </div>
+        </div>
+        
+        <div class="news-item">
+            <h3>Daníel Andri Halldórsson þjálfar kvennalið KR í körfubolta</h3>
+            <p>Daníel Andri Halldórsson hefur verið ráðinn þjálfari kvennaliðs KR í körfubolta til tveggja ára. Hann tekur við af Herði Unnsteinssyni og hefur áður þjálfað Þór á Akureyri með góðum árangri. Daníel verður einnig einn af aðstoðarþjálfurum A-landsliðs kvenna í körfubolta. Hann lýsir nýja starfinu sem spennandi verkefni og hlakkar til að vinna með liðinu. </p>
+            
+            
+            <div class="tags">
+                <span class="tag">Körfubolti</span> <span class="tag">KR</span> <span class="tag">Þjálfun</span> <span class="tag">Íþróttir</span>
+            </div>
+        </div>
+        
+        <div class="news-item">
+            <h3>Tindastóll vann Víkinga öruggan 4:1 sigur í Bestu deild kvenna</h3>
+            <p>Tindastóll vann Víkinga öruggan 4:1 sigur í 6. umferð Bestu deildar kvenna í knattspyrnu í Víkinni. Elísa Bríet Björnsdóttir skoraði tvö mörk fyrir Tindastól. Víkingar sóttu meira en náðu ekki að nýta færin sín. Sigurinn lyftir Tindastól upp í 7. sæti en Víkingar falla niður í 9. sæti. Þjálfari Tindastóls var ánægður með leik liðsins og segir sigurinn styrkja sjálfstraustið. </p>
+            
+            
+            <div class="tags">
+                <span class="tag">Knattspyrna</span> <span class="tag">Tindastóll</span> <span class="tag">Víkingar</span> <span class="tag">Íþróttir</span>
+            </div>
+        </div>
+        
+            </div>
+        </div>
+        
+
+        <div class="section" id="arts">
+            <div class="section-header-container">
+                <h2 class="section-header">7. LISTIR</h2>
+                <a href="#toc" class="back-to-toc">← Efnisyfirlit</a>
+            </div>
+            <div class="section-content">
+                
+        <div class="news-item">
+            <h3>Óratoríusveitin flytur Litlu messuna hans Rossinis í Salnum</h3>
+            <p>Óratoríusveitin, nýtt félag stofnað af Veru Hjördísi Matsdóttur og samstarfsfólki, flytur Litlu messuna hans Rossinis í Salnum í Kópavogi. Verkið er stórt og margslungið kirkjuverk með djassbrag og leikhúslegum þáttum. Söngvarar og hljóðfæraleikarar leggja áherslu á túlkun og leiklistarlega hlið verksins. Vera, sópransöngkona og forsvarsmaður sveitarinnar, segir þetta vera einstakt tækifæri fyrir ungt tónlistarfólk að spreyta sig með reyndari listamönnum. </p>
+            
+            
+            <div class="tags">
+                <span class="tag">Tónlist</span> <span class="tag">Óratoríusveitin</span> <span class="tag">Rossini</span> <span class="tag">Listir</span>
+            </div>
+        </div>
+        
+        <div class="news-item">
+            <h3>Nýtt lag með VÆB-bræðrum kom út – „Dr. Saxophone“</h3>
+            <p>VÆB-bræður gáfu út nýtt lag, „Dr. Saxophone“, á öllum helstu streymisveitum. Lagið er sumarlegt og stemningsríkt með saxófónn og var samið og framleitt af þríeykinu Matthíasi Davíð, Hálfdáni Helga og Inga Bauer. Bræðurnir eru spenntir fyrir sumartónleikum og Eurovision-úrslitakvöldinu í Basel. Lagið hefur fengið góða viðtöku og verður flutt á fjölskyldutónleikum í Salnum í Kópavogi. </p>
+            
+            
+            <div class="tags">
+                <span class="tag">Tónlist</span> <span class="tag">VÆB</span> <span class="tag">Nýtt lag</span> <span class="tag">Listir</span>
+            </div>
+        </div>
+        
+        <div class="news-item">
+            <h3>Pjetur Stefánsson gefur út plötu með blúsformi og djúpri túlkun</h3>
+            <p>Tónlistar- og myndlistarmaðurinn Pjetur Stefánsson sendi nýlega frá sér 15 laga plötu með hljómsveitinni PS&CO, „Í brennandi húsi“. Platan er blúsplata með djúpum textum um fyrirgefningu og frelsi. Pjetur segir plötuna vera heildstætt verk með frábærum hljóðfæraleikurum og mikilli einbeitingu í hljóðblöndun. Platan er aðgengileg á streymisveitum og er hluti af langri tónlistarferli Pjeturs. </p>
+            
+            
+            <div class="tags">
+                <span class="tag">Tónlist</span> <span class="tag">Blús</span> <span class="tag">Plata</span> <span class="tag">Listir</span>
+            </div>
+        </div>
+        
+            </div>
+        </div>
+        
+
+        <div class="section" id="science">
+            <div class="section-header-container">
+                <h2 class="section-header">8. VÍSINDI</h2>
+                <a href="#toc" class="back-to-toc">← Efnisyfirlit</a>
+            </div>
+            <div class="section-content">
+                
+        <div class="news-item">
+            <h3>FDA heimilar blóðpróf til greiningar á alzheimer</h3>
+            <p>Matvæla- og lyfjaeftirlit Bandaríkjanna (FDA) hefur heimilað nýtt blóðpróf sem greinir alzheimer-taugasjúkdóminn með mælingu á hlutfalli tveggja prótína tengdum amyloid-skellum í heilanum. Þetta gerir kleift að hefja meðferð fyrr með nýjum lyfjum sem hægja á framgangi sjúkdómsins. Fyrir var greining með heilaskönnum eða mænuvökva. Meðferðin dregur lítillega úr hnignun og gæti bætt lífsgæði sjúklinga. </p>
+            
+            
+            <div class="tags">
+                <span class="tag">Heilsa</span> <span class="tag">Alzheimer</span> <span class="tag">Lyf</span> <span class="tag">Vísindi</span>
+            </div>
+        </div>
+        
+        <div class="news-item">
+            <h3>Ný heilsutæknihraðall hjá Klak verður settur af stað í nóvember</h3>
+            <p>Klak, nýsköpunar- og stuðningsmiðstöð, undirbýr heilsutæknihraðal fyrir sprotafyrirtæki í heilbrigðisgeiranum sem verður settur af stað í nóvember. Klak tekur einnig þátt í Tink-hraðli í Kísildalnum með tveimur íslenskum teymum. Framundan eru spennandi verkefni í nýsköpun á heilbrigðissviði og Klak vinnur að því að styðja frumkvöðla og fyrirtæki í þessum geira. </p>
+            
+            
+            <div class="tags">
+                <span class="tag">Nýsköpun</span> <span class="tag">Heilbrigði</span> <span class="tag">Tækni</span> <span class="tag">Vísindi</span>
+            </div>
+        </div>
+        
+            </div>
+        </div>
+        
+
+        <div class="section" id="closing_summary">
+            <div class="section-header-container">
+                <h2 class="section-header">9. LOKAORÐ</h2>
+                <a href="#toc" class="back-to-toc">← Efnisyfirlit</a>
+            </div>
+            <div class="section-content">
+                <p>Gærdagurinn var viðburðaríkur á alþjóðavettvangi og hér heima. Austurríki sigraði Eurovision 2025 í Basel með magnaða rödd JJ, en VÆB-bræður stóðu sig frábærlega og komust í úrslitin þrátt fyrir neikvæða dóma frá dómnefndum. Á sama tíma héldu áfram vopnahlésviðræður milli Ísraela og Hamas í Katar þrátt fyrir hertar hernaðaraðgerðir á Gaza sem hafa valdið miklum mannfalli og alþjóðlegri gagnrýni. Donald Trump Bandaríkjaforseti tilkynnti að hann myndi ræða við Vladímír Pútín og Volodymyr Zelensky um mögulegt vopnahlé í Úkraínu.<br><br>Á innlendum vettvangi var Willum Þór Þórsson kjörinn nýr forseti ÍSÍ með afgerandi meirihluta. Félags- og húsnæðismálaráðherra styður róttækar breytingar á byggingareftirliti til að tryggja rétt kaupenda. Í Hafnarfirði eru yfir 1.000 íbúðir í byggingu og svigrúm til frekari uppbyggingar er að verða takmarkað. Íþróttir voru í hámarki með sögulegum sigri Vals í Evrópubikarnum í handbolta kvenna og stórsigri Crystal Palace í enska bikarnum.<br><br>Í menningu og listum var mikið um gleði og nýja tónlist, meðal annars með VÆB-bræðrum og Óratoríusveitinni. Í vísindum var FDA að heimila blóðpróf til greiningar á alzheimer sem gæti hraðað meðferð. Veður var hlýtt víða á landinu með hættu á gróðureldum á þurrum svæðum.<br><br>Í dag má búast við áframhaldandi umræðum um friðarmál í Miðausturlöndum, þróun Eurovision og áframhaldandi uppbyggingu hér á landi. Íþróttir halda áfram með spennandi leikjum og viðburðum. Samfélagsmiðlar og áhrif þeirra á börn verða áfram til umræðu. Gærdagurinn minnir á mikilvægi samstöðu, ábyrgðar og gleði í samfélaginu okkar.</p>
+            </div>
+        </div>
+        
+
+            <div class="section signature-section">
+                <p class="signature">Fréttabréfið er skrifað af gervigreind frá OpenAI. Gæti innihaldið ofsjónir. Verkefni forritað af Jasoni Andra Gíslasyni.</p>
+                <p class="unsubscribe"><a href="https://docs.google.com/forms/d/e/1FAIpQLSfHWhr9DmTtrtazcCANt-yjpxoAmF9ZEj_lQKZmCwQAqQNZzw/viewform?usp=header">Hætta áskrift á fréttabréfinu</a></p>
+            </div>
+            
+                </div>
+            </body>
+            </html>
+            

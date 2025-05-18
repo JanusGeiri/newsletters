@@ -3,91 +3,83 @@
 Module for processing news articles into article groups.
 """
 import hashlib
+import os
 from pathlib import Path
-from typing import List, Dict, Optional, Tuple
+from typing import List, Dict, Optional, Any
+
+from openai import OpenAI
+from dotenv import load_dotenv
 
 from nl_utils.logger_config import get_logger, get_module_name
 from nl_utils.file_handler import FileHandler, FileType
-from .similarity_strategies import (
-    SimilarityStrategy,
-    JaccardSimilarity,
-    EnhancedJaccardSimilarity,
-    LSASimilarity
-)
-from .lemma_processor import LemmaProcessor
+from .clustering_strategies import ClusteringStrategy
+from .similarity_strategies import SimilarityStrategy
+
+
+def create_group_name(article_titles: List[str], article_descriptions: List[str], prompt_template: str) -> str:
+    """Create a concise title for a group of related articles using OpenAI.
+
+    Args:
+        article_titles (List[str]): List of article titles in the group
+        article_descriptions (List[str]): List of article descriptions in the group
+
+    Returns:
+        str: A concise title in Icelandic describing the main story
+    """
+    try:
+        # Load environment variables and initialize OpenAI client
+        load_dotenv()
+        client = OpenAI(api_key=os.getenv('OPENAI_API_KEY'))
+
+        # Format article titles and descriptions
+        titles_text = "\n".join(
+            [f"- {title}" for title in article_titles if title])
+        descriptions_text = "\n".join(
+            [f"- {desc}" for desc in article_descriptions if desc])
+
+        # Format the prompt
+        prompt = prompt_template.format(
+            article_titles=titles_text,
+            article_descriptions=descriptions_text
+        )
+
+        # Generate the group name using OpenAI
+        response = client.chat.completions.create(
+            model="gpt-4.1-nano",
+            messages=[{"role": "system", "content": prompt}],
+            temperature=0.1,
+            max_tokens=50
+        )
+
+        # Extract and clean the response
+        group_name = response.choices[0].message.content.strip()
+        return group_name
+
+    except Exception as e:
+        logger = get_logger(get_module_name(__name__))
+        logger.error("Error creating group name: %s", str(e))
+        # Return a fallback name if generation fails
+        return "Fréttir um sömu atburði"
 
 
 class ArticleGroupProcessor:
     """Class for processing news articles into article groups."""
 
-    def __init__(self, similarity_strategy: SimilarityStrategy, debug_mode: bool = False):
+    def __init__(self, params: Dict[str, Any], debug_mode: bool = False):
         """Initialize the ArticleGroupProcessor.
 
         Args:
-            similarity_strategy (SimilarityStrategy): Strategy for calculating article similarity.
+            params (Dict[str, Any]): Parameters for the article group processor.
+                Must contain:
+                - clustering_strategy (ClusteringStrategy): Strategy for clustering articles.
+                - similarity_strategy (SimilarityStrategy): Strategy for calculating article similarity.
             debug_mode (bool): Whether to run in debug mode.
         """
         self.logger = get_logger(get_module_name(__name__))
         self.debug_mode = debug_mode
-        self.file_handler = FileHandler()
-        self.similarity_strategy = similarity_strategy
-        self.lemma_processor = LemmaProcessor(debug_mode=debug_mode)
-
-    def find_similar_articles(
-        self,
-        articles_lemmas: Dict[str, List[str]],
-        similarity_threshold: float = 0.3
-    ) -> List[List[Tuple[str, List[str]]]]:
-        """Group articles based on lemma similarity.
-
-        Args:
-            articles_lemmas (Dict[str, List[str]]): Dictionary mapping article IDs to their lemmas.
-            similarity_threshold (float): Minimum similarity score to consider articles similar.
-
-        Returns:
-            List[List[Tuple[str, List[str]]]]: List of groups, where each group is a list of
-            (article_id, lemmas) tuples.
-        """
-        try:
-            # Convert lemma lists to sets for faster comparison
-            article_sets = {
-                article_id: set(lemmas)
-                for article_id, lemmas in articles_lemmas.items()
-            }
-
-            # Initialize groups
-            groups = []
-            processed_articles = set()
-
-            for article_id, lemma_set in article_sets.items():
-                # Skip if article already processed
-                if article_id in processed_articles:
-                    continue
-
-                # Start a new group with current article
-                current_group = [(article_id, articles_lemmas[article_id])]
-                processed_articles.add(article_id)
-
-                # Find similar articles
-                for other_id, other_lemmas in article_sets.items():
-                    if other_id != article_id and other_id not in processed_articles:
-                        similarity = self.similarity_strategy.calculate_similarity(
-                            lemma_set, other_lemmas)
-
-                        if similarity >= similarity_threshold:
-                            current_group.append(
-                                (other_id, articles_lemmas[other_id]))
-                            processed_articles.add(other_id)
-
-                groups.append(current_group)
-
-            # Sort groups by size (largest first)
-            groups.sort(key=len, reverse=True)
-            return groups
-
-        except Exception as e:
-            self.logger.error("Error grouping similar articles: %s", str(e))
-            return []
+        self.file_handler: FileHandler = FileHandler()
+        self.clustering_strategy: ClusteringStrategy = params['clustering_strategy']
+        self.similarity_strategy: SimilarityStrategy = params['similarity_strategy']
 
     def process_articles(self, articles: List[Dict], date_str: str) -> Optional[Dict]:
         """Process articles into article groups.
@@ -103,17 +95,33 @@ class ArticleGroupProcessor:
             self.logger.info(
                 "Processing %d articles into groups", len(articles))
 
-            # Process articles to get filtered lemmas
-            articles_lemmas = self.lemma_processor.process_articles(articles)
+            # Extract lemmas from articles
+            articles_lemmas = {
+                article['article_id']: article['article_lemmas']
+                for article in articles
+            }
+            articles_corpus = [' '.join(list(article_lemmas))
+                               for article_lemmas in articles_lemmas.values()]
+            # print(articles_corpus)
+            self.similarity_strategy.set_corpus(articles_corpus)
+            self.similarity_strategy.fit()
 
-            # Group similar articles
-            groups = self.find_similar_articles(articles_lemmas)
+            # Cluster similar articles
+            groups = self.clustering_strategy.cluster_articles(
+                articles_lemmas
+            )
+            self.clustering_strategy.log_stats_after_clustering(groups)
 
             # Prepare the final output structure
             article_groups = {
                 "date": date_str,
                 "groups": []
             }
+            # Load the prompt template
+            prompt_template = self.file_handler.load_file(
+                FileType.PROMPT,
+                base_name="group_name_prompt"
+            )
 
             # Convert groups to the required format
             for group in groups:
@@ -124,12 +132,15 @@ class ArticleGroupProcessor:
                     "article_ids": [],
                     "details": {
                         "group_number": group_hash,
+                        "group_name": "Title missing",
                         "article_count": len(group),
                         "articles": []
                     }
                 }
 
                 # Process each article in the group
+                article_titles = []
+                article_descriptions = []
                 for article_id, lemmas in group:
                     article = next(
                         (a for a in articles if a.get('article_id') == article_id), None)
@@ -148,9 +159,20 @@ class ArticleGroupProcessor:
                             "lemma_count": len(lemmas),
                             "description": article.get('article_description', 'No description'),
                         }
+                        article_titles.append(
+                            article.get('article_title', None))
+                        article_descriptions.append(
+                            article.get('article_description', None))
                         group_data["details"]["articles"].append(article_info)
+                group_name = create_group_name(
+                    article_titles, article_descriptions, prompt_template)
+                group_data["details"]["group_name"] = group_name
 
                 article_groups["groups"].append(group_data)
+
+            # Sort groups by article count in descending order
+            article_groups["groups"].sort(
+                key=lambda x: x["details"]["article_count"], reverse=True)
 
             return article_groups
 
@@ -220,62 +242,3 @@ class ArticleGroupProcessor:
         except Exception as e:
             self.logger.error("Error in article group processing: %s", str(e))
             return None
-
-
-def main():
-    """Main function to demonstrate usage of different similarity strategies."""
-    import argparse
-    from datetime import datetime
-
-    parser = argparse.ArgumentParser(
-        description='Process articles into groups using different similarity strategies.')
-    parser.add_argument('--date', type=str, help='Date in YYYY-MM-DD format',
-                        default=datetime.now().strftime('%Y-%m-%d'))
-    parser.add_argument('--strategy', type=str, choices=['jaccard', 'enhanced_jaccard', 'lsa'],
-                        default='jaccard', help='Similarity strategy to use')
-    parser.add_argument('--threshold', type=float,
-                        default=0.3, help='Similarity threshold')
-    parser.add_argument('--debug', action='store_true',
-                        help='Enable debug mode')
-
-    args = parser.parse_args()
-
-    # Load articles first to initialize strategies that need all articles
-    file_handler = FileHandler()
-    articles = file_handler.load_file(
-        FileType.ARTICLES,
-        date_str=args.date,
-        base_name="articles"
-    )
-
-    if not articles:
-        print(f"No articles found for date: {args.date}")
-        return
-
-    # Extract all article lemmas for strategies that need them
-    all_articles_lemmas = [set(article.get('lemmas', []))
-                           for article in articles]
-
-    # Initialize appropriate strategy
-    if args.strategy == 'jaccard':
-        strategy = JaccardSimilarity()
-    elif args.strategy == 'enhanced_jaccard':
-        strategy = EnhancedJaccardSimilarity(all_articles_lemmas)
-    else:  # lsa
-        strategy = LSASimilarity(all_articles_lemmas)
-
-    # Create processor with chosen strategy
-    processor = ArticleGroupProcessor(strategy, debug_mode=args.debug)
-
-    # Run processing
-    output_path = processor.run_processor(args.date)
-
-    if output_path:
-        print(
-            f"Successfully processed articles. Output saved to: {output_path}")
-    else:
-        print("Failed to process articles.")
-
-
-if __name__ == "__main__":
-    main()

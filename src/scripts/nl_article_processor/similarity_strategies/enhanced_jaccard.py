@@ -1,24 +1,30 @@
 """Enhanced Jaccard similarity strategy implementation."""
-from typing import List, Set
+from typing import Set, Dict, Any
 
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
-from .base import SimilarityStrategy
+from .base_similarity import SimilarityStrategy
 
 
 class EnhancedJaccardSimilarity(SimilarityStrategy):
     """Enhanced Jaccard similarity with TF-IDF weighting."""
 
-    def __init__(self, all_articles: List[Set[str]]):
-        """Initialize with all articles for TF-IDF calculation.
+    def __init__(self, params: Dict[str, Any]):
+        """Initialize the enhanced Jaccard similarity strategy.
 
         Args:
-            all_articles (List[Set[str]]): List of all article lemma sets.
+            params (Dict[str, Any]): Parameters for the similarity strategy.
         """
-        self.vectorizer = TfidfVectorizer(analyzer=lambda x: x)
-        self.tfidf_matrix = self.vectorizer.fit_transform(
-            [' '.join(article) for article in all_articles])
+        super().__init__(params)
+        self.vectorizer = TfidfVectorizer(analyzer='word')
+
+    def fit(self):
+        """Fit the similarity strategy on the corpus."""
+        if self.corpus:
+            self.vectorizer.fit(self.corpus)
+        else:
+            raise ValueError('Corpus is empty')
 
     def calculate_similarity(self, article1: Set[str], article2: Set[str]) -> float:
         """Calculate enhanced Jaccard similarity with TF-IDF weighting.
@@ -40,4 +46,8 @@ class EnhancedJaccardSimilarity(SimilarityStrategy):
 
         # Calculate cosine similarity
         similarity = cosine_similarity(vec1, vec2)[0][0]
+
+        # Log the similarity calculation
+        self.log_similarity(similarity)
+
         return float(similarity)

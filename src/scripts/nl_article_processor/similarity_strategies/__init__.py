@@ -1,13 +1,17 @@
-"""Similarity strategies for article grouping."""
+"""Similarity strategies package."""
 
-from .base import SimilarityStrategy
+from .base_similarity import SimilarityStrategy
 from .jaccard import JaccardSimilarity
-from .enhanced_jaccard import EnhancedJaccardSimilarity
 from .lsa import LSASimilarity
+from .enhanced_jaccard import EnhancedJaccardSimilarity
+from .lda import LDASimilarity
+from .bert_similarity import BERTSimilarity
 
 __all__ = [
     'SimilarityStrategy',
     'JaccardSimilarity',
-    'EnhancedJaccardSimilarity',
     'LSASimilarity',
+    'EnhancedJaccardSimilarity',
+    'LDASimilarity',
+    'BERTSimilarity'
 ]

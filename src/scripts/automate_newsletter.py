@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 import os
 import sys
+import json
+import argparse
 from datetime import datetime
 from dotenv import load_dotenv
 
@@ -9,7 +11,14 @@ from nl_formatter.update_index import NewsletterIndexUpdater
 
 from nl_generator.newsletter_generator import NewsletterGenerator
 from nl_article_processor.article_group_processor import ArticleGroupProcessor
-from nl_article_processor.similarity_strategies import JaccardSimilarity
+from nl_article_processor.clustering_strategies import AgglomerativeClusteringStrategy
+from nl_article_processor.similarity_strategies import (
+    JaccardSimilarity,
+    LSASimilarity,
+    EnhancedJaccardSimilarity,
+    LDASimilarity,
+    BERTSimilarity
+)
 
 from nl_scraper.master_scraper import MasterScraper
 
@@ -29,20 +38,79 @@ load_dotenv()
 # Set up logging first, before importing other modules
 logger = setup_logger(name=__name__, configure_debug=False)
 
+# LSA similarity configuration
+lsa_similarity_params = {'n_components': 80}
+lsa_similarity_strategy = LSASimilarity(params=lsa_similarity_params)
+
+# Jaccard similarity configuration
+jaccard_similarity_params = {}
+jaccard_similarity_strategy = JaccardSimilarity(
+    params=jaccard_similarity_params)
+
+# Enhanced Jaccard similarity configuration
+enhanced_jaccard_similarity_params = {}
+enhanced_jaccard_similarity_strategy = EnhancedJaccardSimilarity(
+    params=enhanced_jaccard_similarity_params)
+
+# LDA similarity configuration
+lda_similarity_params = {
+    'n_topics': 20,
+    'max_iter': 100
+}
+lda_similarity_strategy = LDASimilarity(params=lda_similarity_params)
+
+# BERT similarity configuration
+bert_similarity_params = {
+    'model_name': 'all-MiniLM-L6-v2',
+    'device': 'cpu'
+}
+bert_similarity_strategy = BERTSimilarity(params=bert_similarity_params)
+
+similarity_strategies = {
+    'lsa': {
+        'strategy': lsa_similarity_strategy,
+        'params': lsa_similarity_params
+    },
+    'jaccard': {
+        'strategy': jaccard_similarity_strategy,
+        'params': jaccard_similarity_params
+    },
+    'enhanced_jaccard': {
+        'strategy': enhanced_jaccard_similarity_strategy,
+        'params': enhanced_jaccard_similarity_params
+    },
+    'lda': {
+        'strategy': lda_similarity_strategy,
+        'params': lda_similarity_params
+    },
+    'bert': {
+        'strategy': bert_similarity_strategy,
+        'params': bert_similarity_params
+    }
+}
+
 
 def main():
     """Main automation function."""
     try:
-        # Control which processes run
+        # Set up argument parser
+        parser = argparse.ArgumentParser(description='Newsletter automation script')
+        parser.add_argument('--test', action='store_true', help='Run in test mode with all process flags set to false')
+        parser.add_argument('--date', type=str, help='Date to process (YYYY-MM-DD format)')
+        parser.add_argument('--verbose', action='store_true', help='Enable verbose logging')
+        parser.add_argument('--sources', nargs='+', default=['visir', 'mbl', 'vb', 'ruv'],
+                            help='News sources to scrape')
+        args = parser.parse_args()
 
+        # Control which processes run
         dev_mode_flag = False
 
-        if dev_mode_flag:
-            yesterday = '2025-05-16'
+        if args.test:
+            yesterday = args.date if args.date else '2025-05-16'
             process_flags = {
                 'unsubscribes': False,
                 'scraping': False,
-                'article_groups': True,  # New flag for article group processing
+                'article_groups': False,
                 'total_generation': False,
                 'generation': False,
                 'matching': False,
@@ -50,6 +118,20 @@ def main():
                 'formatting': False,
                 'index_update': False,
                 'sending': False
+            }
+        elif dev_mode_flag:
+            yesterday = '2025-05-16'
+            process_flags = {
+                'unsubscribes': False,
+                'scraping': False,
+                'article_groups': False,
+                'total_generation': False,
+                'generation': False,
+                'matching': False,
+                'impacts': False,
+                'formatting': True,
+                'index_update': False,
+                'sending': True
             }
         else:
             yesterday = get_yesterday_date()
@@ -66,10 +148,11 @@ def main():
                 'sending': True
             }
 
+        # Convert args to the expected format
         args = type('Args', (), {
             'date': yesterday,
-            'verbose': False,
-            'sources': ['visir', 'mbl', 'vb', 'ruv'],
+            'verbose': args.verbose,
+            'sources': args.sources,
         })
 
         logger.info("Starting newsletter automation pipeline")
@@ -105,10 +188,24 @@ def main():
 
         # Step 3: Process article groups
         logger.info("Step 3/6: Processing article groups")
-        # Initialize with basic Jaccard similarity strategy
-        similarity_strategy = JaccardSimilarity()
+
+        sim_strat_choice = 'lsa'
+        similarity_strategy = similarity_strategies[sim_strat_choice]['strategy']
+        similarity_params = similarity_strategies[sim_strat_choice]['params']
+
+        clustering_strategy = AgglomerativeClusteringStrategy(
+            params={
+                'n_clusters': None,
+                'distance_threshold': 0.67,
+                'similarity_strategy': similarity_strategy,
+                'similarity_params': similarity_params
+            }
+        )
         article_processor = ArticleGroupProcessor(
-            similarity_strategy=similarity_strategy,
+            params={
+                'clustering_strategy': clustering_strategy,
+                'similarity_strategy': similarity_strategy
+            },
             debug_mode=args.verbose
         )
         article_groups_file = article_processor.run_processor(
@@ -117,6 +214,23 @@ def main():
             logger.error("✗ Failed to process article groups")
             return
         logger.info("✓ Article group processing completed")
+
+        # Log article groups in dev mode
+        if dev_mode_flag and process_flags['article_groups']:
+            logger.info("Article Groups Summary:")
+            with open(article_groups_file, 'r', encoding='utf-8') as f:
+                article_groups = json.load(f)
+                for group in article_groups['groups']:
+                    logger.info("Group: %s", group['details']['group_name'])
+                    logger.info("Articles:")
+                    for article in group['details']['articles']:
+                        logger.info("- %s", article['title'])
+
+        # Save similarity logs
+        if dev_mode_flag:
+            logger.info("Saving similarity logs...")
+            similarity_strategy.save_similarity_log()
+            logger.info("✓ Similarity logs saved")
 
         # Step 4: Generate newsletter or run matching
         logger.info("Step 4/6: Starting newsletter processing")
