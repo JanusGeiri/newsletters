@@ -21,7 +21,7 @@ class LSASimilarity(SimilarityStrategy):
         """
         super().__init__(params)
         self.n_components = params.get('n_components', 100)
-        self.vectorizer = TfidfVectorizer(analyzer='word')
+        self.vectorizer = TfidfVectorizer(analyzer='word',)
         self.lsa = TruncatedSVD(n_components=self.n_components)
         # Fit the vectorizer on the corpus
 

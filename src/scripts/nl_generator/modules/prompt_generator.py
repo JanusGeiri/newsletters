@@ -4,6 +4,7 @@ Module for generating prompts for newsletter generation.
 """
 import random
 from typing import List, Dict, Optional
+from datetime import datetime, timedelta
 
 from nl_utils.logger_config import get_logger, get_module_name
 from nl_utils.file_handler import FileHandler, FileType
@@ -21,6 +22,89 @@ class PromptGenerator:
         self.logger = get_logger(get_module_name(__name__))
         self.debug_mode = debug_mode
         self.file_handler = FileHandler()
+
+    def load_previous_newsletter(self, date_str: str) -> str:
+        """Load and format the previous day's newsletter content.
+
+        Args:
+            date_str (str): Current date string in YYYY-MM-DD format.
+
+        Returns:
+            str: Formatted previous newsletter content.
+        """
+        try:
+            # Calculate previous day's date
+            current_date = datetime.strptime(date_str, '%Y-%m-%d')
+            previous_date = current_date - timedelta(days=1)
+            previous_date_str = previous_date.strftime('%Y-%m-%d')
+
+            # Load the previous newsletter
+            previous_newsletter = self.file_handler.load_file(
+                FileType.PROCESSED_NEWSLETTER,
+                date_str=previous_date_str,
+                base_name="newsletter_processed"
+            )
+
+            if not previous_newsletter:
+                self.logger.warning("No previous newsletter found for date: %s", previous_date_str)
+                return "No previous newsletter available."
+
+            # Format the content sections
+            formatted_sections = []
+
+            # Add key events
+            if 'key_events' in previous_newsletter:
+                formatted_sections.append("\nMikilvægustu fréttirnar:")
+                for event in previous_newsletter['key_events']:
+                    formatted_sections.append(f"\n{event['title']}\n{event['description']}")
+
+            # Add domestic news
+            if 'domestic_news' in previous_newsletter:
+                formatted_sections.append("\nInnlent:")
+                for news in previous_newsletter['domestic_news']:
+                    formatted_sections.append(f"\n{news['title']}\n{news['description']}")
+
+            # Add foreign news
+            if 'foreign_news' in previous_newsletter:
+                formatted_sections.append("\nErlent:")
+                for news in previous_newsletter['foreign_news']:
+                    formatted_sections.append(f"\n{news['title']}\n{news['description']}")
+
+            # Add business news
+            if 'business' in previous_newsletter:
+                formatted_sections.append("\nViðskipti:")
+                for news in previous_newsletter['business']:
+                    formatted_sections.append(f"\n{news['title']}\n{news['description']}")
+
+            # Add famous people news
+            if 'famous_people' in previous_newsletter:
+                formatted_sections.append("\nFræga fólkið:")
+                for news in previous_newsletter['famous_people']:
+                    formatted_sections.append(f"\n{news['title']}\n{news['description']}")
+
+            # Add sports news
+            if 'sports' in previous_newsletter:
+                formatted_sections.append("\nÍþróttir:")
+                for news in previous_newsletter['sports']:
+                    formatted_sections.append(f"\n{news['title']}\n{news['description']}")
+
+            # Add arts news
+            if 'arts' in previous_newsletter:
+                formatted_sections.append("\nListir:")
+                for news in previous_newsletter['arts']:
+                    formatted_sections.append(f"\n{news['title']}\n{news['description']}")
+
+            # Add science news
+            if 'science' in previous_newsletter:
+                formatted_sections.append("\nVísindi:")
+                for news in previous_newsletter['science']:
+                    formatted_sections.append(f"\n{news['title']}\n{news['description']}")
+
+            return "\n".join(formatted_sections)
+
+        except Exception as e:
+            self.logger.error("Error loading previous newsletter: %s", str(e))
+            return "Error loading previous newsletter."
 
     def format_article_groups_for_prompt(self, article_groups: List[Dict]) -> str:
         """Format article groups into a string for the prompt.
@@ -56,8 +140,7 @@ class PromptGenerator:
                 return "No articles available."
 
             # Create a lookup dictionary for articles by ID
-            article_lookup = {article['article_id']
-                : article for article in articles}
+            article_lookup = {article['article_id']: article for article in articles}
 
             # Get the groups from the article_groups structure
             groups = article_groups.get('groups', [])
@@ -140,10 +223,14 @@ class PromptGenerator:
                 base_name="base_newsletter_prompt"
             )
 
+            # Load previous newsletter content
+            previous_newsletter_content = self.load_previous_newsletter(date_str)
+
             # Format the template with the provided data
             prompt = base_template.format(
                 date=date_str,
-                article_groups=formatted_article_groups
+                article_groups=formatted_article_groups,
+                previous_newsletter_content=previous_newsletter_content
             )
 
             return prompt

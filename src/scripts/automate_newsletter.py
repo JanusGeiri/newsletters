@@ -106,7 +106,7 @@ def main():
         dev_mode_flag = False
 
         if args.test:
-            yesterday = args.date if args.date else '2025-05-16'
+            yesterday = args.date if args.date else datetime.now().strftime('%Y-%m-%d')
             process_flags = {
                 'unsubscribes': False,
                 'scraping': False,
@@ -120,7 +120,7 @@ def main():
                 'sending': False
             }
         elif dev_mode_flag:
-            yesterday = '2025-05-16'
+            yesterday = '2025-05-19'
             process_flags = {
                 'unsubscribes': False,
                 'scraping': False,
@@ -129,9 +129,9 @@ def main():
                 'generation': False,
                 'matching': False,
                 'impacts': False,
-                'formatting': True,
-                'index_update': False,
-                'sending': True
+                'formatting': False,
+                'index_update': True,
+                'sending': False
             }
         else:
             yesterday = get_yesterday_date()

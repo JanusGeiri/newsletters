@@ -132,11 +132,39 @@ class NewsletterFormatter:
 
             date_str_icelandic_format = format_date_icelandic(date_str)
 
-            # Add title section
+            # Add title section (simplified for mobile compatibility)
             html_sections.append(f"""
-            <div class="section title-section">
-                <h1 class="newsletter-title">{self.template.TEXT_CONFIG['title']}</h1>
-                <h2 class="newsletter-date">{date_str_icelandic_format}</h2>
+            <div class="title-section">
+                <div class="newsletter-title">{self.template.TEXT_CONFIG['title']}</div>
+                <div class="newsletter-date">{date_str_icelandic_format}</div>
+            </div>
+            """)
+
+            # Calculate total reading time by summing up section reading times
+            total_reading_time = 0
+
+            # Add summary reading time
+            summary_text = content.get('summary', '') + (content.get('summary_impact', '') or '')
+            total_reading_time += self.template.calculate_reading_time(summary_text)
+
+            # Add reading times for each section
+            for section_key in self.template.TEXT_CONFIG['sections'].keys():
+                if section_key in content and content[section_key]:
+                    if isinstance(content[section_key], list):
+                        for item in content[section_key]:
+                            if isinstance(item, dict):
+                                section_text = item.get('title', '') + ' ' + item.get('description',
+                                                                                      '') + ' ' + (item.get('impact', '') or '')
+                                total_reading_time += self.template.calculate_reading_time(section_text)
+                    else:
+                        total_reading_time += self.template.calculate_reading_time(str(content[section_key]))
+
+            total_reading_time_html = self.template.create_reading_time_html(total_reading_time, is_total=True)
+
+            # Add total reading time after title
+            html_sections.append(f"""
+            <div class="section reading-time-section">
+                {total_reading_time_html}
             </div>
             """)
 

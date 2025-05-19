@@ -1,12 +1,15 @@
 :root {
     --primary-color: #2563eb;
     --primary-hover: #1d4ed8;
+    --accent: #60a5fa;
+    --danger: #ef4444;
     --text-color: #1f2937;
     --text-light: #6b7280;
     --bg-light: #f9fafb;
     --border-color: #e5e7eb;
     --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-    --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+    --shadow: 0 4px 12px 0 rgb(0 0 0 / 0.10);
+    --radius: 1rem;
 }
 
 * {
@@ -17,125 +20,451 @@
 
 body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 2rem;
-    line-height: 1.6;
+    background: var(--bg-light);
     color: var(--text-color);
-    background-color: var(--bg-light);
+    min-height: 100vh;
 }
 
-.container {
-    max-width: 800px;
+.main-container {
+    max-width: 900px;
     margin: 0 auto;
+    padding: 2.5rem 1rem 2rem 1rem;
 }
 
-header {
+.main-header {
     text-align: center;
-    margin-bottom: 3rem;
-    padding: 2rem;
+    margin-bottom: 2.5rem;
+    padding: 2rem 1rem 1.5rem 1rem;
     background: white;
-    border-radius: 1rem;
+    border-radius: var(--radius);
     box-shadow: var(--shadow-sm);
+    animation: fadeInDown 0.7s cubic-bezier(.4, 0, .2, 1);
 }
 
-header h1 {
-    margin-bottom: 1rem;
+.site-title {
     font-size: 2.5rem;
-    font-weight: 600;
-    color: var(--text-color);
+    font-weight: 800;
+    color: var(--primary-color);
+    margin-bottom: 0.5rem;
+    letter-spacing: -1px;
+    text-shadow: 0 2px 8px #e0e7ef33;
 }
 
-.subscribe-card {
-    background: white;
-    padding: 2rem;
-    border-radius: 1rem;
-    margin-bottom: 3rem;
-    box-shadow: var(--shadow);
-    text-align: center;
-}
-
-.subscribe-card h2 {
-    font-size: 1.5rem;
-    margin-bottom: 1rem;
-    color: var(--text-color);
-}
-
-.subscribe-card p {
+.site-subtitle {
+    font-size: 1.15rem;
     color: var(--text-light);
-    margin-bottom: 1.5rem;
-    max-width: 600px;
-    margin-left: auto;
-    margin-right: auto;
+    font-weight: 400;
+    margin-bottom: 0;
 }
 
-.newsletter-section {
-    margin-bottom: 3rem;
+.cta-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 2.5rem;
+    gap: 1.2rem;
 }
 
-.newsletter-section h2 {
-    font-size: 1.5rem;
-    margin-bottom: 1.5rem;
-    color: var(--text-color);
+.cta-buttons {
+    display: flex;
+    gap: 1.2rem;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.cta-btn {
+    display: inline-block;
+    padding: 0.9rem 2.2rem;
+    font-size: 1.1rem;
     font-weight: 600;
-}
-
-.newsletter-list {
-    display: grid;
-    gap: 1rem;
-}
-
-.newsletter-link {
+    border-radius: 2rem;
+    border: none;
+    background: var(--primary-color);
+    color: #fff;
     text-decoration: none;
-    color: inherit;
+    box-shadow: var(--shadow-sm);
+    transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+    cursor: pointer;
+    letter-spacing: 0.01em;
+    outline: none;
+    position: relative;
+    overflow: hidden;
+}
+
+.cta-btn:after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 0;
+    height: 0;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 100%;
+    transform: translate(-50%, -50%);
+    transition: width 0.4s cubic-bezier(.4, 0, .2, 1), height 0.4s cubic-bezier(.4, 0, .2, 1);
+    z-index: 0;
+}
+
+.cta-btn:active:after {
+    width: 200px;
+    height: 200px;
+}
+
+.cta-btn:hover,
+.cta-btn:focus {
+    background: var(--primary-hover);
+    transform: translateY(-2px) scale(1.03);
+    box-shadow: var(--shadow);
+}
+
+.subscribe-btn {
+    background: var(--primary-color);
+}
+
+.unsubscribe-btn {
+    background: var(--danger);
+}
+
+.unsubscribe-btn:hover,
+.unsubscribe-btn:focus {
+    background: #b91c1c;
+}
+
+.newsletter-info {
+    background: #f1f5f9;
+    color: #1e293b;
+    border-left: 4px solid var(--primary-color);
+    border-radius: 0.5rem;
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+    text-align: left;
+    box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.04);
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+    animation: fadeIn 1.2s cubic-bezier(.4, 0, .2, 1);
+}
+
+.latest-section,
+.all-section {
+    margin-bottom: 2.5rem;
+}
+
+.section-title {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    margin-bottom: 1.2rem;
+    letter-spacing: 0.01em;
+}
+
+.latest-newsletter-card {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 1.5rem;
 }
 
 .newsletter-card {
     background: white;
-    padding: 1.5rem;
-    border-radius: 0.5rem;
+    padding: 1.5rem 2rem;
+    border-radius: 0.7rem;
     box-shadow: var(--shadow-sm);
     transition: transform 0.2s, box-shadow 0.2s;
+    min-width: 260px;
+    max-width: 420px;
+    margin: 0 auto;
+    text-align: center;
+    animation: fadeInUp 0.7s cubic-bezier(.4, 0, .2, 1);
 }
 
-.newsletter-card:hover {
-    transform: translateY(-2px);
-    box-shadow: var(--shadow);
+.newsletter-card.highlight {
+    background: linear-gradient(90deg, var(--primary-color) 60%, var(--accent) 100%);
+    color: white;
+    border: none;
+    box-shadow: 0 4px 12px 0 rgb(37 99 235 / 0.10);
+}
+
+.newsletter-card.highlight h3,
+.newsletter-card.highlight p {
+    color: white;
 }
 
 .newsletter-card h3 {
-    color: var(--text-color);
+    color: var(--primary-color);
     font-size: 1.1rem;
     margin-bottom: 0.5rem;
+    font-weight: 700;
 }
 
-.latest-newsletter .newsletter-card {
+.newsletter-card p {
+    color: var(--text-light);
+    font-size: 1rem;
+}
+
+.newsletter-table-wrapper {
+    overflow-x: auto;
+    background: white;
+    border-radius: 0.7rem;
+    box-shadow: var(--shadow-sm);
+    padding: 1.2rem 0.5rem;
+    animation: fadeInUp 0.7s cubic-bezier(.4, 0, .2, 1);
+}
+
+.newsletter-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 340px;
+}
+
+.newsletter-table th,
+.newsletter-table td {
+    padding: 0.7rem 0.5rem;
+    text-align: center;
+    border-bottom: 1px solid var(--border-color);
+    font-size: 1rem;
+}
+
+.newsletter-table th {
+    background: var(--bg-light);
+    color: var(--primary-color);
+    font-weight: 700;
+    letter-spacing: 0.01em;
+}
+
+.newsletter-table tr:last-child td {
+    border-bottom: none;
+}
+
+.newsletter-table-link {
+    display: inline-block;
+    padding: 0.5rem 1.2rem;
     background: var(--primary-color);
-    color: white;
+    color: #fff;
+    border-radius: 2rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+    box-shadow: var(--shadow-sm);
+    font-size: 1rem;
+    position: relative;
 }
 
-.latest-newsletter .newsletter-card h3 {
-    color: white;
+.newsletter-table-link:hover,
+.newsletter-table-link:focus {
+    background: var(--primary-hover);
+    transform: translateY(-2px) scale(1.04);
+    box-shadow: var(--shadow);
 }
 
-.latest-newsletter .newsletter-card p {
-    color: rgba(255, 255, 255, 0.9);
+.newsletter-table tr {
+    transition: background 0.18s, box-shadow 0.18s;
 }
 
+.newsletter-table tr:hover {
+    background: #f3f6fd;
+    box-shadow: 0 2px 8px 0 rgb(37 99 235 / 0.07);
+    cursor: pointer;
+}
+
+.newsletter-card {
+    transition: box-shadow 0.22s, transform 0.22s;
+}
+
+.newsletter-card:hover {
+    box-shadow: 0 8px 24px 0 rgb(37 99 235 / 0.13);
+    transform: translateY(-4px) scale(1.03);
+}
+
+.newsletter-link:hover .newsletter-card {
+    box-shadow: 0 8px 24px 0 rgb(37 99 235 / 0.13);
+    transform: translateY(-4px) scale(1.03);
+}
+
+.newsletter-table-link[data-tooltip]:hover:after {
+    content: attr(data-tooltip);
+    position: absolute;
+    left: 50%;
+    bottom: 120%;
+    transform: translateX(-50%);
+    background: #222;
+    color: #fff;
+    padding: 0.4em 0.8em;
+    border-radius: 0.5em;
+    font-size: 0.95em;
+    white-space: nowrap;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.13);
+    opacity: 0.97;
+    pointer-events: none;
+    z-index: 10;
+    animation: fadeIn 0.25s;
+}
+
+.cta-btn[data-tooltip]:hover:after {
+    content: attr(data-tooltip);
+    position: absolute;
+    left: 50%;
+    bottom: 120%;
+    transform: translateX(-50%);
+    background: #222;
+    color: #fff;
+    padding: 0.4em 0.8em;
+    border-radius: 0.5em;
+    font-size: 0.95em;
+    white-space: nowrap;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.13);
+    opacity: 0.97;
+    pointer-events: none;
+    z-index: 10;
+    animation: fadeIn 0.25s;
+}
+
+.newsletter-table tr {
+    animation: fadeInUp 0.5s cubic-bezier(.4, 0, .2, 1);
+}
+
+/* Animations */
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+/* Responsive */
 @media (max-width: 768px) {
-    body {
-        padding: 1rem;
+    .main-container {
+        padding: 1rem 0.2rem 1rem 0.2rem;
     }
 
-    header {
-        padding: 1.5rem;
+    .main-header {
+        padding: 1.2rem 0.5rem 1rem 0.5rem;
     }
 
-    header h1 {
-        font-size: 2rem;
+    .site-title {
+        font-size: 1.3rem;
     }
 
-    .newsletter-card {
-        padding: 1rem;
+    .site-subtitle {
+        font-size: 0.98rem;
     }
+
+    .cta-btn {
+        font-size: 1rem;
+        padding: 0.7rem 1.2rem;
+    }
+
+    .newsletter-card,
+    .newsletter-card.highlight {
+        padding: 1rem 0.5rem;
+        min-width: 0;
+        max-width: 100vw;
+    }
+
+    .newsletter-table th,
+    .newsletter-table td {
+        padding: 0.5rem 0.2rem;
+        font-size: 0.95rem;
+    }
+
+    .newsletter-info {
+        font-size: 0.92rem;
+        padding: 0.5rem 0.7rem;
+    }
+}
+
+/* --- Subtle Hovers and Rises --- */
+
+/* Subtle raise and highlight for all major containers */
+.main-header:hover,
+.cta-section:hover,
+.latest-section:hover,
+.all-section:hover,
+.newsletter-table-wrapper:hover {
+    box-shadow: 0 4px 18px 0 var(--shadow), 0 1.5px 6px 0 var(--accent);
+    background: #f6faff;
+    transition: box-shadow 0.18s, background 0.18s;
+}
+
+/* Card and row hover: subtle lift and shadow */
+.newsletter-card:hover,
+.newsletter-table tr:hover {
+    box-shadow: 0 2px 8px 0 var(--primary-color);
+    filter: brightness(1.24);
+    transform: translateY(-2px) scale(1.03);
+    transition: box-shadow 0.18s, filter 0.18s, transform 0.18s;
+}
+
+/* Button and link hover: subtle lift */
+.cta-btn:hover,
+.newsletter-table-link:hover {
+    box-shadow: 0 2px 8px 0 var(--primary-color);
+    filter: brightness(1.24);
+    transform: translateY(-2px) scale(1.03);
+    transition: box-shadow 0.18s, filter 0.18s, transform 0.18s;
+}
+
+/* Table cell hover: subtle background */
+.newsletter-table td:hover {
+    background: #f4ffe3;
+    color: var(--primary-hover);
+    transition: background 0.15s, color 0.15s;
+}
+
+/* Info box hover: subtle shadow */
+.newsletter-info:hover {
+    background: #eaf1fb;
+    box-shadow: 0 2px 8px 0 var(--accent);
+    transition: background 0.15s, box-shadow 0.15s;
+}
+
+/* Section titles: subtle color change on hover */
+.section-title:hover {
+    color: var(--primary-hover);
+    transition: color 0.15s;
+}
+
+/* Remove strong glow and text-shadow from previous rules */
+.site-title:hover,
+.section-title:hover,
+.newsletter-card h3:hover,
+.newsletter-table th:hover,
+.newsletter-info:hover {
+    text-shadow: none;
+}
+
+/* Remove underline from latest newsletter highlight link */
+.latest-newsletter-card .newsletter-link {
+    text-decoration: none !important;
+}
+
+.latest-newsletter-card .newsletter-link:hover,
+.latest-newsletter-card .newsletter-link:focus {
+    text-decoration: none !important;
 }

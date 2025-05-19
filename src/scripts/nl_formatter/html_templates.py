@@ -1,7 +1,10 @@
 """
 HTML templates and formatting utilities for the newsletter.
+
+Note: For best mobile compatibility, use <div class="newsletter-title"> and <div class="newsletter-date"> for the main title and date in the newsletter header.
 """
 from typing import Dict, List, Optional
+from nl_utils.file_handler import FileHandler, FileType
 
 
 class NewsletterTemplate:
@@ -26,12 +29,32 @@ class NewsletterTemplate:
         }
     }
 
+    def __init__(self):
+        self.file_handler = FileHandler()
+
     @staticmethod
     def format_text(text: str) -> str:
         """Convert text with line breaks to HTML."""
         if not text:
             return ""
         return text.replace('\n\n', '<br><br>').replace('\n', '<br>')
+
+    @staticmethod
+    def calculate_reading_time(text: str) -> int:
+        """Calculate reading time in minutes based on text length.
+
+        Args:
+            text (str): The text to calculate reading time for
+
+        Returns:
+            int: Estimated reading time in minutes
+        """
+        if not text:
+            return 0
+        # Average reading speed: 200 words per minute
+        words = len(text.split())
+        minutes = max(1, round(words / 240))
+        return minutes
 
     @staticmethod
     def create_footnote_links(urls: List[str], prefix: str = '') -> str:
@@ -42,18 +65,45 @@ class NewsletterTemplate:
         for i, url in enumerate(urls, 1):
             footnote_id = f"{prefix}fn{i}"
             links.append(
-                f'<a href="{url}" class="footnote-link" data-tooltip="{url}" id="{footnote_id}">[{i}]</a>')
+                f'<a href="{url}" class="footnote-link" data-tooltip="{url}" id="{footnote_id}" target="_blank">[{i}]</a>')
         return ' '.join(links)
+
+    @staticmethod
+    def create_reading_time_html(minutes: int, is_total: bool = False) -> str:
+        """Create HTML for reading time display.
+
+        Args:
+            minutes (int): Number of minutes to read
+            is_total (bool): Whether this is the total reading time
+
+        Returns:
+            str: HTML for reading time display
+        """
+        label = "Heildar lestur" if is_total else "Lestur"
+        return f"""
+        <div class="reading-time-container {'total' if is_total else 'section'}">
+            <div class="reading-time-icon">⏱️</div>
+            <div class="reading-time-content">
+                <span class="reading-time-label">{label}:</span>
+                <span class="reading-time-value"> {minutes} mín.</span>
+            </div>
+        </div>
+        """
 
     @staticmethod
     def create_section_html(section_id: str, section_title: str, content: str) -> str:
         """Create HTML for a section."""
+        # Calculate reading time for this section
+        reading_time = NewsletterTemplate.calculate_reading_time(content)
+        reading_time_html = NewsletterTemplate.create_reading_time_html(reading_time)
+
         return f"""
         <div class="section" id="{section_id}">
             <div class="section-header-container">
                 <h2 class="section-header">{section_title}</h2>
                 <a href="#toc" class="back-to-toc">← Efnisyfirlit</a>
             </div>
+            {reading_time_html}
             <div class="section-content">
                 {content}
             </div>
@@ -200,11 +250,16 @@ class NewsletterTemplate:
                 summary_impact_urls or [], 'summary-impact')
             impact_html = f'<div class="impact-section"><strong>Áhrif:</strong> {NewsletterTemplate.format_text(summary_impact)} {impact_urls_html}</div>'
 
+        # Calculate reading time for summary
+        reading_time = NewsletterTemplate.calculate_reading_time(summary + (summary_impact or ''))
+        reading_time_html = NewsletterTemplate.create_reading_time_html(reading_time)
+
         return f"""
         <div class="section" id="summary">
             <div class="section-header-container">
-                <h2 class="main-headline">{main_headline}</h2>
+                <h2 class="section-header">{main_headline}</h2>
             </div>
+            {reading_time_html}
             <div class="section-content">
                 <p>{NewsletterTemplate.format_text(summary)}</p>
                 {impact_html}
@@ -229,527 +284,9 @@ class NewsletterTemplate:
         </div>
         """
 
-    @staticmethod
-    def get_css_styles() -> str:
+    def get_css_styles(self) -> str:
         """Get CSS styles for the newsletter."""
-        return """
-        <style>
-            /* Base styles */
-            body {
-                font-family: 'Helvetica Neue', Arial, sans-serif;
-                line-height: 1.6;
-                margin: 0;
-                padding: 0;
-                color: #2c3e50;
-                background-color: #f8f9fa;
-            }
-            
-            .newsletter {
-                max-width: 800px;
-                margin: 20px auto;
-                background-color: #ffffff;
-                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-                border-radius: 12px;
-                overflow: hidden;
-            }
-            
-            /* Title section */
-            .title-section {
-                background: linear-gradient(135deg, #2c3e50, #3498db);
-                color: white;
-                padding: 40px 20px;
-                text-align: center;
-                margin-bottom: 0;
-            }
-            
-            .newsletter-title {
-                font-size: 2.5em;
-                margin: 0;
-                font-weight: 300;
-                letter-spacing: 1px;
-            }
-            
-            .newsletter-date {
-                font-size: 1.2em;
-                margin: 10px 0 0;
-                opacity: 0.9;
-                font-weight: 300;
-            }
-            
-            /* Section styles */
-            .section {
-                margin: 20px;
-                padding: 30px;
-                background-color: #ffffff;
-                border-radius: 12px;
-                box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-            }
-            
-            .section-content {
-                text-align: justify;
-            }
-            
-            .section-header-container {
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                margin-bottom: 20px;
-            }
-            
-            .section-header {
-                color: #2c3e50;
-                font-size: 1.5em;
-                margin: 0;
-                font-weight: 500;
-            }
-            
-            .back-to-toc {
-                font-size: 0.9em;
-                color: #666;
-                text-decoration: none;
-                padding: 5px 10px;
-                border-radius: 4px;
-                background-color: #f8f9fa;
-                transition: all 0.2s ease;
-            }
-            
-            .back-to-toc:hover {
-                background-color: #e9ecef;
-                color: #2c3e50;
-            }
-            
-            /* News item styles */
-            .news-item {
-                margin-bottom: 25px;
-                padding: 20px;
-                background-color: #fafafa;
-                border-radius: 8px;
-                box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-                position: relative;
-            }
-            
-            .news-item:last-child {
-                margin-bottom: 0;
-            }
-            
-            .news-item h3 {
-                margin: 0 0 15px;
-                color: #2c3e50;
-                font-size: 1.3em;
-                font-weight: 500;
-                line-height: 1.4;
-            }
-            
-            .news-item p {
-                margin: 0 0 15px;
-                color: #4a5568;
-                line-height: 1.6;
-                text-align: justify;
-            }
-            
-            /* Impact section */
-            .impact {
-                margin-top: 15px;
-                padding: 12px 15px;
-                background-color: #f8f9fa;
-                border-left: 3px solid #3498db;
-                font-size: 0.95em;
-                color: #4a5568;
-                text-align: justify;
-            }
-            
-            .impact strong {
-                color: #2c3e50;
-            }
-            
-            /* Sources section */
-            .sources {
-                margin-top: 12px;
-                font-size: 0.9em;
-                color: #718096;
-            }
-            
-            .sources strong {
-                color: #4a5568;
-            }
-
-            /* Group sources section */
-            .group-sources {
-                margin-top: 12px;
-                font-size: 0.9em;
-                color: #718096;
-                border-left: 3px solid #48bb78;
-                padding-left: 12px;
-            }
-            
-            .group-sources strong {
-                color: #4a5568;
-            }
-
-            .group-sources-header {
-                display: flex;
-                align-items: center;
-                gap: 8px;
-                margin-bottom: 4px;
-            }
-
-            .group-sources-tooltip {
-                position: relative;
-                display: inline-block;
-            }
-
-            .tooltip-icon {
-                font-size: 0.9em;
-                cursor: help;
-                opacity: 0.7;
-                transition: opacity 0.2s ease;
-            }
-
-            .tooltip-icon:hover {
-                opacity: 1;
-            }
-
-            .tooltip-content {
-                display: none;
-                position: absolute;
-                left: 50%;
-                transform: translateX(-50%);
-                bottom: 100%;
-                background-color: #2d3748;
-                color: white;
-                padding: 8px 12px;
-                border-radius: 6px;
-                font-size: 0.85em;
-                width: max-content;
-                max-width: 300px;
-                margin-bottom: 8px;
-                z-index: 1000;
-                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-                text-align: justify;
-            }
-
-            .tooltip-content::after {
-                content: '';
-                position: absolute;
-                top: 100%;
-                left: 50%;
-                transform: translateX(-50%);
-                border-width: 6px;
-                border-style: solid;
-                border-color: #2d3748 transparent transparent transparent;
-            }
-
-            .group-sources-tooltip:hover .tooltip-content {
-                display: block;
-            }
-
-            .tooltip-content a {
-                color: #63b3ed;
-                text-decoration: none;
-                margin-left: 4px;
-            }
-
-            .tooltip-content a:hover {
-                text-decoration: underline;
-            }
-            
-            /* Tags section */
-            .tags {
-                margin-top: 12px;
-            }
-            
-            .tag {
-                display: inline-block;
-                padding: 3px 8px;
-                margin: 2px;
-                background-color: #edf2f7;
-                border-radius: 4px;
-                font-size: 0.8em;
-                color: #4a5568;
-            }
-            
-            /* Matches section */
-            .matches-container {
-                position: absolute;
-                bottom: 10px;
-                right: 10px;
-                font-size: 0.85em;
-                color: #718096;
-            }
-            
-            .match {
-                display: inline-block;
-                cursor: help;
-                position: relative;
-                opacity: 0.7;
-                transition: opacity 0.2s ease;
-            }
-            
-            .match:hover {
-                opacity: 1;
-            }
-            
-            .match-icon {
-                font-size: 1.2em;
-            }
-            
-            .match-tooltip {
-                display: none;
-                position: absolute;
-                bottom: 100%;
-                right: 0;
-                background-color: #ffffff;
-                color: #2c3e50;
-                border-radius: 8px;
-                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-                z-index: 1000;
-                min-width: 300px;
-                max-width: 400px;
-                margin-bottom: 10px;
-            }
-            
-            .match:hover .match-tooltip {
-                display: block;
-            }
-            
-            .matches {
-                padding: 15px;
-                font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            }
-            
-            .matches p {
-                margin: 0 0 10px 0;
-                font-weight: 500;
-                color: #2c3e50;
-                font-size: 0.95em;
-                text-align: justify;
-            }
-            
-            .matches ul {
-                padding: 0;
-                margin: 0 0 10px 0;
-                list-style: none;
-            }
-            
-            .matches ul li {
-                display: grid;
-                grid-template-columns: 1fr auto;
-                gap: 15px;
-                padding: 8px 0;
-                border-bottom: 1px solid #edf2f7;
-                font-size: 0.9em;
-            }
-            
-            .matches ul li:last-child {
-                border-bottom: none;
-            }
-            
-            .matches ul li span:first-child {
-                color: #4a5568;
-            }
-            
-            .matches ul li span:last-child {
-                color: #2d3748;
-                font-weight: 500;
-                text-align: right;
-                min-width: 60px;
-            }
-            
-            .matches a {
-                color: #3498db;
-                text-decoration: none;
-                font-size: 0.85em;
-            }
-            
-            .matches a:hover {
-                text-decoration: underline;
-            }
-            
-            /* Links */
-            a {
-                color: #3498db;
-                text-decoration: none;
-                transition: color 0.2s ease;
-            }
-            
-            a:hover {
-                color: #2980b9;
-            }
-            
-            /* Table of contents */
-            .toc-section {
-                background-color: #f8f9fa;
-                padding: 20px 30px;
-                margin: 20px;
-                border-radius: 12px;
-            }
-            
-            .toc-container {
-                display: flex;
-                flex-wrap: wrap;
-                gap: 8px;
-            }
-            
-            .toc-item {
-                padding: 6px 12px;
-                background-color: #ffffff;
-                border-radius: 4px;
-                color: #4a5568;
-                text-decoration: none;
-                font-size: 0.9em;
-                transition: all 0.2s ease;
-                border: 1px solid #e2e8f0;
-            }
-            
-            .toc-item:hover {
-                background-color: #edf2f7;
-                color: #2c3e50;
-            }
-            
-            /* Signature section */
-            .signature-section {
-                margin: 20px;
-                padding: 20px 30px;
-                background-color: #f8f9fa;
-                font-size: 0.85em;
-                color: #718096;
-                text-align: center;
-                border-radius: 12px;
-            }
-            
-            .signature {
-                margin: 0 0 10px;
-            }
-            
-            .unsubscribe {
-                margin: 0;
-            }
-            
-            .unsubscribe a {
-                color: #718096;
-                text-decoration: underline;
-            }
-            
-            .unsubscribe a:hover {
-                color: #4a5568;
-            }
-
-            /* Mobile Responsive Styles */
-            @media screen and (max-width: 768px) {
-                .newsletter {
-                    margin: 0;
-                    border-radius: 0;
-                    box-shadow: none;
-                }
-
-                .section {
-                    margin: 3px 0;
-                    padding: 4.5px;
-                    border-radius: 0;
-                }
-
-                .title-section {
-                    padding: 9px 4.5px;
-                }
-
-                .newsletter-title {
-                    font-size: 2em;
-                }
-
-                .newsletter-date {
-                    font-size: 1em;
-                }
-
-                .section-header {
-                    font-size: 1.3em;
-                }
-
-                .news-item {
-                    padding: 4.5px;
-                    margin-bottom: 4.5px;
-                }
-
-                .news-item h3 {
-                    font-size: 1.2em;
-                }
-
-                .news-item p {
-                    font-size: 0.95em;
-                }
-
-                .impact {
-                    font-size: 0.9em;
-                    padding: 3px;
-                }
-
-                .sources, .group-sources {
-                    font-size: 0.85em;
-                }
-
-                .toc-section {
-                    margin: 3px 0;
-                    padding: 4.5px;
-                }
-
-                .toc-item {
-                    font-size: 0.85em;
-                    padding: 1.5px 3px;
-                }
-
-                .signature-section {
-                    margin: 3px 0;
-                    padding: 4.5px;
-                }
-
-                .signature, .unsubscribe {
-                    font-size: 0.8em;
-                }
-
-                .match-tooltip {
-                    min-width: 250px;
-                    max-width: 300px;
-                }
-
-                .matches {
-                    padding: 3px;
-                }
-
-                .matches ul li {
-                    font-size: 0.85em;
-                    gap: 3px;
-                }
-            }
-
-            /* Small Mobile Devices */
-            @media screen and (max-width: 480px) {
-                .newsletter-title {
-                    font-size: 1.8em;
-                }
-
-                .newsletter-date {
-                    font-size: 0.9em;
-                }
-
-                .section-header {
-                    font-size: 1.2em;
-                }
-
-                .news-item h3 {
-                    font-size: 1.1em;
-                }
-
-                .news-item p {
-                    font-size: 0.9em;
-                }
-
-                .toc-container {
-                    gap: 1.5px;
-                }
-
-                .toc-item {
-                    font-size: 0.8em;
-                    padding: 1.2px 2.4px;
-                }
-            }
-        </style>
-        """
+        return self.file_handler.load_file(
+            FileType.TEXT,
+            base_name='nl_style'
+        )

@@ -150,7 +150,7 @@ class TextProcessor:
             article_source (str): Source of the article for logging.
 
         Returns:
-            List[str]: List of unique lemmas.
+            List[str]: List of lemmas from the text.
         """
         try:
             # Clean HTML from text
@@ -174,13 +174,10 @@ class TextProcessor:
                     successful_parses += 1
                     all_lemmas.extend(result['filtered_lemmas'])
 
-            # Remove duplicates while preserving order
-            unique_lemmas = list(dict.fromkeys(all_lemmas))
-
             self.logger.info(
-                "Extracted %d unique lemmas from %d sentences (%d successful parses)",
-                len(unique_lemmas), sentence_count, successful_parses)
-            return unique_lemmas
+                "Extracted %d lemmas from %d sentences (%d successful parses)",
+                len(all_lemmas), sentence_count, successful_parses)
+            return all_lemmas
 
         except Exception as e:
             self.logger.error(

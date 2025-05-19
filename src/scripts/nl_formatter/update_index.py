@@ -89,7 +89,7 @@ class NewsletterIndexUpdater:
             soup (BeautifulSoup): BeautifulSoup object of the index
             latest_file (Path): Path to the latest newsletter file
         """
-        latest_section = soup.find('div', class_='latest-newsletter')
+        latest_section = soup.find('div', class_='latest-newsletter-card')
         if not latest_section:
             return
 
@@ -97,50 +97,55 @@ class NewsletterIndexUpdater:
         if not latest_date:
             return
 
-        latest_link = latest_section.find('a')
-        if not latest_link:
-            return
+        # Remove existing content
+        latest_section.clear()
 
-        latest_link[
-            'href'] = f'/newsletters/src/outputs/newsletters/formatted/{latest_file.name}'
-        latest_title = latest_link.find('h3')
-        if latest_title:
-            latest_title.string = self._format_newsletter_title(latest_date)
-            self.logger.info(
-                "Updated latest newsletter link for date: %s", latest_date)
+        # Create new card
+        link = soup.new_tag(
+            'a', href=f'/newsletters/src/outputs/newsletters/formatted/{latest_file.name}',
+            attrs={'class': 'newsletter-link', 'target': '_blank', 'rel': 'noopener'})
+        card = soup.new_tag('div', attrs={'class': 'newsletter-card highlight'})
+        title = soup.new_tag('h3')
+        title.string = 'Lesa nýjasta fréttabréfið'
+        card.append(title)
+        link.append(card)
+        latest_section.append(link)
+        self.logger.info("Updated latest newsletter card for date: %s", latest_date)
 
     def _update_newsletter_list(self, soup: BeautifulSoup, newsletter_files: List[Path]) -> None:
-        """Update the newsletter list section in the index.
+        """Update the newsletter table section in the index.
 
         Args:
             soup (BeautifulSoup): BeautifulSoup object of the index
             newsletter_files (List[Path]): List of newsletter file paths
         """
-        newsletter_list = soup.find('div', class_='newsletter-list')
-        if not newsletter_list:
+        table_body = soup.find('tbody', class_='newsletter-table-body')
+        if not table_body:
+            self.logger.error('Could not find <tbody class="newsletter-table-body"> in index.html!')
             return
-
-        # Clear existing links
-        newsletter_list.clear()
-
-        # Add new links
+        table_body.clear()
         for file in newsletter_files:
             date = self._extract_date_from_filename(file)
             if not date:
                 continue
-
-            link = soup.new_tag('a',
-                                href=f'/newsletters/src/outputs/newsletters/formatted/{file.name}',
-                                attrs={'class': 'newsletter-link'})
-            card = soup.new_tag('div', attrs={'class': 'newsletter-card'})
-            title = soup.new_tag('h3')
-            title.string = self._format_newsletter_title(date)
-            card.append(title)
-            link.append(card)
-            newsletter_list.append(link)
-
-        self.logger.info(
-            "Updated newsletter list with %d entries", len(newsletter_files))
+            news_date = datetime.strptime(date, '%Y-%m-%d')
+            send_date = news_date + timedelta(days=1)
+            tr = soup.new_tag('tr')
+            td_date = soup.new_tag('td')
+            td_date.string = date
+            td_send = soup.new_tag('td')
+            td_send.string = send_date.strftime('%Y-%m-%d')
+            td_link = soup.new_tag('td')
+            a = soup.new_tag(
+                'a', href=f'/newsletters/src/outputs/newsletters/formatted/{file.name}',
+                attrs={'class': 'newsletter-table-link', 'target': '_blank', 'rel': 'noopener'})
+            a.string = 'Skoða'
+            td_link.append(a)
+            tr.append(td_date)
+            tr.append(td_send)
+            tr.append(td_link)
+            table_body.append(tr)
+        self.logger.info("Updated newsletter table with %d entries", len(newsletter_files))
 
     def update_index_html(self) -> None:
         """Update index.html with latest newsletter links."""

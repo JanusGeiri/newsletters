@@ -47,7 +47,7 @@ class MasterScraper:
             # Generate MD5 hash
             hash_obj = hashlib.md5(unique_str.encode('utf-8'))
             # Use first 8 characters of hash
-            hash_hex = hash_obj.hexdigest()[:32]
+            hash_hex = hash_obj.hexdigest()[:8]
 
             # Create ID in format 'source_hash'
             source = article.get('article_source', 'unknown').lower()
