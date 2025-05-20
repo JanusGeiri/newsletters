@@ -103,7 +103,7 @@ def main():
         args = parser.parse_args()
 
         # Control which processes run
-        dev_mode_flag = True
+        dev_mode_flag = False
 
         if args.test:
             yesterday = args.date if args.date else datetime.now().strftime('%Y-%m-%d')
