@@ -90,6 +90,11 @@ similarity_strategies = {
 }
 
 
+def is_running_in_github_actions():
+    """Checks if the script is likely running inside a GitHub Actions environment."""
+    return 'GITHUB_ACTIONS' in os.environ
+
+
 def main():
     """Main automation function."""
     try:
@@ -103,7 +108,10 @@ def main():
         args = parser.parse_args()
 
         # Control which processes run
-        dev_mode_flag = False
+        if is_running_in_github_actions():
+            dev_mode_flag = False
+        else:
+            dev_mode_flag = True
 
         if args.test:
             yesterday = args.date if args.date else datetime.now().strftime('%Y-%m-%d')
