@@ -64,13 +64,13 @@ class RawNLGenerator:
 
             schema = DAILY_MORNING_SCHEMA
             response = self.client.chat.completions.create(
-                model="gpt-4.1-mini",
+                model="gpt-4.1",
                 messages=[{"role": "system", "content": prompt}],
                 response_format={
                     "type": "json_schema",
                     "json_schema": schema.get("json_schema")
                 },
-                temperature=0.01
+                temperature=0.12
             )
 
             completion_tokens = response.usage.completion_tokens
