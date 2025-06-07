@@ -1,0 +1,2498 @@
+
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <style>
+
+/* Base styles */
+body {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+    color: #2c3e50;
+    background-color: #f8f9fa;
+}
+
+.newsletter {
+    max-width: 800px;
+    margin: 20px auto;
+    background-color: #ffffff;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 16px;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.newsletter:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Title section */
+.title-section {
+    background: linear-gradient(135deg, #2c3e50, #3498db);
+    color: white;
+    padding: 40px 20px;
+    text-align: center;
+    margin-bottom: 0;
+    position: relative;
+    overflow: hidden;
+}
+
+.title-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, rgba(255, 255, 255, 0.1) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.1) 50%, rgba(255, 255, 255, 0.1) 75%, transparent 75%, transparent);
+    background-size: 100px 100px;
+    animation: shine 3s linear infinite;
+    opacity: 0.1;
+}
+
+@keyframes shine {
+    0% {
+        background-position: 0 0;
+    }
+
+    100% {
+        background-position: 100px 100px;
+    }
+}
+
+.newsletter-title {
+    font-size: 3.5em;
+    margin: 0;
+    font-weight: 300;
+    letter-spacing: 1px;
+}
+
+.newsletter-date {
+    font-size: 1.2em;
+    margin: 10px 0 0;
+    opacity: 0.9;
+    font-weight: 300;
+}
+
+
+        /* Reading time styles */
+        .section.reading-time-section,
+        .reading-time-section {
+            margin: 0 20px 0 20px !important;
+            padding: 4px 0 !important;
+            background: none;
+            box-shadow: none;
+        }
+
+        .section .reading-time-container {
+            margin: 0px 0px 12px 0px !important;
+            padding: 2px 20px !important;
+            background-color: #e9ecef;
+            border-radius: 6px;
+            font-size: 0.88em;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.07);
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .reading-time-container.total {
+            background-color: #d1e7fd;
+            border: none;
+            font-size: 1em;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.10);
+            display: inline-flex;
+            margin: 6px 8px 6px 10px !important;
+        }
+
+        .reading-time-icon {
+            font-size: 1em;
+            opacity: 0.8;
+            margin-right: 4px;
+        }
+
+        .reading-time-content {
+            display: inline-flex;
+            align-items: center;
+            gap: 2px;
+        }
+
+        .reading-time-label {
+            font-weight: 500;
+            color: #333;
+        }
+
+        .reading-time-value {
+            color: #222;
+            font-weight: 600;
+        }
+
+        .reading-time-section {
+            margin: 0;
+            padding: 0;
+        }
+
+/* Section styles */
+.section {
+    margin: 20px;
+    padding: 30px;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.section:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.section-content {
+    text-align: justify;
+}
+
+.section-header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.section-header {
+    color: #2c3e50;
+    font-size: 1.5em;
+    margin: 0.3em;
+    font-weight: 500;
+    position: relative;
+    padding-bottom: 8px;
+}
+
+.section-header::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: #3498db;
+    transition: width 0.3s ease;
+}
+
+.section:hover .section-header::after {
+    width: 100%;
+}
+
+.back-to-toc {
+    font-size: 0.9em;
+    color: #666;
+    text-decoration: none;
+    padding: 8px 16px;
+    border-radius: 20px;
+    background-color: #f8f9fa;
+    transition: all 0.3s ease;
+}
+
+.back-to-toc:hover {
+    background-color: #3498db;
+    color: white;
+    transform: translateX(-4px);
+}
+
+/* News item styles */
+.news-item {
+    margin-bottom: 25px;
+    padding: 20px;
+    background-color: #fafafa;
+    border-radius: 12px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    position: relative;
+    transition: all 0.3s ease;
+    border: 1px solid transparent;
+}
+
+.news-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-color: #e2e8f0;
+}
+
+.news-item:last-child {
+    margin-bottom: 0;
+}
+
+.news-item h3 {
+    margin: 0 0 15px;
+    color: #2c3e50;
+    font-size: 1.3em;
+    font-weight: 500;
+    line-height: 1.4;
+    transition: color 0.3s ease;
+}
+
+.news-item:hover h3 {
+    color: #3498db;
+}
+
+.news-item p {
+    margin: 0 0 15px;
+    color: #4a5568;
+    line-height: 1.6;
+    text-align: justify;
+}
+
+/* Impact section */
+.impact {
+    margin-top: 15px;
+    padding: 15px;
+    background-color: #f8f9fa;
+    border-left: 3px solid #3498db;
+    font-size: 0.95em;
+    color: #4a5568;
+    text-align: justify;
+    transition: all 0.3s ease;
+}
+
+.impact:hover {
+    background-color: #edf2f7;
+    border-left-color: #2980b9;
+}
+
+.impact strong {
+    color: #2c3e50;
+}
+
+/* Sources section */
+.sources {
+    margin-top: 12px;
+    font-size: 0.9em;
+    color: #718096;
+    transition: color 0.3s ease;
+}
+
+.sources:hover {
+    color: #4a5568;
+}
+
+.sources strong {
+    color: #4a5568;
+}
+
+/* Group sources section */
+.group-sources {
+    margin-top: 12px;
+    font-size: 0.9em;
+    color: #718096;
+    border-left: 3px solid #48bb78;
+    padding-left: 12px;
+    transition: all 0.3s ease;
+}
+
+.group-sources:hover {
+    border-left-color: #38a169;
+    background-color: #f0fff4;
+}
+
+.group-sources strong {
+    color: #4a5568;
+}
+
+.group-sources-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 4px;
+}
+
+.group-sources-tooltip {
+    position: relative;
+    display: inline-block;
+}
+
+.tooltip-icon {
+    font-size: 0.9em;
+    cursor: help;
+    opacity: 0.7;
+    transition: all 0.3s ease;
+}
+
+.tooltip-icon:hover {
+    opacity: 1;
+    transform: scale(1.1);
+}
+
+.tooltip-content {
+    display: none;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%) translateY(10px);
+    bottom: 100%;
+    background-color: #2d3748;
+    color: white;
+    padding: 12px 16px;
+    border-radius: 8px;
+    font-size: 0.85em;
+    width: max-content;
+    max-width: 300px;
+    margin-bottom: 8px;
+    z-index: 1000;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: justify;
+    opacity: 0;
+    transition: all 0.3s ease;
+}
+
+.tooltip-content::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: 6px;
+    border-style: solid;
+    border-color: #2d3748 transparent transparent transparent;
+}
+
+.group-sources-tooltip:hover .tooltip-content {
+    display: block;
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+
+.tooltip-content a {
+    color: #63b3ed;
+    text-decoration: none;
+    margin-left: 4px;
+    transition: color 0.3s ease;
+}
+
+.tooltip-content a:hover {
+    color: #90cdf4;
+    text-decoration: underline;
+}
+
+/* Tags section */
+.tags {
+    margin-top: 12px;
+}
+
+.tag {
+    display: inline-block;
+    padding: 4px 10px;
+    margin: 2px;
+    background-color: #edf2f7;
+    border-radius: 20px;
+    font-size: 0.8em;
+    color: #4a5568;
+    transition: all 0.3s ease;
+}
+
+.tag:hover {
+    background-color: #3498db;
+    color: white;
+    transform: translateY(-1px);
+}
+
+/* Matches section */
+.matches-container {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    font-size: 0.85em;
+    color: #718096;
+}
+
+.match {
+    display: inline-block;
+    cursor: help;
+    position: relative;
+    opacity: 0.7;
+    transition: all 0.3s ease;
+}
+
+.match:hover {
+    opacity: 1;
+    transform: scale(1.1);
+}
+
+.match-icon {
+    font-size: 1.2em;
+}
+
+.match-tooltip {
+    display: none;
+    position: absolute;
+    bottom: 100%;
+    right: 0;
+    background-color: #ffffff;
+    color: #2c3e50;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    z-index: 1000;
+    min-width: 300px;
+    max-width: 400px;
+    margin-bottom: 10px;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: all 0.3s ease;
+}
+
+.match:hover .match-tooltip {
+    display: block;
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.matches {
+    padding: 15px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+.matches p {
+    margin: 0 0 10px 0;
+    font-weight: 500;
+    color: #2c3e50;
+    font-size: 0.95em;
+    text-align: justify;
+}
+
+.matches ul {
+    padding: 0;
+    margin: 0 0 10px 0;
+    list-style: none;
+}
+
+.matches ul li {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 15px;
+    padding: 8px 0;
+    border-bottom: 1px solid #edf2f7;
+    font-size: 0.9em;
+    transition: background-color 0.3s ease;
+}
+
+.matches ul li:hover {
+    background-color: #f8f9fa;
+}
+
+.matches ul li:last-child {
+    border-bottom: none;
+}
+
+.matches ul li span:first-child {
+    color: #4a5568;
+}
+
+.matches ul li span:last-child {
+    color: #2d3748;
+    font-weight: 500;
+    text-align: right;
+    min-width: 60px;
+}
+
+.matches a {
+    color: #3498db;
+    text-decoration: none;
+    font-size: 0.85em;
+    transition: color 0.3s ease;
+}
+
+.matches a:hover {
+    color: #2980b9;
+    text-decoration: underline;
+}
+
+/* Links */
+a {
+    color: #3498db;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+a:hover {
+    color: #2980b9;
+}
+
+/* Table of contents */
+.toc-section {
+    background-color: #f8f9fa;
+    padding: 20px 30px;
+    margin: 20px;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+}
+
+.toc-section:hover {
+    background-color: #edf2f7;
+}
+
+.toc-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.toc-item {
+    padding: 8px 16px;
+    background-color: #ffffff;
+    border-radius: 20px;
+    color: #4a5568;
+    text-decoration: none;
+    font-size: 0.8em;
+    transition: all 0.3s ease;
+    border: 1px solid #e2e8f0;
+}
+
+.toc-item:hover {
+    background-color: #3498db;
+    color: white;
+    transform: translateY(-2px);
+    border-color: #3498db;
+}
+
+/* Signature section */
+.signature-section {
+    margin: 20px;
+    padding: 20px 30px;
+    background-color: #f8f9fa;
+    font-size: 0.85em;
+    color: #718096;
+    text-align: center;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+}
+
+.signature-section:hover {
+    background-color: #edf2f7;
+}
+
+.signature {
+    margin: 0 0 10px;
+}
+
+.unsubscribe {
+    margin: 0;
+}
+
+.unsubscribe a {
+    color: #718096;
+    text-decoration: underline;
+    transition: color 0.3s ease;
+}
+
+.unsubscribe a:hover {
+    color: #4a5568;
+}
+
+/* Mobile Responsive Styles */
+@media screen and (max-width: 768px) {
+    html, body {
+        margin: 0 !important;
+        padding: 0 !important;
+        box-sizing: border-box;
+        width: 100%;
+        min-width: 0;
+        overflow-x: hidden;
+    }
+    .newsletter {
+        width: 100%;
+        max-width: 100vw;
+        margin: 2px 0 !important;
+        padding: 2px !important;
+        border-radius: 4px !important;
+        box-shadow: none !important;
+    }
+    .title-section {
+        padding: 10px 2vw !important;
+        width: 100%;
+        box-sizing: border-box;
+        margin: 0 !important;
+    }
+    .section {
+        margin: 4px 0 !important;
+        padding: 6px 2vw !important;
+        border-radius: 4px !important;
+        box-sizing: border-box;
+    }
+    .section-content, .section-header {
+        word-break: break-word;
+    }
+    body, .section, .newsletter {
+        font-size: 0.98em !important;
+    }
+    .news-item {
+        padding: 10px;
+        margin-bottom: 15px;
+    }
+    .news-item h3 {
+        font-size: 0.92em !important;
+    }
+    .news-item p {
+        font-size: 0.78em !important;
+    }
+    .impact {
+        font-size: 0.9em;
+        padding: 12px;
+    }
+    .sources,
+    .group-sources {
+        font-size: 0.85em;
+    }
+    .toc-section {
+        margin: 10px;
+        padding: 15px;
+    }
+    .toc-item {
+        font-size: 0.85em;
+        padding: 6px 12px;
+    }
+    .signature-section {
+        margin: 10px;
+        padding: 15px;
+    }
+    .signature,
+    .unsubscribe {
+        font-size: 0.8em;
+    }
+    .match-tooltip {
+        min-width: 250px;
+        max-width: 300px;
+    }
+    .matches {
+        padding: 12px;
+    }
+    .matches ul li {
+        font-size: 0.85em;
+        gap: 10px;
+    }
+    .section-header {
+        font-size: 0.98em !important;
+    }
+    /* Make summary title larger and bolder */
+    #summary .section-header {
+        font-size: 1.3em !important;
+        font-weight: 700 !important;
+        color: #222 !important;
+    }
+    /* Make summary text smaller */
+    #summary .section-content p {
+        font-size: 0.85em !important;
+    }
+    /* Newsletter title and date: ensure visibility and simplicity */
+    .newsletter-title, .newsletter-date {
+        display: block !important;
+        color: #222 !important;
+        background: none !important;
+        font-size: 1.2em !important;
+        font-weight: 700 !important;
+        margin: 0 0 2px 0 !important;
+        padding: 0 !important;
+        text-align: center !important;
+        line-height: 1.2 !important;
+        letter-spacing: 0 !important;
+        word-break: break-word !important;
+    }
+    .newsletter-date {
+        font-size: 1em !important;
+        font-weight: 400 !important;
+        margin: 0 0 8px 0 !important;
+    }
+    .title-section {
+        background: #fff !important;
+        padding: 8px 0 4px 0 !important;
+        margin: 0 !important;
+        border-radius: 0 !important;
+        box-shadow: none !important;
+    }
+}
+
+/* Small Mobile Devices */
+@media screen and (max-width: 480px) {
+     .newsletter {
+        margin: 0;
+        border-radius: 0;
+        box-shadow: none;
+    }
+
+    .section {
+        margin: 3px;
+        padding: 4px;
+        border-radius: 4px;
+    }
+
+    .title-section {
+        padding: 5px 3px;
+    }
+
+    .newsletter-title {
+        font-size: 1.5em;
+    }
+
+    .newsletter-date {
+        font-size: 0.9em;
+    }
+
+    .section-header {
+        font-size: 1.1em;
+    }
+
+    .news-item {
+        padding: 10px;
+        margin-bottom: 15px;
+    }
+
+    .news-item h3 {
+        font-size: 1.1em;
+    }
+
+    .news-item p {
+        font-size: 0.85em;
+    }
+
+    .impact {
+        font-size: 0.9em;
+        padding: 12px;
+    }
+
+    .sources,
+    .group-sources {
+        font-size: 0.85em;
+    }
+
+    .toc-section {
+        margin: 10px;
+        padding: 15px;
+    }
+
+    .toc-item {
+        font-size: 0.85em;
+        padding: 6px 12px;
+    }
+
+    .signature-section {
+        margin: 10px;
+        padding: 15px;
+    }
+
+    .signature,
+    .unsubscribe {
+        font-size: 0.8em;
+    }
+
+    .match-tooltip {
+        min-width: 250px;
+        max-width: 300px;
+    }
+
+    .matches {
+        padding: 12px;
+    }
+
+    .matches ul li {
+        font-size: 0.85em;
+        gap: 10px;
+    }
+}
+
+</style>
+            </head>
+            <body>
+                <div class="newsletter">
+                    
+            <div class="title-section">
+                <div class="newsletter-title">Fréttir Gærdagsins</div>
+                <div class="newsletter-date">6. júní 2025</div>
+            </div>
+            
+
+            <div class="section reading-time-section">
+                
+        <div class="reading-time-container total">
+            <div class="reading-time-icon">⏱️</div>
+            <div class="reading-time-content">
+                <span class="reading-time-label">Heildar lestur:</span>
+                <span class="reading-time-value"> 35 mín.</span>
+            </div>
+        </div>
+        
+            </div>
+            
+
+        <div class="section" id="summary">
+            <div class="section-header-container">
+                <h2 class="section-header">Þorskafli dregst saman um 4% – Milljarðatjón og pólitísk óvissa í sjávarútvegi</h2>
+            </div>
+            
+        <div class="reading-time-container section">
+            <div class="reading-time-icon">⏱️</div>
+            <div class="reading-time-content">
+                <span class="reading-time-label">Lestur:</span>
+                <span class="reading-time-value"> 1 mín.</span>
+            </div>
+        </div>
+        
+            <div class="section-content">
+                <p>Gærdagurinn var markaður af stórum tíðindum í sjávarútvegi þegar Hafrannsóknastofnun kynnti ráðgjöf sína fyrir næsta fiskveiðiár. Lagt er til að þorskafli verði lækkaður um 4%, sem þýðir minnsta ráðlagða þorskafla í rúman áratug og er áætlað að samdrátturinn kosti þjóðarbúið 6–7 milljarða króna í útflutningstekjur. Samhliða þessu eru boðaðar breytingar á veiðigjöldum og strandveiðum, sem auka óvissu og valda mikilli umræðu á Alþingi og meðal hagsmunaaðila. Þessi þróun hefur þegar haft áhrif á fjárfestingar og störf í greininni.<br><br>Á Alþingi var viðburðaríkur dagur þar sem fimm frumvörp voru samþykkt, þar á meðal ný lög um grunnskólanámsmat, breytingar á sorgarleyfi foreldra og lög um afhendingu farþegalista flugfélaga til yfirvalda. Starfsáætlun þingsins var felld úr gildi og óvissa ríkir um hvenær þinglok verða. Umdeildar breytingar á félagsmiðstöðvastarfi á Akureyri vöktu einnig mikla athygli og gagnrýni.<br><br>Á alþjóðavettvangi voru umfangsmiklar árásir Rússa á Úkraínu, með hundruðum dróna og eldflauga, og fjórir létust í Kænugarði. Bandaríkin hófu refsiaðgerðir gegn dómurum Alþjóðlega sakamáladómstólsins vegna ákvarðana um rannsóknir á hermönnum og ráðamönnum. Í efnahagslífinu lauk Kaldvík við 40 milljarða króna endurfjármögnun og Icelandair birti jákvæðar flutningatölur þrátt fyrir lækkun á hlutabréfaverði. Íþróttir og menning voru einnig áberandi, með óvæntum sigri Íslands á Skotum í fótbolta og undirbúningi fyrir Skjaldborgarhátíðina á Patreksfirði.</p>
+                
+            </div>
+        </div>
+        
+
+        <div class="section toc-section" id="toc">
+            <h2 class="section-header">Efnisyfirlit</h2>
+            <div class="toc-container">
+                <a href="#key_events" class="toc-item">1. MIKILVÆGUSTU FRÉTTIRNAR</a><a href="#domestic_news" class="toc-item">2. INNLENT</a><a href="#foreign_news" class="toc-item">3. ERLENT</a><a href="#business" class="toc-item">4. VIÐSKIPTI</a><a href="#famous_people" class="toc-item">5. FRÆGA FÓLKIÐ</a><a href="#sports" class="toc-item">6. ÍÞRÓTTIR</a><a href="#arts" class="toc-item">7. LISTIR</a><a href="#science" class="toc-item">8. VÍSINDI</a><a href="#closing_summary" class="toc-item">9. LOKAORÐ</a>
+            </div>
+        </div>
+        
+
+        <div class="section" id="key_events">
+            <div class="section-header-container">
+                <h2 class="section-header">1. MIKILVÆGUSTU FRÉTTIRNAR</h2>
+                <a href="#toc" class="back-to-toc">← Efnisyfirlit</a>
+            </div>
+            
+        <div class="reading-time-container section">
+            <div class="reading-time-icon">⏱️</div>
+            <div class="reading-time-content">
+                <span class="reading-time-label">Lestur:</span>
+                <span class="reading-time-value"> 8 mín.</span>
+            </div>
+        </div>
+        
+            <div class="section-content">
+                
+        <div class="news-item">
+            <h3>Þorskafli lækkaður um 4% – Þjóðarbúið tapar milljörðum</h3>
+            <p>Hafrannsóknastofnun kynnti í gær ráðgjöf sína fyrir fiskveiðiárið 2025/2026. Lagt er til að aflamark þorsks verði 203.822 tonn, sem er 4% lækkun frá yfirstandandi ári. Þetta er minnsta ráðlagða þorskafla frá árinu 2013 og 25% lægri en árið 2019/2020. Samtök fyrirtækja í sjávarútvegi áætla að þessi samdráttur kosti þjóðarbúið 6–7 milljarða króna í útflutningstekjur.<br><br>Ástæður lækkunarinnar eru meðal annars slakur vöxtur í yngri árgöngum þorsks og skortur á loðnu, sem hefur áhrif á fæðu og vöxt stofnsins. Samhliða þessu eru boðaðar breytingar á veiðigjöldum og strandveiðum, sem auka óvissu í greininni. Þingmenn og hagsmunaaðilar hafa lýst yfir miklum áhyggjum og bent á að þessi þróun hafi þegar haft áhrif á fjárfestingar og störf í sjávarútvegi víða um land.<br><br>Jákvæð tíðindi eru þó í ráðgjöfinni fyrir sumargotssíld, þar sem lagt er til 27% hækkun á aflamarki, og ýsu, sem hækkar um 3%. Samtök fyrirtækja í sjávarútvegi leggja áherslu á að fylgja vísindalegri ráðgjöf til að tryggja sjálfbærni og alþjóðlega vottun íslensks sjávarútvegs.</p>
+        
+                <div class="group-sources">
+                    <div class="group-sources-header">
+                        <strong>Tengdar fréttir</strong>
+                        <div class="group-sources-tooltip">
+                            <span class="tooltip-icon">ℹ️</span>
+                            <div class="tooltip-content">
+                                Í einhverjum tilvikum gætu tengdar fréttir vísað á vitlausar slóðir
+                                <a href="/why-wrong-links">Af hverju?</a>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="https://www.visir.is/g/20252736398d/sjavarutvegurinn-standi-hollum-faeti" class="footnote-link" data-tooltip="https://www.visir.is/g/20252736398d/sjavarutvegurinn-standi-hollum-faeti" id="group-fn1" target="_blank">[1]</a> <a href="https://www.visir.is/g/20252736086d/aflamark-thorsks-laekkad-og-reiknad-med-ad-stofninn-minnki-afram" class="footnote-link" data-tooltip="https://www.visir.is/g/20252736086d/aflamark-thorsks-laekkad-og-reiknad-med-ad-stofninn-minnki-afram" id="group-fn2" target="_blank">[2]</a> <a href="https://www.visir.is/g/20252736187d/minni-thorskafli-kosti-fleiri-milljarda" class="footnote-link" data-tooltip="https://www.visir.is/g/20252736187d/minni-thorskafli-kosti-fleiri-milljarda" id="group-fn3" target="_blank">[3]</a> <a href="https://www.mbl.is/200milur/frettir/2025/06/06/thjodarbuid_verdi_af_6_7_milljordum/" class="footnote-link" data-tooltip="https://www.mbl.is/200milur/frettir/2025/06/06/thjodarbuid_verdi_af_6_7_milljordum/" id="group-fn4" target="_blank">[4]</a> <a href="https://www.mbl.is/200milur/frettir/2025/06/06/radleggja_4_prosent_laegra_aflamark_thorsks/" class="footnote-link" data-tooltip="https://www.mbl.is/200milur/frettir/2025/06/06/radleggja_4_prosent_laegra_aflamark_thorsks/" id="group-fn5" target="_blank">[5]</a> <a href="https://fiskifrettir.vb.is/minni-radlagdur-thorskafli-kosti-6-7-milljarda-i-utflutningstekjur/" class="footnote-link" data-tooltip="https://fiskifrettir.vb.is/minni-radlagdur-thorskafli-kosti-6-7-milljarda-i-utflutningstekjur/" id="group-fn6" target="_blank">[6]</a> <a href="https://fiskifrettir.vb.is/hafro-radleggur-27-prosent-aukningu-i-sildinni/" class="footnote-link" data-tooltip="https://fiskifrettir.vb.is/hafro-radleggur-27-prosent-aukningu-i-sildinni/" id="group-fn7" target="_blank">[7]</a> <a href="https://www.vb.is/frettir/hafro-radleggur-4-laekkun-aflamarks-thorsks/" class="footnote-link" data-tooltip="https://www.vb.is/frettir/hafro-radleggur-4-laekkun-aflamarks-thorsks/" id="group-fn8" target="_blank">[8]</a> <a href="https://fiskifrettir.vb.is/hafro-radleggur-4-samdratt-i-thorskafla-fyrir-20252026/" class="footnote-link" data-tooltip="https://fiskifrettir.vb.is/hafro-radleggur-4-samdratt-i-thorskafla-fyrir-20252026/" id="group-fn9" target="_blank">[9]</a> <a href="https://nyr.ruv.is/frettir/innlent/2025-06-06-veidiradgjof-a-ekki-ad-hafa-ahrif-a-frumvarp-um-veidigjald-eda-strandveidar-445541/" class="footnote-link" data-tooltip="https://nyr.ruv.is/frettir/innlent/2025-06-06-veidiradgjof-a-ekki-ad-hafa-ahrif-a-frumvarp-um-veidigjald-eda-strandveidar-445541/" id="group-fn10" target="_blank">[10]</a> <a href="https://nyr.ruv.is/frettir/innlent/2025-06-06-hiti-thegar-tekist-var-a-um-veidiradgjofina-a-althingi-445537/" class="footnote-link" data-tooltip="https://nyr.ruv.is/frettir/innlent/2025-06-06-hiti-thegar-tekist-var-a-um-veidiradgjofina-a-althingi-445537/" id="group-fn11" target="_blank">[11]</a> <a href="https://nyr.ruv.is/frettir/innlent/2025-06-06-lodnubrestur-skyri-lakan-voxt-i-islenska-thorskstofninum-445535/" class="footnote-link" data-tooltip="https://nyr.ruv.is/frettir/innlent/2025-06-06-lodnubrestur-skyri-lakan-voxt-i-islenska-thorskstofninum-445535/" id="group-fn12" target="_blank">[12]</a> <a href="https://nyr.ruv.is/frettir/innlent/2025-06-06-radleggja-4-laekkun-aflamarks-thorsks-445514/" class="footnote-link" data-tooltip="https://nyr.ruv.is/frettir/innlent/2025-06-06-radleggja-4-laekkun-aflamarks-thorsks-445514/" id="group-fn13" target="_blank">[13]</a>
+                </div>
+                
+            <div class="tags">
+                <span class="tag">sjávarútvegur</span><span class="tag">þorskafli</span><span class="tag">hagkerfi</span><span class="tag">ráðgjöf</span><span class="tag">útflutningur</span>
+            </div>
+            
+            <div class="matches-container">
+                <div class="match">
+                    <span class="match-icon">✨</span>
+                    <div class="match-tooltip">
+                        
+            <div class="matches">
+                <p>Við teljum að þessar fréttir passi hér með eftirfarandi líkum:</p>
+                <ul>
+            
+                    <li>
+                        <span>Minni þorskafli kostar milljarða</span>
+                        <span>95.72%</span>
+                    </li>
+                
+                </ul>
+                <p><a href="/how-matches-work">Hvað er þetta?</a></p>
+            </div>
+            
+                    </div>
+                </div>
+            </div>
+            </div>
+        <div class="news-item">
+            <h3>Fimm frumvörp samþykkt á Alþingi – Nýtt námsmat, sorgarleyfi og farþegalistar</h3>
+            <p>Á viðburðaríkum þingfundi í gær voru fimm frumvörp samþykkt á Alþingi. Meðal þeirra var frumvarp mennta- og barnamálaráðherra um nýtt námsmat í grunnskólum, þar sem samræmd próf víkja fyrir sveigjanlegra matskerfi (Matsferli). Frumvarpið var umdeilt, einkum vegna þess að ekki er lengur gert ráð fyrir samræmdu lokaprófi í 10. bekk, en meirihluti þjóðarinnar styður breytingarnar samkvæmt nýrri könnun.<br><br>Einnig voru samþykktar breytingar á lögum um sorgarleyfi, sem veita foreldrum sem missa maka rétt á allt að sex mánaða sorgarleyfi eða styrk. Þetta er mikil réttarbót fyrir fjölskyldur sem verða fyrir áföllum. Þá var samþykkt frumvarp dómsmálaráðherra sem gerir flugfélögum skylt að afhenda íslenskum yfirvöldum farþegalista við komu til landsins, sem á að styrkja baráttu gegn skipulagðri brotastarfsemi og auka öryggi á landamærum.<br><br>Auk þess voru samþykktar breytingar á lögum um framsal sakamanna, heilbrigðisskrár og landlækni. Þingmenn stjórnarandstöðunnar gagnrýndu vinnubrögð og töf á afgreiðslu mála, en samstaða náðist um flest frumvörpin.</p>
+        
+                <div class="group-sources">
+                    <div class="group-sources-header">
+                        <strong>Tengdar fréttir</strong>
+                        <div class="group-sources-tooltip">
+                            <span class="tooltip-icon">ℹ️</span>
+                            <div class="tooltip-content">
+                                Í einhverjum tilvikum gætu tengdar fréttir vísað á vitlausar slóðir
+                                <a href="/why-wrong-links">Af hverju?</a>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="https://www.visir.is/g/20252736449d/fimm-frumvorp-fjogurra-raduneyta-samthykkt" class="footnote-link" data-tooltip="https://www.visir.is/g/20252736449d/fimm-frumvorp-fjogurra-raduneyta-samthykkt" id="group-fn1" target="_blank">[1]</a> <a href="https://www.visir.is/g/20252736404d/-kraftmiklar-og-afgerandi-adgerdir-gegn-skipulagdri-brotastarfsemi-" class="footnote-link" data-tooltip="https://www.visir.is/g/20252736404d/-kraftmiklar-og-afgerandi-adgerdir-gegn-skipulagdri-brotastarfsemi-" id="group-fn2" target="_blank">[2]</a> <a href="https://www.visir.is/g/20252736351d/ein-a-moti-rymkudu-sorgarleyfi" class="footnote-link" data-tooltip="https://www.visir.is/g/20252736351d/ein-a-moti-rymkudu-sorgarleyfi" id="group-fn3" target="_blank">[3]</a> <a href="https://www.visir.is/g/20252736232d/frumvarp-um-farthegalista-samthykkt" class="footnote-link" data-tooltip="https://www.visir.is/g/20252736232d/frumvarp-um-farthegalista-samthykkt" id="group-fn4" target="_blank">[4]</a> <a href="https://nyr.ruv.is/frettir/innlent/2025-06-06-umdeilt-grunnskolafrumvarp-samthykkt-a-thingi-445533/" class="footnote-link" data-tooltip="https://nyr.ruv.is/frettir/innlent/2025-06-06-umdeilt-grunnskolafrumvarp-samthykkt-a-thingi-445533/" id="group-fn5" target="_blank">[5]</a>
+                </div>
+                
+            <div class="tags">
+                <span class="tag">Alþingi</span><span class="tag">lög</span><span class="tag">menntamál</span><span class="tag">heilbrigðismál</span><span class="tag">öryggi</span>
+            </div>
+            
+            <div class="matches-container">
+                <div class="match">
+                    <span class="match-icon">✨</span>
+                    <div class="match-tooltip">
+                        
+            <div class="matches">
+                <p>Við teljum að þessar fréttir passi hér með eftirfarandi líkum:</p>
+                <ul>
+            
+                    <li>
+                        <span>Þing samþykkir fjölmörg frumvörp</span>
+                        <span>96.72%</span>
+                    </li>
+                
+                </ul>
+                <p><a href="/how-matches-work">Hvað er þetta?</a></p>
+            </div>
+            
+                    </div>
+                </div>
+            </div>
+            </div>
+        <div class="news-item">
+            <h3>Starfsáætlun Alþingis felld úr gildi – Óvissa um þinglok</h3>
+            <p>Í gær var tilkynnt að starfsáætlun Alþingis hefði verið tekin úr sambandi. Þetta þýðir að þingforseti hefur nú heimild til að fjölga þingfundum og lengja þá eftir þörfum. Ástæðan er sú að mörg mál eru enn óafgreidd og talið óraunhæft að ljúka þingstörfum á tilsettum tíma. Samkvæmt fyrri áætlun átti þingfrestun að fara fram eftir viku, en nú ríkir óvissa um hvenær þinglok verða.<br><br>Þingmenn hafa bent á að álagið sé mikið og að mörg stór mál séu enn í vinnslu, þar á meðal frumvörp um veiðigjöld, strandveiðar og bókun 35 við EES-samninginn. Eldhúsdagsumræður eru þó enn á dagskrá næsta miðvikudag. Óvissan um þinglok hefur áhrif á framgang margra mála og veldur óánægju meðal þingmanna og hagsmunaaðila.</p>
+        
+                <div class="group-sources">
+                    <div class="group-sources-header">
+                        <strong>Tengdar fréttir</strong>
+                        <div class="group-sources-tooltip">
+                            <span class="tooltip-icon">ℹ️</span>
+                            <div class="tooltip-content">
+                                Í einhverjum tilvikum gætu tengdar fréttir vísað á vitlausar slóðir
+                                <a href="/why-wrong-links">Af hverju?</a>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="https://www.visir.is/g/20252736400d/starfsaaetlun-althingis-felld-ur-gildi" class="footnote-link" data-tooltip="https://www.visir.is/g/20252736400d/starfsaaetlun-althingis-felld-ur-gildi" id="group-fn1" target="_blank">[1]</a> <a href="https://www.mbl.is/frettir/innlent/2025/06/06/starfsaaetlun_althingis_ut_um_thufur/" class="footnote-link" data-tooltip="https://www.mbl.is/frettir/innlent/2025/06/06/starfsaaetlun_althingis_ut_um_thufur/" id="group-fn2" target="_blank">[2]</a> <a href="https://nyr.ruv.is/frettir/innlent/2025-06-06-ekkert-samkomulag-um-thinglok-i-augsyn-445551/" class="footnote-link" data-tooltip="https://nyr.ruv.is/frettir/innlent/2025-06-06-ekkert-samkomulag-um-thinglok-i-augsyn-445551/" id="group-fn3" target="_blank">[3]</a>
+                </div>
+                
+            <div class="tags">
+                <span class="tag">Alþingi</span><span class="tag">stjórnmál</span><span class="tag">þinglok</span><span class="tag">starfsáætlun</span>
+            </div>
+            
+            <div class="matches-container">
+                <div class="match">
+                    <span class="match-icon">✨</span>
+                    <div class="match-tooltip">
+                        
+            <div class="matches">
+                <p>Við teljum að þessar fréttir passi hér með eftirfarandi líkum:</p>
+                <ul>
+            
+                    <li>
+                        <span>Óvissa um þinglok og starfsáætlun Alþingis</span>
+                        <span>91.45%</span>
+                    </li>
+                
+                </ul>
+                <p><a href="/how-matches-work">Hvað er þetta?</a></p>
+            </div>
+            
+                    </div>
+                </div>
+            </div>
+            </div>
+        <div class="news-item">
+            <h3>Rússar gera umfangsmiklar árásir á Úkraínu – Fjórir látnir í Kænugarði</h3>
+            <p>Rússneskar hersveitir hófu í gærkvöldi og nótt umfangsmiklar árásir á Kænugarð og víðar um Úkraínu. Samkvæmt úkraínskum yfirvöldum voru yfir 400 drónar og 40 eldflaugar skotnar á landið. Í Kænugarði létust að minnsta kosti fjórir og 20 særðust, þar af 16 sem voru fluttir á sjúkrahús. Þrír hinna látnu voru viðbragðsaðilar sem störfuðu við björgunaraðgerðir.<br><br>Árásirnar voru gerðar í kjölfar þess að Pútín Rússlandsforseti hét hefndum fyrir árás Úkraínumanna á rússneskar herstöðvar. Skemmdir urðu á almenningssamgöngum og rafmagnslaust varð á mörgum heimilum í Kænugarði. Úkraínumenn segjast hafa skotið niður marga dróna og eldflaugar, en árásirnar sýna áframhaldandi hörku og óvissu í stríðinu.</p>
+        
+                <div class="group-sources">
+                    <div class="group-sources-header">
+                        <strong>Tengdar fréttir</strong>
+                        <div class="group-sources-tooltip">
+                            <span class="tooltip-icon">ℹ️</span>
+                            <div class="tooltip-content">
+                                Í einhverjum tilvikum gætu tengdar fréttir vísað á vitlausar slóðir
+                                <a href="/why-wrong-links">Af hverju?</a>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="https://www.visir.is/g/20252736002d/eldar-logudu-i-kaenugardi-eftir-umfangsmiklar-arasir-russa" class="footnote-link" data-tooltip="https://www.visir.is/g/20252736002d/eldar-logudu-i-kaenugardi-eftir-umfangsmiklar-arasir-russa" id="group-fn1" target="_blank">[1]</a> <a href="https://www.mbl.is/frettir/erlent/2025/06/06/fjorir_drepnir_i_arasum_russa_a_kaenugard/" class="footnote-link" data-tooltip="https://www.mbl.is/frettir/erlent/2025/06/06/fjorir_drepnir_i_arasum_russa_a_kaenugard/" id="group-fn2" target="_blank">[2]</a> <a href="https://nyr.ruv.is/frettir/erlent/2025-06-06-hvetur-til-aukins-thrystings-a-russa-445513/" class="footnote-link" data-tooltip="https://nyr.ruv.is/frettir/erlent/2025-06-06-hvetur-til-aukins-thrystings-a-russa-445513/" id="group-fn3" target="_blank">[3]</a>
+                </div>
+                
+            <div class="tags">
+                <span class="tag">Úkraína</span><span class="tag">Rússland</span><span class="tag">stríð</span><span class="tag">drónaárásir</span><span class="tag">mannfall</span>
+            </div>
+            
+            <div class="matches-container">
+                <div class="match">
+                    <span class="match-icon">✨</span>
+                    <div class="match-tooltip">
+                        
+            <div class="matches">
+                <p>Við teljum að þessar fréttir passi hér með eftirfarandi líkum:</p>
+                <ul>
+            
+                    <li>
+                        <span>Rússar framkvæma umfangsmiklar árásir á Kænugarð</span>
+                        <span>99.06%</span>
+                    </li>
+                
+                </ul>
+                <p><a href="/how-matches-work">Hvað er þetta?</a></p>
+            </div>
+            
+                    </div>
+                </div>
+            </div>
+            </div>
+        <div class="news-item">
+            <h3>Kaldvík lýkur 40 milljarða króna endurfjármögnun</h3>
+            <p>Kaldvík AS, eitt stærsta laxeldisfélag landsins, tilkynnti í gær að félagið hefði lokið við umfangsmikla endurfjármögnun að fjárhæð 40 milljarðar króna. Þar af eru 33 milljarðar í nýju sambankaláni frá DNB, Nordea, Arion banka og Landsbankanum, og 6,6 milljarðar í hlutafjáraukningu með stuðningi meirihlutaeiganda, Austur Holding AS.<br><br>Rekstrarniðurstaða fyrsta ársfjórðungs var umfram væntingar, með 56% aukningu í tekjum frá fyrra ári og þreföldun á rekstrarhagnaði. Félagið áætlar að framleiða 21.500 tonn af laxi á árinu 2025 og hefur nú leyfi til framleiðslu á samtals 43.800 tonnum. Nýjar fjárfestingar í innviðum og vinnslu eru taldar skila árlegum sparnaði og auka samkeppnishæfni félagsins. Kaldvík bíður nú eftir rekstrarleyfi fyrir nýtt eldissvæði í Seyðisfirði.</p>
+        
+                <div class="group-sources">
+                    <div class="group-sources-header">
+                        <strong>Tengdar fréttir</strong>
+                        <div class="group-sources-tooltip">
+                            <span class="tooltip-icon">ℹ️</span>
+                            <div class="tooltip-content">
+                                Í einhverjum tilvikum gætu tengdar fréttir vísað á vitlausar slóðir
+                                <a href="/why-wrong-links">Af hverju?</a>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="https://www.mbl.is/200milur/frettir/2025/06/06/kaldvik_klarar_40_milljarda_krona_endurfjarmognun/" class="footnote-link" data-tooltip="https://www.mbl.is/200milur/frettir/2025/06/06/kaldvik_klarar_40_milljarda_krona_endurfjarmognun/" id="group-fn1" target="_blank">[1]</a> <a href="https://www.vb.is/frettir/kaldvik-lykur-40-milljarda-krona-endurfjarmognun/" class="footnote-link" data-tooltip="https://www.vb.is/frettir/kaldvik-lykur-40-milljarda-krona-endurfjarmognun/" id="group-fn2" target="_blank">[2]</a> <a href="https://fiskifrettir.vb.is/kaldvik-klarar-40-milljarda-krona-endurfjarmognun/" class="footnote-link" data-tooltip="https://fiskifrettir.vb.is/kaldvik-klarar-40-milljarda-krona-endurfjarmognun/" id="group-fn3" target="_blank">[3]</a>
+                </div>
+                
+            <div class="tags">
+                <span class="tag">viðskipti</span><span class="tag">laxeldi</span><span class="tag">fjármögnun</span><span class="tag">Kaldvík</span><span class="tag">fjárfestingar</span>
+            </div>
+            
+            <div class="matches-container">
+                <div class="match">
+                    <span class="match-icon">✨</span>
+                    <div class="match-tooltip">
+                        
+            <div class="matches">
+                <p>Við teljum að þessar fréttir passi hér með eftirfarandi líkum:</p>
+                <ul>
+            
+                    <li>
+                        <span>Kaldvík klárar 40 milljarða endurfjármögnun</span>
+                        <span>98.69%</span>
+                    </li>
+                
+                </ul>
+                <p><a href="/how-matches-work">Hvað er þetta?</a></p>
+            </div>
+            
+                    </div>
+                </div>
+            </div>
+            </div>
+        <div class="news-item">
+            <h3>Umdeildar breytingar á félagsmiðstöðvum Akureyrar – Starfsfólk gagnrýnir samþættingu við grunnskóla</h3>
+            <p>Þrettán starfsmönnum félagsmiðstöðva á Akureyri var sagt upp í kjölfar ákvörðunar bæjaryfirvalda um að leggja FÉLAK niður í núverandi mynd og færa starfsemina undir grunnskólana. Tíu starfsmönnum var boðið annað starf, en ekki endilega sambærilegt. Starfsfólk lýsir yfir áhyggjum af því að samþættingin dragi úr faglegu tómstundastarfi og þátttöku barna og ungmenna.<br><br>Minnihluti bæjarstjórnar gagnrýnir vinnubrögðin og skort á samráði við fagfólk í æskulýðsmálum. Starfsfólk FÉLAK telur breytingarnar skólamiðaðar og óttast að traust og dýnamík milli barna og starfsfólks breytist til hins verra. Bæjaryfirvöld segja breytingarnar byggðar á norrænni fyrirmynd og telja þær til bóta til lengri tíma litið.</p>
+        
+                <div class="group-sources">
+                    <div class="group-sources-header">
+                        <strong>Tengdar fréttir</strong>
+                        <div class="group-sources-tooltip">
+                            <span class="tooltip-icon">ℹ️</span>
+                            <div class="tooltip-content">
+                                Í einhverjum tilvikum gætu tengdar fréttir vísað á vitlausar slóðir
+                                <a href="/why-wrong-links">Af hverju?</a>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="https://www.visir.is/g/20252736116d/ollum-sagt-upp-ekkert-verid-ad-hugsa-um-felagsmidstodvastarf-" class="footnote-link" data-tooltip="https://www.visir.is/g/20252736116d/ollum-sagt-upp-ekkert-verid-ad-hugsa-um-felagsmidstodvastarf-" id="group-fn1" target="_blank">[1]</a> <a href="https://nyr.ruv.is/frettir/innlent/2025-06-06-skoli-og-felagsmidstod-eru-bara-sitthvor-hluturinn-445538/" class="footnote-link" data-tooltip="https://nyr.ruv.is/frettir/innlent/2025-06-06-skoli-og-felagsmidstod-eru-bara-sitthvor-hluturinn-445538/" id="group-fn2" target="_blank">[2]</a>
+                </div>
+                
+            <div class="tags">
+                <span class="tag">Akureyri</span><span class="tag">félagsmiðstöðvar</span><span class="tag">menntamál</span><span class="tag">samþætting</span><span class="tag">samfélag</span>
+            </div>
+            
+            <div class="matches-container">
+                <div class="match">
+                    <span class="match-icon">✨</span>
+                    <div class="match-tooltip">
+                        
+            <div class="matches">
+                <p>Við teljum að þessar fréttir passi hér með eftirfarandi líkum:</p>
+                <ul>
+            
+                    <li>
+                        <span>Ákvörðun um sameiningu félagsmiðstöðva og skóla á Akureyri</span>
+                        <span>98.13%</span>
+                    </li>
+                
+                </ul>
+                <p><a href="/how-matches-work">Hvað er þetta?</a></p>
+            </div>
+            
+                    </div>
+                </div>
+            </div>
+            </div>
+        <div class="news-item">
+            <h3>Bandaríkin hefja refsiaðgerðir gegn dómurum Alþjóðlega sakamáladómstólsins</h3>
+            <p>Ríkisstjórn Bandaríkjanna tilkynnti í gær efnahagsþvinganir gegn fjórum dómurum og embættismönnum Alþjóðlega sakamáladómstólsins (ICC). Ástæðan eru ákvarðanir þeirra um að heimila rannsóknir á háttsemi bandarískra hermanna í Afganistan og gefa út handtökuskipanir á hendur ísraelskum ráðamönnum vegna gruns um stríðsglæpi á Gaza.<br><br>Refsiaðgerðirnar fela í sér frystingu eigna í Bandaríkjunum og bann við viðskiptum bandarískra fyrirtækja við dómara ICC. Mannréttindastjóri Sameinuðu þjóðanna og leiðtogar Evrópusambandsins hafa fordæmt aðgerðirnar og kallað eftir því að þær verði dregnar til baka. ICC segir aðgerðirnar tilraun til að grafa undan sjálfstæði dómstólsins.</p>
+        
+                <div class="group-sources">
+                    <div class="group-sources-header">
+                        <strong>Tengdar fréttir</strong>
+                        <div class="group-sources-tooltip">
+                            <span class="tooltip-icon">ℹ️</span>
+                            <div class="tooltip-content">
+                                Í einhverjum tilvikum gætu tengdar fréttir vísað á vitlausar slóðir
+                                <a href="/why-wrong-links">Af hverju?</a>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="https://nyr.ruv.is/frettir/erlent/2025-06-06-krefjast-thess-ad-bandarikin-afnemi-refsiadgerdir-445517/" class="footnote-link" data-tooltip="https://nyr.ruv.is/frettir/erlent/2025-06-06-krefjast-thess-ad-bandarikin-afnemi-refsiadgerdir-445517/" id="group-fn1" target="_blank">[1]</a> <a href="https://nyr.ruv.is/frettir/erlent/2025-06-06-hefja-refsiadgerdir-gegn-domurum-icc-445502/" class="footnote-link" data-tooltip="https://nyr.ruv.is/frettir/erlent/2025-06-06-hefja-refsiadgerdir-gegn-domurum-icc-445502/" id="group-fn2" target="_blank">[2]</a>
+                </div>
+                
+            <div class="tags">
+                <span class="tag">Bandaríkin</span><span class="tag">ICC</span><span class="tag">refsiaðgerðir</span><span class="tag">alþjóðalög</span><span class="tag">mannréttindi</span>
+            </div>
+            
+            <div class="matches-container">
+                <div class="match">
+                    <span class="match-icon">✨</span>
+                    <div class="match-tooltip">
+                        
+            <div class="matches">
+                <p>Við teljum að þessar fréttir passi hér með eftirfarandi líkum:</p>
+                <ul>
+            
+                    <li>
+                        <span>Bandaríkin refsiaðgerðir gegn ICC-dómurum</span>
+                        <span>98.77%</span>
+                    </li>
+                
+                </ul>
+                <p><a href="/how-matches-work">Hvað er þetta?</a></p>
+            </div>
+            
+                    </div>
+                </div>
+            </div>
+            </div>
+        <div class="news-item">
+            <h3>Icelandair fjölgar farþegum um 13% í maí</h3>
+            <p>Icelandair birti í gær flutningatölur fyrir maímánuð. Félagið flutti 448 þúsund farþega, sem er 13% aukning frá sama mánuði í fyrra. Þar af voru 29% farþega á leið til Íslands, 16% frá Íslandi, 50% tengifarþegar og 5% innanlandsfarþegar. Sætanýting var 79,6% og stundvísi 84,1%.<br><br>Tekjur á hvern seldan sætiskílómetra lækkuðu um 2% milli ára, aðallega vegna lækkunar á fargjöldum á Norður-Atlantshafsmarkaði þar sem mikil samkeppni ríkir. Fraktflutningar jukust um 2% og kolefnislosun minnkaði um 4%. Félagið hefur flutt rúmlega 1,6 milljón farþega það sem af er ári.</p>
+        
+                <div class="group-sources">
+                    <div class="group-sources-header">
+                        <strong>Tengdar fréttir</strong>
+                        <div class="group-sources-tooltip">
+                            <span class="tooltip-icon">ℹ️</span>
+                            <div class="tooltip-content">
+                                Í einhverjum tilvikum gætu tengdar fréttir vísað á vitlausar slóðir
+                                <a href="/why-wrong-links">Af hverju?</a>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="https://www.mbl.is/vidskipti/frettir/2025/06/06/farthegum_icelandair_til_islands_fjolgar_um_18_pros/" class="footnote-link" data-tooltip="https://www.mbl.is/vidskipti/frettir/2025/06/06/farthegum_icelandair_til_islands_fjolgar_um_18_pros/" id="group-fn1" target="_blank">[1]</a> <a href="https://www.vb.is/frettir/farthegum-icelandair-i-mai-fjolgadi-um-13/" class="footnote-link" data-tooltip="https://www.vb.is/frettir/farthegum-icelandair-i-mai-fjolgadi-um-13/" id="group-fn2" target="_blank">[2]</a>
+                </div>
+                
+            <div class="tags">
+                <span class="tag">Icelandair</span><span class="tag">flutningar</span><span class="tag">flug</span><span class="tag">viðskipti</span><span class="tag">ferðamál</span>
+            </div>
+            
+            <div class="matches-container">
+                <div class="match">
+                    <span class="match-icon">✨</span>
+                    <div class="match-tooltip">
+                        
+            <div class="matches">
+                <p>Við teljum að þessar fréttir passi hér með eftirfarandi líkum:</p>
+                <ul>
+            
+                    <li>
+                        <span>Farþegafjöldi Icelandair aukist um 18%</span>
+                        <span>99.24%</span>
+                    </li>
+                
+                </ul>
+                <p><a href="/how-matches-work">Hvað er þetta?</a></p>
+            </div>
+            
+                    </div>
+                </div>
+            </div>
+            </div>
+        <div class="news-item">
+            <h3>Ísland sigrar Skotland í fótbolta – Fyrsti sigur Arnars Gunnlaugssonar</h3>
+            <p>Íslenska karlalandsliðið í knattspyrnu vann í gær óvæntan og verðskuldaðan sigur á Skotum í vináttulandsleik á Hampden Park í Glasgow, 3:1. Andri Lucas Guðjohnsen og Guðlaugur Victor Pálsson skoruðu sitt markið hvor, en annað mark Íslands var sjálfsmark. Þetta er í fyrsta sinn sem Ísland sigrar Skotland í A-landsleik karla.<br><br>Leikurinn var jafn framan af, en Ísland komst yfir snemma og hélt forystunni út leikinn. Sigurinn er mikilvægur fyrir liðið og þjálfarann Arnar Gunnlaugsson, sem fagnar sínum fyrsta sigri með landsliðinu. Næsti leikur Íslands er gegn Norður-Írum á þriðjudaginn.</p>
+        
+                <div class="group-sources">
+                    <div class="group-sources-header">
+                        <strong>Tengdar fréttir</strong>
+                        <div class="group-sources-tooltip">
+                            <span class="tooltip-icon">ℹ️</span>
+                            <div class="tooltip-content">
+                                Í einhverjum tilvikum gætu tengdar fréttir vísað á vitlausar slóðir
+                                <a href="/why-wrong-links">Af hverju?</a>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="https://www.mbl.is/sport/efstadeild/2025/06/06/glaesilegur_sigur_islands_i_glasgow/" class="footnote-link" data-tooltip="https://www.mbl.is/sport/efstadeild/2025/06/06/glaesilegur_sigur_islands_i_glasgow/" id="group-fn1" target="_blank">[1]</a> <a href="https://www.mbl.is/sport/efstadeild/2025/06/06/hordur_beint_i_byrjunarlidid/" class="footnote-link" data-tooltip="https://www.mbl.is/sport/efstadeild/2025/06/06/hordur_beint_i_byrjunarlidid/" id="group-fn2" target="_blank">[2]</a> <a href="https://www.mbl.is/sport/fotbolti/2025/06/06/32_thusund_midar_seldir_a_leik_islands/" class="footnote-link" data-tooltip="https://www.mbl.is/sport/fotbolti/2025/06/06/32_thusund_midar_seldir_a_leik_islands/" id="group-fn3" target="_blank">[3]</a> <a href="https://nyr.ruv.is/frettir/ithrottir/2025-06-06-fyrsti-sigur-arnars-kom-i-skotlandi-445563/" class="footnote-link" data-tooltip="https://nyr.ruv.is/frettir/ithrottir/2025-06-06-fyrsti-sigur-arnars-kom-i-skotlandi-445563/" id="group-fn4" target="_blank">[4]</a>
+                </div>
+                
+            <div class="tags">
+                <span class="tag">íþróttir</span><span class="tag">knattspyrna</span><span class="tag">Ísland</span><span class="tag">Skotland</span><span class="tag">landslið</span>
+            </div>
+            
+            <div class="matches-container">
+                <div class="match">
+                    <span class="match-icon">✨</span>
+                    <div class="match-tooltip">
+                        
+            <div class="matches">
+                <p>Við teljum að þessar fréttir passi hér með eftirfarandi líkum:</p>
+                <ul>
+            
+                    <li>
+                        <span>Ísland sigraði Skotland í vináttuleik</span>
+                        <span>95.39%</span>
+                    </li>
+                
+                </ul>
+                <p><a href="/how-matches-work">Hvað er þetta?</a></p>
+            </div>
+            
+                    </div>
+                </div>
+            </div>
+            </div>
+            </div>
+        </div>
+        
+
+        <div class="section" id="domestic_news">
+            <div class="section-header-container">
+                <h2 class="section-header">2. INNLENT</h2>
+                <a href="#toc" class="back-to-toc">← Efnisyfirlit</a>
+            </div>
+            
+        <div class="reading-time-container section">
+            <div class="reading-time-icon">⏱️</div>
+            <div class="reading-time-content">
+                <span class="reading-time-label">Lestur:</span>
+                <span class="reading-time-value"> 3 mín.</span>
+            </div>
+        </div>
+        
+            <div class="section-content">
+                
+        <div class="news-item">
+            <h3>Hætt við lokun leikskólans á Laugum í Þingeyjarsveit</h3>
+            <p>Sveitarstjórn Þingeyjarsveitar hefur ákveðið að hætta við áform um að loka leikskóladeildinni Krílabæ á Laugum í Reykjadal. Ákvörðunin var tekin eftir að foreldrar mótmæltu harðlega og bentu á mikilvægi leikskólans fyrir samfélagið. Sex börn eru á Krílabæ og þrír starfsmenn höfðu verið boðaðir á fund þar sem þeim var sagt að þeir gætu ekki snúið aftur til starfa eftir sumarfrí. Sveitarstjórn tók tillit til sjónarmiða foreldra og verður leikskóladeildin því áfram opin.</p>
+        
+                <div class="group-sources">
+                    <div class="group-sources-header">
+                        <strong>Tengdar fréttir</strong>
+                        <div class="group-sources-tooltip">
+                            <span class="tooltip-icon">ℹ️</span>
+                            <div class="tooltip-content">
+                                Í einhverjum tilvikum gætu tengdar fréttir vísað á vitlausar slóðir
+                                <a href="/why-wrong-links">Af hverju?</a>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="https://www.mbl.is/frettir/innlent/2025/06/06/stadan_langverst_i_reykjanesbae/" class="footnote-link" data-tooltip="https://www.mbl.is/frettir/innlent/2025/06/06/stadan_langverst_i_reykjanesbae/" id="group-fn1" target="_blank">[1]</a> <a href="https://nyr.ruv.is/frettir/innlent/2025-06-06-haett-vid-lokun-leikskolans-a-laugum-445564/" class="footnote-link" data-tooltip="https://nyr.ruv.is/frettir/innlent/2025-06-06-haett-vid-lokun-leikskolans-a-laugum-445564/" id="group-fn2" target="_blank">[2]</a> <a href="https://nyr.ruv.is/frettir/innlent/2025-06-06-aetla-ekki-ad-laekka-leikskolagjoldin-thratt-fyrir-ad-trona-a-toppnum-445532/" class="footnote-link" data-tooltip="https://nyr.ruv.is/frettir/innlent/2025-06-06-aetla-ekki-ad-laekka-leikskolagjoldin-thratt-fyrir-ad-trona-a-toppnum-445532/" id="group-fn3" target="_blank">[3]</a>
+                </div>
+                
+            <div class="tags">
+                <span class="tag">leikskólar</span><span class="tag">samfélag</span><span class="tag">menntamál</span>
+            </div>
+            
+            <div class="matches-container">
+                <div class="match">
+                    <span class="match-icon">✨</span>
+                    <div class="match-tooltip">
+                        
+            <div class="matches">
+                <p>Við teljum að þessar fréttir passi hér með eftirfarandi líkum:</p>
+                <ul>
+            
+                    <li>
+                        <span>Leikskólagjöld og lokaáætlanir</span>
+                        <span>94.67%</span>
+                    </li>
+                
+                </ul>
+                <p><a href="/how-matches-work">Hvað er þetta?</a></p>
+            </div>
+            
+                    </div>
+                </div>
+            </div>
+            </div>
+        <div class="news-item">
+            <h3>Staðan verst í Reykjanesbæ – Börn hefja leikskólagöngu síðar en annars staðar</h3>
+            <p>Í Reykjanesbæ hefja flest börn leikskóladvöl þegar þau eru 24–29 mánaða gömul, sem er hærri meðalaldur en í öðrum sveitarfélögum. Til samanburðar er meðalaldur barna í Garðabæ 15 mánuðir og í Hafnarfirði 17,7 mánuðir. Foreldrar hafa lýst yfir áhyggjum af stöðunni og skorti á leikskólaplássum. Ekki hefur komið til tals að lækka leikskólagjöld í Kópavogi, þrátt fyrir að þau séu þau hæstu á landinu.</p>
+        
+                <div class="group-sources">
+                    <div class="group-sources-header">
+                        <strong>Tengdar fréttir</strong>
+                        <div class="group-sources-tooltip">
+                            <span class="tooltip-icon">ℹ️</span>
+                            <div class="tooltip-content">
+                                Í einhverjum tilvikum gætu tengdar fréttir vísað á vitlausar slóðir
+                                <a href="/why-wrong-links">Af hverju?</a>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="https://www.mbl.is/frettir/innlent/2025/06/06/stadan_langverst_i_reykjanesbae/" class="footnote-link" data-tooltip="https://www.mbl.is/frettir/innlent/2025/06/06/stadan_langverst_i_reykjanesbae/" id="group-fn1" target="_blank">[1]</a> <a href="https://nyr.ruv.is/frettir/innlent/2025-06-06-haett-vid-lokun-leikskolans-a-laugum-445564/" class="footnote-link" data-tooltip="https://nyr.ruv.is/frettir/innlent/2025-06-06-haett-vid-lokun-leikskolans-a-laugum-445564/" id="group-fn2" target="_blank">[2]</a> <a href="https://nyr.ruv.is/frettir/innlent/2025-06-06-aetla-ekki-ad-laekka-leikskolagjoldin-thratt-fyrir-ad-trona-a-toppnum-445532/" class="footnote-link" data-tooltip="https://nyr.ruv.is/frettir/innlent/2025-06-06-aetla-ekki-ad-laekka-leikskolagjoldin-thratt-fyrir-ad-trona-a-toppnum-445532/" id="group-fn3" target="_blank">[3]</a>
+                </div>
+                
+            <div class="tags">
+                <span class="tag">leikskólar</span><span class="tag">Reykjanesbær</span><span class="tag">menntamál</span><span class="tag">samfélag</span>
+            </div>
+            
+            <div class="matches-container">
+                <div class="match">
+                    <span class="match-icon">✨</span>
+                    <div class="match-tooltip">
+                        
+            <div class="matches">
+                <p>Við teljum að þessar fréttir passi hér með eftirfarandi líkum:</p>
+                <ul>
+            
+                    <li>
+                        <span>Leikskólagjöld og lokaáætlanir</span>
+                        <span>91.90%</span>
+                    </li>
+                
+                </ul>
+                <p><a href="/how-matches-work">Hvað er þetta?</a></p>
+            </div>
+            
+                    </div>
+                </div>
+            </div>
+            </div>
+        <div class="news-item">
+            <h3>Óvissustigi vegna norðanveðurs aflýst</h3>
+            <p>Almannavarnir hafa aflýst óvissustigi sem lýst var yfir 2. júní vegna norðanáhlaups sem gekk yfir landið í vikunni. Veðrið hefur gengið niður og aðstæður batnað verulega. Engar veðurviðvaranir eru lengur í gildi og því ekki talin þörf á auknu viðbúnaðarstigi. Fólk er þó hvatt til að sýna aðgát undir fjallshlíðum vegna áframhaldandi skriðu- og snjóflóðahættu á Norðurlandi.</p>
+        
+                <div class="group-sources">
+                    <div class="group-sources-header">
+                        <strong>Tengdar fréttir</strong>
+                        <div class="group-sources-tooltip">
+                            <span class="tooltip-icon">ℹ️</span>
+                            <div class="tooltip-content">
+                                Í einhverjum tilvikum gætu tengdar fréttir vísað á vitlausar slóðir
+                                <a href="/why-wrong-links">Af hverju?</a>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="https://www.visir.is/g/20252736115d/aflysa-ovissustigi-vegna-nordanahlaupsins" class="footnote-link" data-tooltip="https://www.visir.is/g/20252736115d/aflysa-ovissustigi-vegna-nordanahlaupsins" id="group-fn1" target="_blank">[1]</a> <a href="https://nyr.ruv.is/frettir/innlent/2025-06-06-ovissustigi-vegna-nordanvedurs-aflyst-445515/" class="footnote-link" data-tooltip="https://nyr.ruv.is/frettir/innlent/2025-06-06-ovissustigi-vegna-nordanvedurs-aflyst-445515/" id="group-fn2" target="_blank">[2]</a>
+                </div>
+                
+            <div class="tags">
+                <span class="tag">veður</span><span class="tag">almannavarnir</span><span class="tag">viðvaranir</span>
+            </div>
+            
+            <div class="matches-container">
+                <div class="match">
+                    <span class="match-icon">✨</span>
+                    <div class="match-tooltip">
+                        
+            <div class="matches">
+                <p>Við teljum að þessar fréttir passi hér með eftirfarandi líkum:</p>
+                <ul>
+            
+                    <li>
+                        <span>Óvissustigi vegna norðanáhlaups aflýst</span>
+                        <span>95.61%</span>
+                    </li>
+                
+                </ul>
+                <p><a href="/how-matches-work">Hvað er þetta?</a></p>
+            </div>
+            
+                    </div>
+                </div>
+            </div>
+            </div>
+        <div class="news-item">
+            <h3>Hluta útsýnispalls við Dettifoss lokað vegna aurskriðu</h3>
+            <p>Hluta af útsýnispalli við Dettifoss hefur verið lokað vegna aurskriðu sem féll í gær. Nyrsti hluti pallsins og leið niður í Fosshvamm eru lokaðar í öryggisskyni þar sem sprungur á svæðinu eru óstöðugar. Enn er hægt að sjá fossinn frá öðrum hluta pallsins, en gestir eru beðnir um að fara varlega. Veðurstofan hefur dregið úr skriðuhættu en viðvörun er enn í gildi á Norðurlandi.</p>
+        
+                <div class="group-sources">
+                    <div class="group-sources-header">
+                        <strong>Tengdar fréttir</strong>
+                        <div class="group-sources-tooltip">
+                            <span class="tooltip-icon">ℹ️</span>
+                            <div class="tooltip-content">
+                                Í einhverjum tilvikum gætu tengdar fréttir vísað á vitlausar slóðir
+                                <a href="/why-wrong-links">Af hverju?</a>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="https://www.visir.is/g/20252736423d/loka-hluta-utsynispallsins-vegna-aurskridu" class="footnote-link" data-tooltip="https://www.visir.is/g/20252736423d/loka-hluta-utsynispallsins-vegna-aurskridu" id="group-fn1" target="_blank">[1]</a> <a href="https://nyr.ruv.is/frettir/innlent/2025-06-06-utsynispalli-vid-dettifoss-lokad-vegna-skridu-445559/" class="footnote-link" data-tooltip="https://nyr.ruv.is/frettir/innlent/2025-06-06-utsynispalli-vid-dettifoss-lokad-vegna-skridu-445559/" id="group-fn2" target="_blank">[2]</a>
+                </div>
+                
+            <div class="tags">
+                <span class="tag">náttúruvá</span><span class="tag">Dettifoss</span><span class="tag">skriður</span><span class="tag">ferðamál</span>
+            </div>
+            
+            <div class="matches-container">
+                <div class="match">
+                    <span class="match-icon">✨</span>
+                    <div class="match-tooltip">
+                        
+            <div class="matches">
+                <p>Við teljum að þessar fréttir passi hér með eftirfarandi líkum:</p>
+                <ul>
+            
+                    <li>
+                        <span>Lokað við Dettifoss vegna skriðu</span>
+                        <span>99.26%</span>
+                    </li>
+                
+                </ul>
+                <p><a href="/how-matches-work">Hvað er þetta?</a></p>
+            </div>
+            
+                    </div>
+                </div>
+            </div>
+            </div>
+        <div class="news-item">
+            <h3>Þyrla Landhelgisgæslunnar kölluð út vegna slysa</h3>
+            <p>Þyrla Landhelgisgæslunnar var kölluð út vegna tveggja atvika í gær. Annars vegar vegna göngumanns sem slasaðist á Hafnarfjalli og hins vegar vegna erlends ferðamanns sem féll í Brúará við Hlauptungufoss. Fjölmennt björgunarlið var kallað út og einstaklingarnir fundnir, en ekki hefur verið gefið upp um líðan þeirra. Rannsókn stendur yfir á tildrögum slyssins við Brúará.</p>
+        
+                <div class="group-sources">
+                    <div class="group-sources-header">
+                        <strong>Tengdar fréttir</strong>
+                        <div class="group-sources-tooltip">
+                            <span class="tooltip-icon">ℹ️</span>
+                            <div class="tooltip-content">
+                                Í einhverjum tilvikum gætu tengdar fréttir vísað á vitlausar slóðir
+                                <a href="/why-wrong-links">Af hverju?</a>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="https://www.visir.is/g/20252736493d/thyrla-landhelgisgaeslunnar-kollud-ut-vegna-gongumanns" class="footnote-link" data-tooltip="https://www.visir.is/g/20252736493d/thyrla-landhelgisgaeslunnar-kollud-ut-vegna-gongumanns" id="group-fn1" target="_blank">[1]</a> <a href="https://www.visir.is/g/20252736369d/erlendur-ferdamadur-fell-i-bruara" class="footnote-link" data-tooltip="https://www.visir.is/g/20252736369d/erlendur-ferdamadur-fell-i-bruara" id="group-fn2" target="_blank">[2]</a> <a href="https://www.mbl.is/frettir/innlent/2025/06/06/sa_sem_fell_i_bruara_var_ferdamadur/" class="footnote-link" data-tooltip="https://www.mbl.is/frettir/innlent/2025/06/06/sa_sem_fell_i_bruara_var_ferdamadur/" id="group-fn3" target="_blank">[3]</a> <a href="https://www.mbl.is/frettir/innlent/2025/06/06/madurinn_sem_fell_i_bruara_fundinn/" class="footnote-link" data-tooltip="https://www.mbl.is/frettir/innlent/2025/06/06/madurinn_sem_fell_i_bruara_fundinn/" id="group-fn4" target="_blank">[4]</a> <a href="https://www.mbl.is/frettir/innlent/2025/06/06/mikill_vidbunadur_vegna_slyss_vid_bruara/" class="footnote-link" data-tooltip="https://www.mbl.is/frettir/innlent/2025/06/06/mikill_vidbunadur_vegna_slyss_vid_bruara/" id="group-fn5" target="_blank">[5]</a> <a href="https://nyr.ruv.is/frettir/innlent/2025-06-06-mikid-vidbragd-eftir-ad-madur-fell-i-bruara-445545/" class="footnote-link" data-tooltip="https://nyr.ruv.is/frettir/innlent/2025-06-06-mikid-vidbragd-eftir-ad-madur-fell-i-bruara-445545/" id="group-fn6" target="_blank">[6]</a>
+                </div>
+                
+            <div class="tags">
+                <span class="tag">björgunarsveitir</span><span class="tag">slys</span><span class="tag">Landhelgisgæslan</span>
+            </div>
+            
+            <div class="matches-container">
+                <div class="match">
+                    <span class="match-icon">✨</span>
+                    <div class="match-tooltip">
+                        
+            <div class="matches">
+                <p>Við teljum að þessar fréttir passi hér með eftirfarandi líkum:</p>
+                <ul>
+            
+                    <li>
+                        <span>Slyss í Brúará við Hlauptungufoss</span>
+                        <span>95.94%</span>
+                    </li>
+                
+                </ul>
+                <p><a href="/how-matches-work">Hvað er þetta?</a></p>
+            </div>
+            
+                    </div>
+                </div>
+            </div>
+            </div>
+            </div>
+        </div>
+        
+
+        <div class="section" id="foreign_news">
+            <div class="section-header-container">
+                <h2 class="section-header">3. ERLENT</h2>
+                <a href="#toc" class="back-to-toc">← Efnisyfirlit</a>
+            </div>
+            
+        <div class="reading-time-container section">
+            <div class="reading-time-icon">⏱️</div>
+            <div class="reading-time-content">
+                <span class="reading-time-label">Lestur:</span>
+                <span class="reading-time-value"> 2 mín.</span>
+            </div>
+        </div>
+        
+            <div class="section-content">
+                
+        <div class="news-item">
+            <h3>Taívan fordæmir hernaðarlegar aðgerðir Kína</h3>
+            <p>Taívan fordæmdi í gær „egnandi“ aðgerðir Kína sem sendi 21 herflugvél, þar á meðal orrustuþotur og dróna, yfir miðlínu Taívansunds. Aðgerðirnar komu í kjölfar símtals milli leiðtoga Bandaríkjanna og Kína, þar sem Xi Jinping varaði við afskiptum Bandaríkjanna af Taívan. Kína hefur aukið hernaðarlegan þrýsting á Taívan á undanförnum árum og telur eyjuna hluta af yfirráðasvæði sínu.</p>
+        
+                <div class="group-sources">
+                    <div class="group-sources-header">
+                        <strong>Tengdar fréttir</strong>
+                        <div class="group-sources-tooltip">
+                            <span class="tooltip-icon">ℹ️</span>
+                            <div class="tooltip-content">
+                                Í einhverjum tilvikum gætu tengdar fréttir vísað á vitlausar slóðir
+                                <a href="/why-wrong-links">Af hverju?</a>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="https://www.mbl.is/frettir/erlent/2025/06/06/taivan_fordaemir_egnandi_eftirlitsferd_kina/" class="footnote-link" data-tooltip="https://www.mbl.is/frettir/erlent/2025/06/06/taivan_fordaemir_egnandi_eftirlitsferd_kina/" id="group-fn1" target="_blank">[1]</a> <a href="https://www.vb.is/frettir/sakadi-kina-um-mismunun-og-hefndaradgerdir/" class="footnote-link" data-tooltip="https://www.vb.is/frettir/sakadi-kina-um-mismunun-og-hefndaradgerdir/" id="group-fn2" target="_blank">[2]</a>
+                </div>
+                
+            <div class="tags">
+                <span class="tag">Taívan</span><span class="tag">Kína</span><span class="tag">hernaðarátök</span><span class="tag">Asía</span>
+            </div>
+            
+            <div class="matches-container">
+                <div class="match">
+                    <span class="match-icon">✨</span>
+                    <div class="match-tooltip">
+                        
+            <div class="matches">
+                <p>Við teljum að þessar fréttir passi hér með eftirfarandi líkum:</p>
+                <ul>
+            
+                    <li>
+                        <span>Taívan fordæmir kínverska eftirlitsferð</span>
+                        <span>98.12%</span>
+                    </li>
+                
+                </ul>
+                <p><a href="/how-matches-work">Hvað er þetta?</a></p>
+            </div>
+            
+                    </div>
+                </div>
+            </div>
+            </div>
+        <div class="news-item">
+            <h3>Hollandsdrottning gefur Tékkum klukku úr bræddum rússneskum vopnum</h3>
+            <p>Máxima Hollandsdrottning afhenti kirkju í Tékklandi klukku sem gerð er að hluta úr rússneskum vopnum og skotfærum sem notuð hafa verið í innrásinni í Úkraínu. Klukkan er táknræn stuðningsyfirlýsing við Úkraínu og kemur í stað klukku sem var brædd niður fyrir vopnaframleiðslu í fyrri heimsstyrjöldinni. Athöfnin fór fram í Prag að viðstöddum forseta Tékklands og eiginkonu hans.</p>
+        
+                <div class="group-sources">
+                    <div class="group-sources-header">
+                        <strong>Tengdar fréttir</strong>
+                        <div class="group-sources-tooltip">
+                            <span class="tooltip-icon">ℹ️</span>
+                            <div class="tooltip-content">
+                                Í einhverjum tilvikum gætu tengdar fréttir vísað á vitlausar slóðir
+                                <a href="/why-wrong-links">Af hverju?</a>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="https://nyr.ruv.is/frettir/erlent/2025-06-06-hollandsdrottning-gaf-tekkum-klukku-ur-braeddum-vopnum-russa-445501/" class="footnote-link" data-tooltip="https://nyr.ruv.is/frettir/erlent/2025-06-06-hollandsdrottning-gaf-tekkum-klukku-ur-braeddum-vopnum-russa-445501/" id="group-fn1" target="_blank">[1]</a>
+                </div>
+                
+            <div class="tags">
+                <span class="tag">Evrópa</span><span class="tag">Úkraína</span><span class="tag">Tékkland</span><span class="tag">Holland</span><span class="tag">stríð</span>
+            </div>
+            
+            <div class="matches-container">
+                <div class="match">
+                    <span class="match-icon">✨</span>
+                    <div class="match-tooltip">
+                        
+            <div class="matches">
+                <p>Við teljum að þessar fréttir passi hér með eftirfarandi líkum:</p>
+                <ul>
+            
+                    <li>
+                        <span>Hollensk drottning gefur táknræna klukku úr vopnum</span>
+                        <span>99.07%</span>
+                    </li>
+                
+                </ul>
+                <p><a href="/how-matches-work">Hvað er þetta?</a></p>
+            </div>
+            
+                    </div>
+                </div>
+            </div>
+            </div>
+        <div class="news-item">
+            <h3>Bandaríkin hefja refsiaðgerðir gegn dómurum Alþjóðlega sakamáladómstólsins</h3>
+            <p>Bandaríkin hófu í gær efnahagsþvinganir gegn fjórum dómurum Alþjóðlega sakamáladómstólsins vegna ákvarðana um rannsóknir á háttsemi bandarískra hermanna í Afganistan og útgáfu handtökuskipana á hendur ísraelskum ráðamönnum. Mannréttindastjóri Sameinuðu þjóðanna og Evrópusambandið hafa fordæmt aðgerðirnar og kallað eftir því að þær verði dregnar til baka.</p>
+        
+                <div class="group-sources">
+                    <div class="group-sources-header">
+                        <strong>Tengdar fréttir</strong>
+                        <div class="group-sources-tooltip">
+                            <span class="tooltip-icon">ℹ️</span>
+                            <div class="tooltip-content">
+                                Í einhverjum tilvikum gætu tengdar fréttir vísað á vitlausar slóðir
+                                <a href="/why-wrong-links">Af hverju?</a>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="https://nyr.ruv.is/frettir/erlent/2025-06-06-krefjast-thess-ad-bandarikin-afnemi-refsiadgerdir-445517/" class="footnote-link" data-tooltip="https://nyr.ruv.is/frettir/erlent/2025-06-06-krefjast-thess-ad-bandarikin-afnemi-refsiadgerdir-445517/" id="group-fn1" target="_blank">[1]</a> <a href="https://nyr.ruv.is/frettir/erlent/2025-06-06-hefja-refsiadgerdir-gegn-domurum-icc-445502/" class="footnote-link" data-tooltip="https://nyr.ruv.is/frettir/erlent/2025-06-06-hefja-refsiadgerdir-gegn-domurum-icc-445502/" id="group-fn2" target="_blank">[2]</a>
+                </div>
+                
+            <div class="tags">
+                <span class="tag">Bandaríkin</span><span class="tag">ICC</span><span class="tag">refsiaðgerðir</span><span class="tag">alþjóðalög</span>
+            </div>
+            
+            <div class="matches-container">
+                <div class="match">
+                    <span class="match-icon">✨</span>
+                    <div class="match-tooltip">
+                        
+            <div class="matches">
+                <p>Við teljum að þessar fréttir passi hér með eftirfarandi líkum:</p>
+                <ul>
+            
+                    <li>
+                        <span>Bandaríkin refsiaðgerðir gegn ICC-dómurum</span>
+                        <span>86.85%</span>
+                    </li>
+                
+                </ul>
+                <p><a href="/how-matches-work">Hvað er þetta?</a></p>
+            </div>
+            
+                    </div>
+                </div>
+            </div>
+            </div>
+        <div class="news-item">
+            <h3>Rússar drepa mann sem reyndi að ráðast á herstöð með dróna</h3>
+            <p>Þjóðvarðlið Rússlands tilkynnti að það hefði drepið mann sem reyndi að ráðast á herstöð með dróna sem bar handsprengjur. Maðurinn streittist á móti handtöku og var tekinn úr leik. Myndskeið úr eftirlitsmyndavélum sýnir manninn reyna að koma drónanum af stað áður en hann var eltur af vopnuðum hermönnum.</p>
+        
+                <div class="group-sources">
+                    <div class="group-sources-header">
+                        <strong>Tengdar fréttir</strong>
+                        <div class="group-sources-tooltip">
+                            <span class="tooltip-icon">ℹ️</span>
+                            <div class="tooltip-content">
+                                Í einhverjum tilvikum gætu tengdar fréttir vísað á vitlausar slóðir
+                                <a href="/why-wrong-links">Af hverju?</a>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="https://www.mbl.is/frettir/erlent/2025/06/06/drepinn_fyrir_ad_reyna_ad_radast_a_herstod_russa/" class="footnote-link" data-tooltip="https://www.mbl.is/frettir/erlent/2025/06/06/drepinn_fyrir_ad_reyna_ad_radast_a_herstod_russa/" id="group-fn1" target="_blank">[1]</a> <a href="https://www.mbl.is/frettir/erlent/2025/06/06/myndskeid_fill_braust_inn_i_bud_ad_na_ser_i_nasl/" class="footnote-link" data-tooltip="https://www.mbl.is/frettir/erlent/2025/06/06/myndskeid_fill_braust_inn_i_bud_ad_na_ser_i_nasl/" id="group-fn2" target="_blank">[2]</a>
+                </div>
+                
+            <div class="tags">
+                <span class="tag">Rússland</span><span class="tag">hernaðarátök</span><span class="tag">drónar</span><span class="tag">öryggi</span>
+            </div>
+            
+            <div class="matches-container">
+                <div class="match">
+                    <span class="match-icon">✨</span>
+                    <div class="match-tooltip">
+                        
+            <div class="matches">
+                <p>Við teljum að þessar fréttir passi hér með eftirfarandi líkum:</p>
+                <ul>
+            
+                    <li>
+                        <span>Árásartilraun við rússneska herstöð</span>
+                        <span>93.65%</span>
+                    </li>
+                
+                </ul>
+                <p><a href="/how-matches-work">Hvað er þetta?</a></p>
+            </div>
+            
+                    </div>
+                </div>
+            </div>
+            </div>
+            </div>
+        </div>
+        
+
+        <div class="section" id="business">
+            <div class="section-header-container">
+                <h2 class="section-header">4. VIÐSKIPTI</h2>
+                <a href="#toc" class="back-to-toc">← Efnisyfirlit</a>
+            </div>
+            
+        <div class="reading-time-container section">
+            <div class="reading-time-icon">⏱️</div>
+            <div class="reading-time-content">
+                <span class="reading-time-label">Lestur:</span>
+                <span class="reading-time-value"> 2 mín.</span>
+            </div>
+        </div>
+        
+            <div class="section-content">
+                
+        <div class="news-item">
+            <h3>Kaldvík lýkur 40 milljarða króna endurfjármögnun</h3>
+            <p>Laxeldisfélagið Kaldvík hefur lokið við umfangsmikla endurfjármögnun að fjárhæð 40 milljarðar króna, þar af 33 milljarðar í nýju sambankaláni og 6,6 milljarðar í hlutafjáraukningu. Félagið áætlar að framleiða 21.500 tonn af laxi á árinu 2025 og hefur nú leyfi til framleiðslu á samtals 43.800 tonnum. Nýjar fjárfestingar í innviðum og vinnslu eru taldar skila árlegum sparnaði og auka samkeppnishæfni félagsins.</p>
+        
+                <div class="group-sources">
+                    <div class="group-sources-header">
+                        <strong>Tengdar fréttir</strong>
+                        <div class="group-sources-tooltip">
+                            <span class="tooltip-icon">ℹ️</span>
+                            <div class="tooltip-content">
+                                Í einhverjum tilvikum gætu tengdar fréttir vísað á vitlausar slóðir
+                                <a href="/why-wrong-links">Af hverju?</a>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="https://www.mbl.is/200milur/frettir/2025/06/06/kaldvik_klarar_40_milljarda_krona_endurfjarmognun/" class="footnote-link" data-tooltip="https://www.mbl.is/200milur/frettir/2025/06/06/kaldvik_klarar_40_milljarda_krona_endurfjarmognun/" id="group-fn1" target="_blank">[1]</a> <a href="https://www.vb.is/frettir/kaldvik-lykur-40-milljarda-krona-endurfjarmognun/" class="footnote-link" data-tooltip="https://www.vb.is/frettir/kaldvik-lykur-40-milljarda-krona-endurfjarmognun/" id="group-fn2" target="_blank">[2]</a> <a href="https://fiskifrettir.vb.is/kaldvik-klarar-40-milljarda-krona-endurfjarmognun/" class="footnote-link" data-tooltip="https://fiskifrettir.vb.is/kaldvik-klarar-40-milljarda-krona-endurfjarmognun/" id="group-fn3" target="_blank">[3]</a>
+                </div>
+                
+            <div class="tags">
+                <span class="tag">viðskipti</span><span class="tag">laxeldi</span><span class="tag">fjármögnun</span><span class="tag">Kaldvík</span>
+            </div>
+            
+            <div class="matches-container">
+                <div class="match">
+                    <span class="match-icon">✨</span>
+                    <div class="match-tooltip">
+                        
+            <div class="matches">
+                <p>Við teljum að þessar fréttir passi hér með eftirfarandi líkum:</p>
+                <ul>
+            
+                    <li>
+                        <span>Kaldvík klárar 40 milljarða endurfjármögnun</span>
+                        <span>97.98%</span>
+                    </li>
+                
+                </ul>
+                <p><a href="/how-matches-work">Hvað er þetta?</a></p>
+            </div>
+            
+                    </div>
+                </div>
+            </div>
+            </div>
+        <div class="news-item">
+            <h3>Icelandair fjölgar farþegum um 13% í maí</h3>
+            <p>Icelandair flutti 448 þúsund farþega í maí, sem er 13% aukning frá sama mánuði í fyrra. Sætanýting var 79,6% og stundvísi 84,1%. Tekjur á hvern seldan sætiskílómetra lækkuðu um 2% milli ára vegna samkeppni á Norður-Atlantshafsmarkaði. Félagið hefur flutt rúmlega 1,6 milljón farþega það sem af er ári.</p>
+        
+                <div class="group-sources">
+                    <div class="group-sources-header">
+                        <strong>Tengdar fréttir</strong>
+                        <div class="group-sources-tooltip">
+                            <span class="tooltip-icon">ℹ️</span>
+                            <div class="tooltip-content">
+                                Í einhverjum tilvikum gætu tengdar fréttir vísað á vitlausar slóðir
+                                <a href="/why-wrong-links">Af hverju?</a>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="https://www.mbl.is/vidskipti/frettir/2025/06/06/farthegum_icelandair_til_islands_fjolgar_um_18_pros/" class="footnote-link" data-tooltip="https://www.mbl.is/vidskipti/frettir/2025/06/06/farthegum_icelandair_til_islands_fjolgar_um_18_pros/" id="group-fn1" target="_blank">[1]</a> <a href="https://www.vb.is/frettir/farthegum-icelandair-i-mai-fjolgadi-um-13/" class="footnote-link" data-tooltip="https://www.vb.is/frettir/farthegum-icelandair-i-mai-fjolgadi-um-13/" id="group-fn2" target="_blank">[2]</a>
+                </div>
+                
+            <div class="tags">
+                <span class="tag">Icelandair</span><span class="tag">flug</span><span class="tag">ferðamál</span><span class="tag">viðskipti</span>
+            </div>
+            
+            <div class="matches-container">
+                <div class="match">
+                    <span class="match-icon">✨</span>
+                    <div class="match-tooltip">
+                        
+            <div class="matches">
+                <p>Við teljum að þessar fréttir passi hér með eftirfarandi líkum:</p>
+                <ul>
+            
+                    <li>
+                        <span>Farþegafjöldi Icelandair aukist um 18%</span>
+                        <span>99.08%</span>
+                    </li>
+                
+                </ul>
+                <p><a href="/how-matches-work">Hvað er þetta?</a></p>
+            </div>
+            
+                    </div>
+                </div>
+            </div>
+            </div>
+        <div class="news-item">
+            <h3>Oculis metið hærra eftir jákvæðar niðurstöður í lyfjaþróun</h3>
+            <p>Bandarískur fjárfestingarbanki hefur hækkað verðmat sitt á Oculis um meira en tvöfalt eftir jákvæðar niðurstöður úr klínískum rannsóknum á lyfinu OCS-05. Lyfið er talið hafa mikla möguleika sem taugaverndandi meðferð við sjaldgæfum augnsjúkdómum og gæti skilað milljörðum dala í tekjur fyrir félagið.</p>
+        
+                <div class="group-sources">
+                    <div class="group-sources-header">
+                        <strong>Tengdar fréttir</strong>
+                        <div class="group-sources-tooltip">
+                            <span class="tooltip-icon">ℹ️</span>
+                            <div class="tooltip-content">
+                                Í einhverjum tilvikum gætu tengdar fréttir vísað á vitlausar slóðir
+                                <a href="/why-wrong-links">Af hverju?</a>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="https://www.visir.is/g/20252736117d/slaevandi-lyf-og-lagt-saetisbak-drattarvelar-orsakir-banaslyss" class="footnote-link" data-tooltip="https://www.visir.is/g/20252736117d/slaevandi-lyf-og-lagt-saetisbak-drattarvelar-orsakir-banaslyss" id="group-fn1" target="_blank">[1]</a> <a href="https://www.visir.is/g/20252736050d/haekka-verdmatid-um-riflega-tvofalt-og-telja-vanmetin-taekifaeri-i-lyfjapipu-oculis" class="footnote-link" data-tooltip="https://www.visir.is/g/20252736050d/haekka-verdmatid-um-riflega-tvofalt-og-telja-vanmetin-taekifaeri-i-lyfjapipu-oculis" id="group-fn2" target="_blank">[2]</a> <a href="https://nyr.ruv.is/frettir/innlent/2025-06-06-rnsa-bidur-lyfjastofnun-ad-baeta-ur-merkingum-lyfja-eftir-banaslys-i-umferdinni-445561/" class="footnote-link" data-tooltip="https://nyr.ruv.is/frettir/innlent/2025-06-06-rnsa-bidur-lyfjastofnun-ad-baeta-ur-merkingum-lyfja-eftir-banaslys-i-umferdinni-445561/" id="group-fn3" target="_blank">[3]</a>
+                </div>
+                
+            <div class="tags">
+                <span class="tag">Oculis</span><span class="tag">lyfjaþróun</span><span class="tag">fjárfestingar</span><span class="tag">viðskipti</span>
+            </div>
+            
+            <div class="matches-container">
+                <div class="match">
+                    <span class="match-icon">✨</span>
+                    <div class="match-tooltip">
+                        
+            <div class="matches">
+                <p>Við teljum að þessar fréttir passi hér með eftirfarandi líkum:</p>
+                <ul>
+            
+                    <li>
+                        <span>Lyfjamerkingar og umferðarslys</span>
+                        <span>91.95%</span>
+                    </li>
+                
+                </ul>
+                <p><a href="/how-matches-work">Hvað er þetta?</a></p>
+            </div>
+            
+                    </div>
+                </div>
+            </div>
+            </div>
+            </div>
+        </div>
+        
+
+        <div class="section" id="famous_people">
+            <div class="section-header-container">
+                <h2 class="section-header">5. FRÆGA FÓLKIÐ</h2>
+                <a href="#toc" class="back-to-toc">← Efnisyfirlit</a>
+            </div>
+            
+        <div class="reading-time-container section">
+            <div class="reading-time-icon">⏱️</div>
+            <div class="reading-time-content">
+                <span class="reading-time-label">Lestur:</span>
+                <span class="reading-time-value"> 2 mín.</span>
+            </div>
+        </div>
+        
+            <div class="section-content">
+                
+        <div class="news-item">
+            <h3>Klara Baldursdóttir á Klörubar látin</h3>
+            <p>Klara Baldursdóttir, betur þekkt sem Klara á Klörubar á Kanarí, lést 74 ára að aldri. Klara var þekkt meðal Íslendinga á Kanaríeyjum og gegndi meðal annars embætti ræðismanns þar. Hún var mikilvæg tenging fyrir Íslendinga á svæðinu og verður minning hennar heiðruð á Kanarí um helgina.</p>
+        
+                <div class="group-sources">
+                    <div class="group-sources-header">
+                        <strong>Tengdar fréttir</strong>
+                        <div class="group-sources-tooltip">
+                            <span class="tooltip-icon">ℹ️</span>
+                            <div class="tooltip-content">
+                                Í einhverjum tilvikum gætu tengdar fréttir vísað á vitlausar slóðir
+                                <a href="/why-wrong-links">Af hverju?</a>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="https://www.visir.is/g/20252736492d/klara-baldursdottir-er-latin" class="footnote-link" data-tooltip="https://www.visir.is/g/20252736492d/klara-baldursdottir-er-latin" id="group-fn1" target="_blank">[1]</a> <a href="https://www.visir.is/g/20252736312d/-erum-ekki-dukkur-sem-snorri-getur-sagt-fyrir-verkum-" class="footnote-link" data-tooltip="https://www.visir.is/g/20252736312d/-erum-ekki-dukkur-sem-snorri-getur-sagt-fyrir-verkum-" id="group-fn2" target="_blank">[2]</a> <a href="https://www.visir.is/g/20252736215d/kolbrun-segir-gesti-nefndarinnar-handbendi-minnihlutans" class="footnote-link" data-tooltip="https://www.visir.is/g/20252736215d/kolbrun-segir-gesti-nefndarinnar-handbendi-minnihlutans" id="group-fn3" target="_blank">[3]</a>
+                </div>
+                
+            <div class="tags">
+                <span class="tag">fræga fólkið</span><span class="tag">minning</span><span class="tag">Kanarí</span>
+            </div>
+            
+            <div class="matches-container">
+                <div class="match">
+                    <span class="match-icon">✨</span>
+                    <div class="match-tooltip">
+                        
+            <div class="matches">
+                <p>Við teljum að þessar fréttir passi hér með eftirfarandi líkum:</p>
+                <ul>
+            
+                    <li>
+                        <span>Klara Baldursdóttir látin</span>
+                        <span>92.16%</span>
+                    </li>
+                
+                </ul>
+                <p><a href="/how-matches-work">Hvað er þetta?</a></p>
+            </div>
+            
+                    </div>
+                </div>
+            </div>
+            </div>
+        <div class="news-item">
+            <h3>Glæsileg mæðgin prýða forsíðu tískutímarits</h3>
+            <p>Kelly Rutherford, leikkona úr Gossip Girl, og sonur hennar Hermés Giersch prýða forsíðu nýjasta tölublaðs Harper's Bazaar í Hollandi. Giersch, sem er 18 ára, er á hraðri uppleið í fyrirsætubransanum og hefur vakið athygli fyrir líkindin við móður sína. Rutherford hefur látið lítið fyrir sér fara undanfarin ár en nýtur nú athygli með syni sínum.</p>
+        
+                <div class="group-sources">
+                    <div class="group-sources-header">
+                        <strong>Tengdar fréttir</strong>
+                        <div class="group-sources-tooltip">
+                            <span class="tooltip-icon">ℹ️</span>
+                            <div class="tooltip-content">
+                                Í einhverjum tilvikum gætu tengdar fréttir vísað á vitlausar slóðir
+                                <a href="/why-wrong-links">Af hverju?</a>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="https://www.mbl.is/folk/frettir/2025/06/06/glaesileg_maedgin_pryda_forsidu_tiskutimarits/" class="footnote-link" data-tooltip="https://www.mbl.is/folk/frettir/2025/06/06/glaesileg_maedgin_pryda_forsidu_tiskutimarits/" id="group-fn1" target="_blank">[1]</a> <a href="https://www.mbl.is/folk/frettir/2025/06/06/christian_bale_naer_othekkjanlegur/" class="footnote-link" data-tooltip="https://www.mbl.is/folk/frettir/2025/06/06/christian_bale_naer_othekkjanlegur/" id="group-fn2" target="_blank">[2]</a> <a href="https://www.mbl.is/folk/frettir/2025/06/06/upplyst_um_danarorsok_leikarans/" class="footnote-link" data-tooltip="https://www.mbl.is/folk/frettir/2025/06/06/upplyst_um_danarorsok_leikarans/" id="group-fn3" target="_blank">[3]</a>
+                </div>
+                
+            <div class="tags">
+                <span class="tag">fræga fólkið</span><span class="tag">tíska</span><span class="tag">fjölskylda</span>
+            </div>
+            
+            <div class="matches-container">
+                <div class="match">
+                    <span class="match-icon">✨</span>
+                    <div class="match-tooltip">
+                        
+            <div class="matches">
+                <p>Við teljum að þessar fréttir passi hér með eftirfarandi líkum:</p>
+                <ul>
+            
+                    <li>
+                        <span>Fréttir um leikarana og tískulist</span>
+                        <span>83.11%</span>
+                    </li>
+                
+                </ul>
+                <p><a href="/how-matches-work">Hvað er þetta?</a></p>
+            </div>
+            
+                    </div>
+                </div>
+            </div>
+            </div>
+        <div class="news-item">
+            <h3>Christian Bale nær óþekkjanlegur í nýrri kvikmynd</h3>
+            <p>Enska stórleikarinn Christian Bale var nær óþekkjanlegur á tökusetti nýjustu kvikmyndar sinnar, Madden, þar sem hann fer með hlutverk NFL-þjálfarans Al Davis. Bale hefur áður verið þekktur fyrir miklar útlitsbreytingar fyrir hlutverk sín og vekur nýja útlitið mikla athygli.</p>
+        
+                <div class="group-sources">
+                    <div class="group-sources-header">
+                        <strong>Tengdar fréttir</strong>
+                        <div class="group-sources-tooltip">
+                            <span class="tooltip-icon">ℹ️</span>
+                            <div class="tooltip-content">
+                                Í einhverjum tilvikum gætu tengdar fréttir vísað á vitlausar slóðir
+                                <a href="/why-wrong-links">Af hverju?</a>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="https://www.mbl.is/folk/frettir/2025/06/06/glaesileg_maedgin_pryda_forsidu_tiskutimarits/" class="footnote-link" data-tooltip="https://www.mbl.is/folk/frettir/2025/06/06/glaesileg_maedgin_pryda_forsidu_tiskutimarits/" id="group-fn1" target="_blank">[1]</a> <a href="https://www.mbl.is/folk/frettir/2025/06/06/christian_bale_naer_othekkjanlegur/" class="footnote-link" data-tooltip="https://www.mbl.is/folk/frettir/2025/06/06/christian_bale_naer_othekkjanlegur/" id="group-fn2" target="_blank">[2]</a> <a href="https://www.mbl.is/folk/frettir/2025/06/06/upplyst_um_danarorsok_leikarans/" class="footnote-link" data-tooltip="https://www.mbl.is/folk/frettir/2025/06/06/upplyst_um_danarorsok_leikarans/" id="group-fn3" target="_blank">[3]</a>
+                </div>
+                
+            <div class="tags">
+                <span class="tag">fræga fólkið</span><span class="tag">kvikmyndir</span><span class="tag">leikarar</span>
+            </div>
+            
+            <div class="matches-container">
+                <div class="match">
+                    <span class="match-icon">✨</span>
+                    <div class="match-tooltip">
+                        
+            <div class="matches">
+                <p>Við teljum að þessar fréttir passi hér með eftirfarandi líkum:</p>
+                <ul>
+            
+                    <li>
+                        <span>Fréttir um leikarana og tískulist</span>
+                        <span>87.56%</span>
+                    </li>
+                
+                </ul>
+                <p><a href="/how-matches-work">Hvað er þetta?</a></p>
+            </div>
+            
+                    </div>
+                </div>
+            </div>
+            </div>
+        <div class="news-item">
+            <h3>Romeo Beckham og Kim Turnbull hætt saman</h3>
+            <p>Romeo Beckham og fyrirsætan Kim Turnbull hafa slitið sambandi sínu eftir nokkra mánuði saman. Orðrómur hefur verið um spennu innan Beckham-fjölskyldunnar og að Turnbull hafi áður verið tengd Brooklyn Beckham, sem gæti hafa skapað óþægindi innan fjölskyldunnar.</p>
+        
+                <div class="group-sources">
+                    <div class="group-sources-header">
+                        <strong>Tengdar fréttir</strong>
+                        <div class="group-sources-tooltip">
+                            <span class="tooltip-icon">ℹ️</span>
+                            <div class="tooltip-content">
+                                Í einhverjum tilvikum gætu tengdar fréttir vísað á vitlausar slóðir
+                                <a href="/why-wrong-links">Af hverju?</a>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="https://www.mbl.is/folk/frettir/2025/06/06/er_thetta_konan_a_bak_vid_fjolskylduerjurnar/" class="footnote-link" data-tooltip="https://www.mbl.is/folk/frettir/2025/06/06/er_thetta_konan_a_bak_vid_fjolskylduerjurnar/" id="group-fn1" target="_blank">[1]</a>
+                </div>
+                
+            <div class="tags">
+                <span class="tag">fræga fólkið</span><span class="tag">sambönd</span><span class="tag">Beckham</span>
+            </div>
+            
+            <div class="matches-container">
+                <div class="match">
+                    <span class="match-icon">✨</span>
+                    <div class="match-tooltip">
+                        
+            <div class="matches">
+                <p>Við teljum að þessar fréttir passi hér með eftirfarandi líkum:</p>
+                <ul>
+            
+                    <li>
+                        <span>Vafamál um bakvið fjölskylduerjur</span>
+                        <span>99.44%</span>
+                    </li>
+                
+                </ul>
+                <p><a href="/how-matches-work">Hvað er þetta?</a></p>
+            </div>
+            
+                    </div>
+                </div>
+            </div>
+            </div>
+            </div>
+        </div>
+        
+
+        <div class="section" id="sports">
+            <div class="section-header-container">
+                <h2 class="section-header">6. ÍÞRÓTTIR</h2>
+                <a href="#toc" class="back-to-toc">← Efnisyfirlit</a>
+            </div>
+            
+        <div class="reading-time-container section">
+            <div class="reading-time-icon">⏱️</div>
+            <div class="reading-time-content">
+                <span class="reading-time-label">Lestur:</span>
+                <span class="reading-time-value"> 2 mín.</span>
+            </div>
+        </div>
+        
+            <div class="section-content">
+                
+        <div class="news-item">
+            <h3>Ísland sigrar Skotland 3:1 í vináttulandsleik</h3>
+            <p>Íslenska karlalandsliðið í knattspyrnu vann óvæntan og verðskuldaðan sigur á Skotum í vináttulandsleik á Hampden Park í Glasgow, 3:1. Þetta er fyrsti sigur Arnars Gunnlaugssonar sem þjálfara liðsins og jafnframt fyrsti sigur Íslands gegn Skotum í A-landsleik karla. Andri Lucas Guðjohnsen og Guðlaugur Victor Pálsson skoruðu fyrir Ísland.</p>
+        
+                <div class="group-sources">
+                    <div class="group-sources-header">
+                        <strong>Tengdar fréttir</strong>
+                        <div class="group-sources-tooltip">
+                            <span class="tooltip-icon">ℹ️</span>
+                            <div class="tooltip-content">
+                                Í einhverjum tilvikum gætu tengdar fréttir vísað á vitlausar slóðir
+                                <a href="/why-wrong-links">Af hverju?</a>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="https://www.mbl.is/sport/efstadeild/2025/06/06/glaesilegur_sigur_islands_i_glasgow/" class="footnote-link" data-tooltip="https://www.mbl.is/sport/efstadeild/2025/06/06/glaesilegur_sigur_islands_i_glasgow/" id="group-fn1" target="_blank">[1]</a> <a href="https://www.mbl.is/sport/efstadeild/2025/06/06/hordur_beint_i_byrjunarlidid/" class="footnote-link" data-tooltip="https://www.mbl.is/sport/efstadeild/2025/06/06/hordur_beint_i_byrjunarlidid/" id="group-fn2" target="_blank">[2]</a> <a href="https://www.mbl.is/sport/fotbolti/2025/06/06/32_thusund_midar_seldir_a_leik_islands/" class="footnote-link" data-tooltip="https://www.mbl.is/sport/fotbolti/2025/06/06/32_thusund_midar_seldir_a_leik_islands/" id="group-fn3" target="_blank">[3]</a> <a href="https://nyr.ruv.is/frettir/ithrottir/2025-06-06-fyrsti-sigur-arnars-kom-i-skotlandi-445563/" class="footnote-link" data-tooltip="https://nyr.ruv.is/frettir/ithrottir/2025-06-06-fyrsti-sigur-arnars-kom-i-skotlandi-445563/" id="group-fn4" target="_blank">[4]</a>
+                </div>
+                
+            <div class="tags">
+                <span class="tag">íþróttir</span><span class="tag">knattspyrna</span><span class="tag">landslið</span>
+            </div>
+            
+            <div class="matches-container">
+                <div class="match">
+                    <span class="match-icon">✨</span>
+                    <div class="match-tooltip">
+                        
+            <div class="matches">
+                <p>Við teljum að þessar fréttir passi hér með eftirfarandi líkum:</p>
+                <ul>
+            
+                    <li>
+                        <span>Ísland sigraði Skotland í vináttuleik</span>
+                        <span>96.33%</span>
+                    </li>
+                
+                </ul>
+                <p><a href="/how-matches-work">Hvað er þetta?</a></p>
+            </div>
+            
+                    </div>
+                </div>
+            </div>
+            </div>
+        <div class="news-item">
+            <h3>Indiana Pacers vinna fyrsta leikinn í NBA-úrslitum</h3>
+            <p>Indiana Pacers höfðu betur gegn Oklahoma City Thunder í fyrsta leik úrslita NBA-deildarinnar, 111:110. Tyrese Haliburton reyndist hetja Indiana með flautukörfu undir lok leiksins. Indiana leiðir þar með einvígið 1:0 og næsti leikur fer fram aðfaranótt mánudags.</p>
+        
+                <div class="group-sources">
+                    <div class="group-sources-header">
+                        <strong>Tengdar fréttir</strong>
+                        <div class="group-sources-tooltip">
+                            <span class="tooltip-icon">ℹ️</span>
+                            <div class="tooltip-content">
+                                Í einhverjum tilvikum gætu tengdar fréttir vísað á vitlausar slóðir
+                                <a href="/why-wrong-links">Af hverju?</a>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="https://www.mbl.is/sport/korfubolti/2025/06/06/hadramatik_og_ovaent_urslit_i_fyrsta_leik/" class="footnote-link" data-tooltip="https://www.mbl.is/sport/korfubolti/2025/06/06/hadramatik_og_ovaent_urslit_i_fyrsta_leik/" id="group-fn1" target="_blank">[1]</a> <a href="https://nyr.ruv.is/frettir/ithrottir/2025-06-06-indiana-vann-fyrsta-urslitaleikinn-med-minnsta-mun-445510/" class="footnote-link" data-tooltip="https://nyr.ruv.is/frettir/ithrottir/2025-06-06-indiana-vann-fyrsta-urslitaleikinn-med-minnsta-mun-445510/" id="group-fn2" target="_blank">[2]</a>
+                </div>
+                
+            <div class="tags">
+                <span class="tag">íþróttir</span><span class="tag">körfubolti</span><span class="tag">NBA</span>
+            </div>
+            
+            <div class="matches-container">
+                <div class="match">
+                    <span class="match-icon">✨</span>
+                    <div class="match-tooltip">
+                        
+            <div class="matches">
+                <p>Við teljum að þessar fréttir passi hér með eftirfarandi líkum:</p>
+                <ul>
+            
+                    <li>
+                        <span>Indiana sigraði fyrsta úrslitaleik NBA</span>
+                        <span>98.92%</span>
+                    </li>
+                
+                </ul>
+                <p><a href="/how-matches-work">Hvað er þetta?</a></p>
+            </div>
+            
+                    </div>
+                </div>
+            </div>
+            </div>
+        <div class="news-item">
+            <h3>Valur og Tindastóll skildu jöfn í Bestu deild kvenna</h3>
+            <p>Valur og Tindastóll gerðu 2:2 jafntefli í fyrsta leik 8. umferðar Bestu deildar kvenna í fótbolta. Valur fór upp um tvö sæti með stiginu og er nú í fimmta sæti deildarinnar. Tindastóll er áfram í áttunda sæti.</p>
+        
+                <div class="group-sources">
+                    <div class="group-sources-header">
+                        <strong>Tengdar fréttir</strong>
+                        <div class="group-sources-tooltip">
+                            <span class="tooltip-icon">ℹ️</span>
+                            <div class="tooltip-content">
+                                Í einhverjum tilvikum gætu tengdar fréttir vísað á vitlausar slóðir
+                                <a href="/why-wrong-links">Af hverju?</a>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="https://www.mbl.is/sport/efstadeild/2025/06/06/valur_upp_um_tvo_saeti_thratt_fyrir_vonbrigdi/" class="footnote-link" data-tooltip="https://www.mbl.is/sport/efstadeild/2025/06/06/valur_upp_um_tvo_saeti_thratt_fyrir_vonbrigdi/" id="group-fn1" target="_blank">[1]</a> <a href="https://www.mbl.is/sport/efstadeild/2025/06/06/islensku_strakarnir_topudu_gegn_englandi/" class="footnote-link" data-tooltip="https://www.mbl.is/sport/efstadeild/2025/06/06/islensku_strakarnir_topudu_gegn_englandi/" id="group-fn2" target="_blank">[2]</a> <a href="https://www.mbl.is/sport/handbolti/2025/06/06/baetti_sitt_eigid_markamet/" class="footnote-link" data-tooltip="https://www.mbl.is/sport/handbolti/2025/06/06/baetti_sitt_eigid_markamet/" id="group-fn3" target="_blank">[3]</a>
+                </div>
+                
+            <div class="tags">
+                <span class="tag">íþróttir</span><span class="tag">knattspyrna</span><span class="tag">kvennabolti</span>
+            </div>
+            
+            <div class="matches-container">
+                <div class="match">
+                    <span class="match-icon">✨</span>
+                    <div class="match-tooltip">
+                        
+            <div class="matches">
+                <p>Við teljum að þessar fréttir passi hér með eftirfarandi líkum:</p>
+                <ul>
+            
+                    <li>
+                        <span>Íslensk úrslit og markamet í íþróttum</span>
+                        <span>43.43%</span>
+                    </li>
+                
+                </ul>
+                <p><a href="/how-matches-work">Hvað er þetta?</a></p>
+            </div>
+            
+                    </div>
+                </div>
+            </div>
+            </div>
+        <div class="news-item">
+            <h3>Sigur í fyrsta leik Íslands á Norðurlandamóti U17 í handbolta</h3>
+            <p>U17-landslið Íslands í handbolta vann Færeyjar 29:28 í fyrsta leik sínum á Norðurlandamótinu í Færeyjum. Gunnar Róbertsson var markahæstur með átta mörk og Sigurmundur Gísli Unnarsson varði tólf skot í markinu.</p>
+        
+                <div class="group-sources">
+                    <div class="group-sources-header">
+                        <strong>Tengdar fréttir</strong>
+                        <div class="group-sources-tooltip">
+                            <span class="tooltip-icon">ℹ️</span>
+                            <div class="tooltip-content">
+                                Í einhverjum tilvikum gætu tengdar fréttir vísað á vitlausar slóðir
+                                <a href="/why-wrong-links">Af hverju?</a>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="https://www.mbl.is/sport/handbolti/2025/06/06/sigur_i_fyrsta_leik_islands/" class="footnote-link" data-tooltip="https://www.mbl.is/sport/handbolti/2025/06/06/sigur_i_fyrsta_leik_islands/" id="group-fn1" target="_blank">[1]</a> <a href="https://www.mbl.is/sport/handbolti/2025/06/06/islendingarnir_fengu_silfur_i_austurriki/" class="footnote-link" data-tooltip="https://www.mbl.is/sport/handbolti/2025/06/06/islendingarnir_fengu_silfur_i_austurriki/" id="group-fn2" target="_blank">[2]</a> <a href="https://www.mbl.is/sport/frettir/2025/06/06/oruggur_sigur_luxemborg_gegn_islandi/" class="footnote-link" data-tooltip="https://www.mbl.is/sport/frettir/2025/06/06/oruggur_sigur_luxemborg_gegn_islandi/" id="group-fn3" target="_blank">[3]</a> <a href="https://www.mbl.is/sport/frettir/2025/06/06/topudu_fyrir_svisslendingum/" class="footnote-link" data-tooltip="https://www.mbl.is/sport/frettir/2025/06/06/topudu_fyrir_svisslendingum/" id="group-fn4" target="_blank">[4]</a> <a href="https://www.mbl.is/sport/enski/2025/06/06/west_ham_festir_kaup_a_varnarmanninum/" class="footnote-link" data-tooltip="https://www.mbl.is/sport/enski/2025/06/06/west_ham_festir_kaup_a_varnarmanninum/" id="group-fn5" target="_blank">[5]</a>
+                </div>
+                
+            <div class="tags">
+                <span class="tag">íþróttir</span><span class="tag">handbolti</span><span class="tag">U17</span>
+            </div>
+            
+            <div class="matches-container">
+                <div class="match">
+                    <span class="match-icon">✨</span>
+                    <div class="match-tooltip">
+                        
+            <div class="matches">
+                <p>Við teljum að þessar fréttir passi hér með eftirfarandi líkum:</p>
+                <ul>
+            
+                    <li>
+                        <span>Íslensk landsliðsárangur og West Ham kaup</span>
+                        <span>78.52%</span>
+                    </li>
+                
+                </ul>
+                <p><a href="/how-matches-work">Hvað er þetta?</a></p>
+            </div>
+            
+                    </div>
+                </div>
+            </div>
+            </div>
+            </div>
+        </div>
+        
+
+        <div class="section" id="arts">
+            <div class="section-header-container">
+                <h2 class="section-header">7. LISTIR</h2>
+                <a href="#toc" class="back-to-toc">← Efnisyfirlit</a>
+            </div>
+            
+        <div class="reading-time-container section">
+            <div class="reading-time-icon">⏱️</div>
+            <div class="reading-time-content">
+                <span class="reading-time-label">Lestur:</span>
+                <span class="reading-time-value"> 1 mín.</span>
+            </div>
+        </div>
+        
+            <div class="section-content">
+                
+        <div class="news-item">
+            <h3>Skjaldborgarhátíðin sett í átjánda sinn á Patreksfirði</h3>
+            <p>Skjaldborgarhátíðin, hátíð íslenskra heimildamynda, var sett í átjánda sinn á Patreksfirði. Fjöldi nýrra íslenskra heimildamynda verður sýnd yfir hvítasunnuhelgina og hátíðin hefur fest sig í sessi sem mikilvægur vettvangur fyrir heimildamyndagerð á Íslandi. Heiðursgestur í ár er ítalska leikstýran Alessandra Celesia.</p>
+        
+                <div class="group-sources">
+                    <div class="group-sources-header">
+                        <strong>Tengdar fréttir</strong>
+                        <div class="group-sources-tooltip">
+                            <span class="tooltip-icon">ℹ️</span>
+                            <div class="tooltip-content">
+                                Í einhverjum tilvikum gætu tengdar fréttir vísað á vitlausar slóðir
+                                <a href="/why-wrong-links">Af hverju?</a>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="https://www.visir.is/g/20252736083d/skjaldborg-i-atjanda-sinn-ef-madur-byr-a-svona-stad-og-vill-eitthvad-tha-verdur-madur-ad-hafa-fyrir-thvi-sjalfur-" class="footnote-link" data-tooltip="https://www.visir.is/g/20252736083d/skjaldborg-i-atjanda-sinn-ef-madur-byr-a-svona-stad-og-vill-eitthvad-tha-verdur-madur-ad-hafa-fyrir-thvi-sjalfur-" id="group-fn1" target="_blank">[1]</a> <a href="https://nyr.ruv.is/frettir/menning-og-daegurmal/2025-06-06-yndislegt-ad-vera-a-patreksfirdi-yfir-skjaldborgarhelgina-445470/" class="footnote-link" data-tooltip="https://nyr.ruv.is/frettir/menning-og-daegurmal/2025-06-06-yndislegt-ad-vera-a-patreksfirdi-yfir-skjaldborgarhelgina-445470/" id="group-fn2" target="_blank">[2]</a>
+                </div>
+                
+            <div class="tags">
+                <span class="tag">listir</span><span class="tag">kvikmyndir</span><span class="tag">hátíðir</span>
+            </div>
+            
+            <div class="matches-container">
+                <div class="match">
+                    <span class="match-icon">✨</span>
+                    <div class="match-tooltip">
+                        
+            <div class="matches">
+                <p>Við teljum að þessar fréttir passi hér með eftirfarandi líkum:</p>
+                <ul>
+            
+                    <li>
+                        <span>Skjaldborgarhátíð í Patreksfirði</span>
+                        <span>94.90%</span>
+                    </li>
+                
+                </ul>
+                <p><a href="/how-matches-work">Hvað er þetta?</a></p>
+            </div>
+            
+                    </div>
+                </div>
+            </div>
+            </div>
+        <div class="news-item">
+            <h3>Hildur Guðnadóttir verður hátíðarlistamaður Listahátíðar 2026</h3>
+            <p>Hildur Guðnadóttir verður hátíðarlistamaður Listahátíðar í Reykjavík sumarið 2026. Á fjögurra daga hátíðinni verður ferill hennar fagnað með þremur viðburðum þar sem tónlist Hildar er í fyrirrúmi, meðal annars með Sinfóníuhljómsveit Íslands og flutningi á nýju verki.</p>
+        
+                <div class="group-sources">
+                    <div class="group-sources-header">
+                        <strong>Tengdar fréttir</strong>
+                        <div class="group-sources-tooltip">
+                            <span class="tooltip-icon">ℹ️</span>
+                            <div class="tooltip-content">
+                                Í einhverjum tilvikum gætu tengdar fréttir vísað á vitlausar slóðir
+                                <a href="/why-wrong-links">Af hverju?</a>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="https://www.visir.is/g/20252736227d/missti-nanast-sjonina-thegar-slattuorf-skaut-steini-i-annad-augad" class="footnote-link" data-tooltip="https://www.visir.is/g/20252736227d/missti-nanast-sjonina-thegar-slattuorf-skaut-steini-i-annad-augad" id="group-fn1" target="_blank">[1]</a> <a href="https://www.visir.is/g/20252736087d/ibuar-leiti-rettar-sins-vegna-flautsins-thetta-er-lydheilsuogn-" class="footnote-link" data-tooltip="https://www.visir.is/g/20252736087d/ibuar-leiti-rettar-sins-vegna-flautsins-thetta-er-lydheilsuogn-" id="group-fn2" target="_blank">[2]</a> <a href="https://www.visir.is/g/20252736306d/hildur-i-adalhlutverki-a-listahatid-i-reykjavik" class="footnote-link" data-tooltip="https://www.visir.is/g/20252736306d/hildur-i-adalhlutverki-a-listahatid-i-reykjavik" id="group-fn3" target="_blank">[3]</a> <a href="https://www.visir.is/g/20252736083d/skjaldborg-i-atjanda-sinn-ef-madur-byr-a-svona-stad-og-vill-eitthvad-tha-verdur-madur-ad-hafa-fyrir-thvi-sjalfur-" class="footnote-link" data-tooltip="https://www.visir.is/g/20252736083d/skjaldborg-i-atjanda-sinn-ef-madur-byr-a-svona-stad-og-vill-eitthvad-tha-verdur-madur-ad-hafa-fyrir-thvi-sjalfur-" id="group-fn4" target="_blank">[4]</a> <a href="https://nyr.ruv.is/frettir/menning-og-daegurmal/2025-06-06-yndislegt-ad-vera-a-patreksfirdi-yfir-skjaldborgarhelgina-445470/" class="footnote-link" data-tooltip="https://nyr.ruv.is/frettir/menning-og-daegurmal/2025-06-06-yndislegt-ad-vera-a-patreksfirdi-yfir-skjaldborgarhelgina-445470/" id="group-fn5" target="_blank">[5]</a>
+                </div>
+                
+            <div class="tags">
+                <span class="tag">listir</span><span class="tag">tónlist</span><span class="tag">Hildur Guðnadóttir</span>
+            </div>
+            
+            <div class="matches-container">
+                <div class="match">
+                    <span class="match-icon">✨</span>
+                    <div class="match-tooltip">
+                        
+            <div class="matches">
+                <p>Við teljum að þessar fréttir passi hér með eftirfarandi líkum:</p>
+                <ul>
+            
+                    <li>
+                        <span>Slys með sláttuorf og lýðheilsuógn</span>
+                        <span>33.19%</span>
+                    </li>
+                
+                    <li>
+                        <span>Skjaldborgarhátíð í Patreksfirði</span>
+                        <span>20.67%</span>
+                    </li>
+                
+                </ul>
+                <p><a href="/how-matches-work">Hvað er þetta?</a></p>
+            </div>
+            
+                    </div>
+                </div>
+            </div>
+            </div>
+            </div>
+        </div>
+        
+
+        <div class="section" id="science">
+            <div class="section-header-container">
+                <h2 class="section-header">8. VÍSINDI</h2>
+                <a href="#toc" class="back-to-toc">← Efnisyfirlit</a>
+            </div>
+            
+        <div class="reading-time-container section">
+            <div class="reading-time-icon">⏱️</div>
+            <div class="reading-time-content">
+                <span class="reading-time-label">Lestur:</span>
+                <span class="reading-time-value"> 1 mín.</span>
+            </div>
+        </div>
+        
+            <div class="section-content">
+                
+        <div class="news-item">
+            <h3>Stór reikistjarna uppgötvuð á braut um litla stjörnu – endurskoða þarf kenningar</h3>
+            <p>Stjörnufræðingar hafa uppgötvað gasrisa á stærð við Satúrnus á braut um rauða dvergstjörnu sem er aðeins fimmtungur af massa sólarinnar. Uppgötvunin gengur gegn fyrri kenningum um myndun reikistjarna og gæti þýtt að fleiri gasrisar séu í Vetrarbrautinni en áður var talið.</p>
+        
+                <div class="group-sources">
+                    <div class="group-sources-header">
+                        <strong>Tengdar fréttir</strong>
+                        <div class="group-sources-tooltip">
+                            <span class="tooltip-icon">ℹ️</span>
+                            <div class="tooltip-content">
+                                Í einhverjum tilvikum gætu tengdar fréttir vísað á vitlausar slóðir
+                                <a href="/why-wrong-links">Af hverju?</a>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="https://www.visir.is/g/20252736088d/klora-ser-i-kollinum-yfir-storri-reikistjornu-a-braut-um-litla-stjornu" class="footnote-link" data-tooltip="https://www.visir.is/g/20252736088d/klora-ser-i-kollinum-yfir-storri-reikistjornu-a-braut-um-litla-stjornu" id="group-fn1" target="_blank">[1]</a> <a href="https://www.visir.is/g/20252736039d/brotlentu-odru-einkafari-a-tunglinu" class="footnote-link" data-tooltip="https://www.visir.is/g/20252736039d/brotlentu-odru-einkafari-a-tunglinu" id="group-fn2" target="_blank">[2]</a>
+                </div>
+                
+            <div class="tags">
+                <span class="tag">vísindi</span><span class="tag">stjörnufræði</span><span class="tag">reikistjörnur</span>
+            </div>
+            
+            <div class="matches-container">
+                <div class="match">
+                    <span class="match-icon">✨</span>
+                    <div class="match-tooltip">
+                        
+            <div class="matches">
+                <p>Við teljum að þessar fréttir passi hér með eftirfarandi líkum:</p>
+                <ul>
+            
+                    <li>
+                        <span>Stór reikistjarna um litla stjörnu</span>
+                        <span>86.72%</span>
+                    </li>
+                
+                </ul>
+                <p><a href="/how-matches-work">Hvað er þetta?</a></p>
+            </div>
+            
+                    </div>
+                </div>
+            </div>
+            </div>
+        <div class="news-item">
+            <h3>Japanskt einkafyrirtæki mistekst að lenda tunglfari</h3>
+            <p>Japanska geimfyrirtækið ispace missti samband við tunglfarið Resilience rétt fyrir áætlaða lendingu á tunglinu. Þetta var önnur tilraun fyrirtækisins til að lenda einkageimfari á tunglinu, en báðar hafa misheppnast. Fyrirtækið hyggst gera aðra tilraun árið 2027.</p>
+        
+                <div class="group-sources">
+                    <div class="group-sources-header">
+                        <strong>Tengdar fréttir</strong>
+                        <div class="group-sources-tooltip">
+                            <span class="tooltip-icon">ℹ️</span>
+                            <div class="tooltip-content">
+                                Í einhverjum tilvikum gætu tengdar fréttir vísað á vitlausar slóðir
+                                <a href="/why-wrong-links">Af hverju?</a>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="https://www.visir.is/g/20252736088d/klora-ser-i-kollinum-yfir-storri-reikistjornu-a-braut-um-litla-stjornu" class="footnote-link" data-tooltip="https://www.visir.is/g/20252736088d/klora-ser-i-kollinum-yfir-storri-reikistjornu-a-braut-um-litla-stjornu" id="group-fn1" target="_blank">[1]</a> <a href="https://www.visir.is/g/20252736039d/brotlentu-odru-einkafari-a-tunglinu" class="footnote-link" data-tooltip="https://www.visir.is/g/20252736039d/brotlentu-odru-einkafari-a-tunglinu" id="group-fn2" target="_blank">[2]</a>
+                </div>
+                
+            <div class="tags">
+                <span class="tag">vísindi</span><span class="tag">geimferðir</span><span class="tag">tunglið</span>
+            </div>
+            
+            <div class="matches-container">
+                <div class="match">
+                    <span class="match-icon">✨</span>
+                    <div class="match-tooltip">
+                        
+            <div class="matches">
+                <p>Við teljum að þessar fréttir passi hér með eftirfarandi líkum:</p>
+                <ul>
+            
+                    <li>
+                        <span>Stór reikistjarna um litla stjörnu</span>
+                        <span>88.11%</span>
+                    </li>
+                
+                </ul>
+                <p><a href="/how-matches-work">Hvað er þetta?</a></p>
+            </div>
+            
+                    </div>
+                </div>
+            </div>
+            </div>
+            </div>
+        </div>
+        
+
+        <div class="section" id="closing_summary">
+            <div class="section-header-container">
+                <h2 class="section-header">9. LOKAORÐ</h2>
+                <a href="#toc" class="back-to-toc">← Efnisyfirlit</a>
+            </div>
+            
+        <div class="reading-time-container section">
+            <div class="reading-time-icon">⏱️</div>
+            <div class="reading-time-content">
+                <span class="reading-time-label">Lestur:</span>
+                <span class="reading-time-value"> 1 mín.</span>
+            </div>
+        </div>
+        
+            <div class="section-content">
+                <p>Gærdagurinn var einkar viðburðaríkur á sviði stjórnmála, efnahags og samfélagsmála. Þorskaflamálin og áhrif þeirra á þjóðarbúið voru í brennidepli, ásamt samþykkt fimm mikilvægra frumvarpa á Alþingi og óvissu um þinglok. Á alþjóðavettvangi héldu átök í Úkraínu áfram og Bandaríkin hófu refsiaðgerðir gegn dómurum ICC, sem gæti haft víðtæk áhrif á alþjóðasamstarf. Í viðskiptum og vísindum voru jákvæðar fréttir af Kaldvík og Icelandair, en einnig áhugaverðar uppgötvanir í stjörnufræði og geimferðum.<br><br>Framundan eru áframhaldandi umræður um sjávarútvegsmál, þinglok og áhrif nýrra laga á samfélagið. Einnig má búast við frekari tíðindum af alþjóðavettvangi, bæði í Úkraínu og í samskiptum stórvelda. Hvítasunnuhelgin verður jafnframt vettvangur menningarviðburða og íþrótta, þar sem landslið Íslands heldur áfram leikjum sínum og Skjaldborgarhátíðin stendur yfir á Patreksfirði.</p>
+            </div>
+        </div>
+        
+
+            <div class="section signature-section">
+                <p class="signature">Fréttabréfið er skrifað af gervigreind frá OpenAI. Gæti innihaldið ofsjónir. Verkefni forritað af Jasoni Andra Gíslasyni.</p>
+                <p class="unsubscribe"><a href="https://docs.google.com/forms/d/e/1FAIpQLSfHWhr9DmTtrtazcCANt-yjpxoAmF9ZEj_lQKZmCwQAqQNZzw/viewform?usp=header">Hætta áskrift á fréttabréfinu</a></p>
+            </div>
+            
+                </div>
+            </body>
+            </html>
+            
