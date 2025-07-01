@@ -1,0 +1,778 @@
+2025-07-01 04:27:22,705 - sentence_transformers.SentenceTransformer - INFO - Load pretrained SentenceTransformer: all-MiniLM-L6-v2
+2025-07-01 04:27:23,939 - __main__                  - INFO - Starting newsletter automation pipeline
+2025-07-01 04:27:23,939 - __main__                  - INFO - Process flags: {'unsubscribes': True, 'scraping': True, 'article_groups': True, 'total_generation': True, 'generation': True, 'matching': True, 'impacts': False, 'formatting': True, 'index_update': True, 'sending': True}
+2025-07-01 04:27:23,939 - __main__                  - INFO - Step 1/6: Processing unsubscribes
+2025-07-01 04:27:23,939 - process_unsubscribes      - INFO - Starting unsubscribe processing...
+2025-07-01 04:27:24,489 - process_unsubscribes      - INFO - No unsubscribed emails to process
+2025-07-01 04:27:24,489 - __main__                  - INFO - ✓ Unsubscribe processing completed
+2025-07-01 04:27:24,489 - __main__                  - INFO - Processing newsletter for date: 2025-06-30
+2025-07-01 04:27:24,489 - __main__                  - INFO - Step 2/6: Starting news scraping
+2025-07-01 04:27:24,489 - __main__                  - INFO - Running news scraper...
+2025-07-01 04:27:24,490 - master_scraper            - INFO - Starting news scraper
+2025-07-01 04:27:24,490 - master_scraper            - INFO - Scraping news for date: 2025-06-30
+2025-07-01 04:27:24,490 - master_scraper            - INFO - Processing articles from visir
+2025-07-01 04:27:30,475 - news_scraper_visir        - INFO - Retrieved 1544 articles from visir RSS feed
+2025-07-01 04:27:30,503 - news_scraper_visir        - INFO - Found 56 articles from visir for 2025-06-30
+2025-07-01 04:27:30,503 - news_scraper_visir        - INFO - Processing article 1 of 56 from visir
+2025-07-01 04:27:39,770 - news_scraper_visir        - INFO - Processing article 11 of 56 from visir
+2025-07-01 04:27:48,917 - news_scraper_visir        - INFO - Processing article 21 of 56 from visir
+2025-07-01 04:27:58,061 - news_scraper_visir        - INFO - Processing article 31 of 56 from visir
+2025-07-01 04:28:06,730 - news_scraper_visir        - INFO - Processing article 41 of 56 from visir
+2025-07-01 04:28:15,126 - news_scraper_visir        - INFO - Processing article 51 of 56 from visir
+2025-07-01 04:28:20,458 - news_scraper_visir        - INFO - Completed processing 56 articles from visir
+2025-07-01 04:28:20,459 - master_scraper            - INFO - Successfully processed 56 articles from visir
+2025-07-01 04:28:20,459 - master_scraper            - INFO - Processing articles from mbl
+2025-07-01 04:28:38,169 - news_scraper_mbl          - INFO - Retrieved 474 articles from mbl RSS feed
+2025-07-01 04:28:38,177 - news_scraper_mbl          - INFO - Found 122 articles from mbl for 2025-06-30
+2025-07-01 04:28:38,178 - news_scraper_mbl          - INFO - Processing article 1 of 122 from mbl
+2025-07-01 04:28:45,803 - news_scraper_mbl          - INFO - Processing article 11 of 122 from mbl
+2025-07-01 04:28:51,734 - news_scraper_mbl          - INFO - Processing article 21 of 122 from mbl
+2025-07-01 04:28:59,136 - news_scraper_mbl          - INFO - Processing article 31 of 122 from mbl
+2025-07-01 04:29:05,389 - news_scraper_mbl          - INFO - Processing article 41 of 122 from mbl
+2025-07-01 04:29:15,861 - news_scraper_mbl          - INFO - Processing article 51 of 122 from mbl
+2025-07-01 04:29:26,694 - news_scraper_mbl          - INFO - Processing article 61 of 122 from mbl
+2025-07-01 04:29:35,096 - news_scraper_mbl          - INFO - Processing article 71 of 122 from mbl
+2025-07-01 04:29:51,026 - news_scraper_mbl          - INFO - Processing article 81 of 122 from mbl
+2025-07-01 04:30:06,899 - news_scraper_mbl          - INFO - Processing article 91 of 122 from mbl
+2025-07-01 04:30:21,811 - news_scraper_mbl          - INFO - Processing article 101 of 122 from mbl
+2025-07-01 04:30:28,604 - news_scraper_mbl          - WARNING - Failed to get content for article: Munaðarlaus ugluungi fann félaga from https://www.mbl.is/k100/frettir/2025/06/30/munadarlaus_ugluungi_fann_felaga/
+2025-07-01 04:30:29,852 - news_scraper_mbl          - WARNING - Failed to get content for article: Ný þjónusta fyrir þá sem vilja leigja sér hjólhýsi from https://www.mbl.is/k100/frettir/2025/06/30/ny_thjonusta_fyrir_tha_sem_vilja_leigja_ser_hjolhys/
+2025-07-01 04:30:30,892 - news_scraper_mbl          - WARNING - Failed to get content for article: Ég á það, ég má það. from https://omargeirsson.blog.is/blog/omargeirsson/entry/2315566/
+2025-07-01 04:30:31,847 - news_scraper_mbl          - WARNING - Failed to get content for article: Öfga vinstrið enn sundrað from https://biggilofts.blog.is/blog/biggilofts/entry/2315565/
+2025-07-01 04:30:33,015 - news_scraper_mbl          - WARNING - Failed to get content for article: Öfund sem þjóðaríþrótt from https://arnarfr.blog.is/blog/arnarfr/entry/2315563/
+2025-07-01 04:30:33,015 - news_scraper_mbl          - INFO - Processing article 111 of 122 from mbl
+2025-07-01 04:30:33,912 - news_scraper_mbl          - WARNING - Failed to get content for article: Gott að eiga bandamenn  sem er annt um frelsið og vera eins og þeir vilja vera. from https://thorsteinnhgunnarsson.blog.is/blog/thorsteinnhgunnarsson/entry/2315562/
+2025-07-01 04:30:35,241 - news_scraper_mbl          - WARNING - Failed to get content for article: Og við gamlingjarnir verðum syngjandi glaðir.  Heiður sé Heilsugjæslunni. Það eru fleiri ´”líf” í líkamanum en líkamsfrumurnar og lífin lifa á líkamanum og þá vítamínunum. Þá getur líkaminn sjálfur liðið skort. from https://jonasg-egi.blog.is/blog/jonasg-egi/entry/2315561/
+2025-07-01 04:30:35,987 - news_scraper_mbl          - WARNING - Failed to get content for article: Er endalaust hægt að nota Rússagrýluna.? from https://siggiflug.blog.is/blog/siggiflug/entry/2315560/
+2025-07-01 04:30:36,981 - news_scraper_mbl          - WARNING - Failed to get content for article: Karlmannatíska : COACH veturinn 2025 - 26 ; tákngerir átrúnað from https://helgiasmunds.blog.is/blog/helgiasmunds/entry/2315559/
+2025-07-01 04:30:38,227 - news_scraper_mbl          - WARNING - Failed to get content for article: Bætum aðeins í. from https://jonmagnusson.blog.is/blog/jonmagnusson/entry/2315557/
+2025-07-01 04:30:38,902 - news_scraper_mbl          - WARNING - Failed to get content for article: -nákvæmnismæling- from https://gudjonelias.blog.is/blog/logostal/entry/2315556/
+2025-07-01 04:30:39,729 - news_scraper_mbl          - WARNING - Failed to get content for article: Að duga eða drepast from https://magnuss.blog.is/blog/magnuss/entry/2315524/
+2025-07-01 04:30:41,387 - news_scraper_mbl          - WARNING - Failed to get content for article: Kosið um örlög Gunnars Smára from https://bjorn.blog.is/blog/bjorn/entry/2315555/
+2025-07-01 04:30:41,930 - news_scraper_mbl          - WARNING - Failed to get content for article: -mælinálin- from https://gudjonelias.blog.is/blog/logostal/entry/2315554/
+2025-07-01 04:30:43,240 - news_scraper_mbl          - WARNING - Failed to get content for article: LOSUM OKKUR ÚR NATO - SEGJUM OKKUR ÚR SCHENGEN OG SEGUM UPP EES SAMINGNUM......... from https://johanneliasson.blog.is/blog/johanneliasson/entry/2315553/
+2025-07-01 04:30:43,240 - news_scraper_mbl          - INFO - Processing article 121 of 122 from mbl
+2025-07-01 04:30:44,143 - news_scraper_mbl          - WARNING - Failed to get content for article: VÖRUSKIPTAJÖFNUÐURINN var 63,1 MILLJARÐAR í mínus í MAÍ samkvæmt LOKA-ÚTREIKNINGI: from https://contact.blog.is/blog/vonin/entry/2315552/
+2025-07-01 04:30:45,004 - news_scraper_mbl          - WARNING - Failed to get content for article: Hitt stóra málið from https://heimssyn.blog.is/blog/heimssyn/entry/2315551/
+2025-07-01 04:30:45,004 - news_scraper_mbl          - INFO - Completed processing 105 articles from mbl
+2025-07-01 04:30:45,005 - master_scraper            - INFO - Successfully processed 105 articles from mbl
+2025-07-01 04:30:45,005 - master_scraper            - INFO - Processing articles from vb
+2025-07-01 04:30:46,394 - news_scraper_vb           - INFO - Retrieved 150 articles from vb RSS feed
+2025-07-01 04:30:46,397 - news_scraper_vb           - INFO - Found 25 articles from vb for 2025-06-30
+2025-07-01 04:30:46,397 - news_scraper_vb           - INFO - Processing article 1 of 25 from vb
+2025-07-01 04:30:52,737 - news_scraper_vb           - INFO - Processing article 11 of 25 from vb
+2025-07-01 04:30:56,079 - news_scraper_vb           - INFO - Processing article 21 of 25 from vb
+2025-07-01 04:30:57,697 - news_scraper_vb           - INFO - Completed processing 25 articles from vb
+2025-07-01 04:30:57,698 - master_scraper            - INFO - Successfully processed 25 articles from vb
+2025-07-01 04:30:57,698 - master_scraper            - INFO - Processing articles from ruv
+2025-07-01 04:30:59,001 - news_scraper_ruv          - INFO - Retrieved 160 articles from ruv RSS feed
+2025-07-01 04:30:59,004 - news_scraper_ruv          - INFO - Found 56 articles from ruv for 2025-06-30
+2025-07-01 04:30:59,004 - news_scraper_ruv          - INFO - Processing article 1 of 56 from ruv
+2025-07-01 04:31:00,206 - news_scraper_ruv          - INFO - Processing article 11 of 56 from ruv
+2025-07-01 04:31:00,425 - news_scraper_ruv          - WARNING - Failed to get content for article: Bókun 35 á mannamáli from https://nyr.ruv.is/frettir/innlent/2025-06-30-bokun-35-a-mannamali-447332/
+2025-07-01 04:31:01,062 - news_scraper_ruv          - INFO - Processing article 21 of 56 from ruv
+2025-07-01 04:31:01,882 - news_scraper_ruv          - INFO - Processing article 31 of 56 from ruv
+2025-07-01 04:31:03,524 - news_scraper_ruv          - INFO - Processing article 41 of 56 from ruv
+2025-07-01 04:31:04,987 - news_scraper_ruv          - INFO - Processing article 51 of 56 from ruv
+2025-07-01 04:31:05,898 - news_scraper_ruv          - INFO - Completed processing 55 articles from ruv
+2025-07-01 04:31:05,899 - master_scraper            - INFO - Successfully processed 55 articles from ruv
+2025-07-01 04:31:05,899 - master_scraper            - INFO - Processing article text and extracting lemmas
+2025-07-01 04:31:05,899 - master_scraper            - INFO - Processing text for article 1/241: visir_f8a50d07 from visir
+2025-07-01 04:31:10,275 - text_processor            - INFO - Extracted 121 lemmas from 10 sentences (10 successful parses)
+2025-07-01 04:31:10,275 - master_scraper            - INFO - Processing text for article 2/241: visir_9469231f from visir
+2025-07-01 04:31:17,507 - text_processor            - INFO - Extracted 250 lemmas from 25 sentences (23 successful parses)
+2025-07-01 04:31:17,507 - master_scraper            - INFO - Processing text for article 3/241: visir_0d36075e from visir
+2025-07-01 04:31:23,408 - text_processor            - INFO - Extracted 178 lemmas from 20 sentences (17 successful parses)
+2025-07-01 04:31:23,408 - master_scraper            - INFO - Processing text for article 4/241: visir_8fc244f5 from visir
+2025-07-01 04:31:25,385 - text_processor            - INFO - Extracted 77 lemmas from 9 sentences (7 successful parses)
+2025-07-01 04:31:25,385 - master_scraper            - INFO - Processing text for article 5/241: visir_07b7d296 from visir
+2025-07-01 04:31:31,052 - text_processor            - INFO - Extracted 260 lemmas from 27 sentences (27 successful parses)
+2025-07-01 04:31:31,052 - master_scraper            - INFO - Processing text for article 6/241: visir_a11819aa from visir
+2025-07-01 04:31:36,493 - text_processor            - INFO - Extracted 232 lemmas from 20 sentences (18 successful parses)
+2025-07-01 04:31:36,493 - master_scraper            - INFO - Processing text for article 7/241: visir_8a39b860 from visir
+2025-07-01 04:31:37,615 - text_processor            - INFO - Extracted 79 lemmas from 9 sentences (9 successful parses)
+2025-07-01 04:31:37,616 - master_scraper            - INFO - Processing text for article 8/241: visir_7a845017 from visir
+2025-07-01 04:31:41,766 - text_processor            - INFO - Extracted 155 lemmas from 32 sentences (27 successful parses)
+2025-07-01 04:31:41,766 - master_scraper            - INFO - Processing text for article 9/241: visir_a5f9d79f from visir
+2025-07-01 04:31:44,187 - text_processor            - INFO - Extracted 121 lemmas from 13 sentences (12 successful parses)
+2025-07-01 04:31:44,188 - master_scraper            - INFO - Processing text for article 10/241: visir_c676f199 from visir
+2025-07-01 04:31:46,243 - text_processor            - INFO - Extracted 89 lemmas from 9 sentences (9 successful parses)
+2025-07-01 04:31:46,243 - master_scraper            - INFO - Processing text for article 11/241: visir_ca94dab3 from visir
+2025-07-01 04:31:53,688 - text_processor            - INFO - Extracted 279 lemmas from 29 sentences (24 successful parses)
+2025-07-01 04:31:53,688 - master_scraper            - INFO - Processing text for article 12/241: visir_869c0def from visir
+2025-07-01 04:31:55,481 - text_processor            - INFO - Extracted 83 lemmas from 10 sentences (9 successful parses)
+2025-07-01 04:31:55,481 - master_scraper            - INFO - Processing text for article 13/241: visir_64bee5d0 from visir
+2025-07-01 04:31:57,160 - text_processor            - INFO - Extracted 95 lemmas from 12 sentences (12 successful parses)
+2025-07-01 04:31:57,160 - master_scraper            - INFO - Processing text for article 14/241: visir_cb7e03af from visir
+2025-07-01 04:32:08,810 - text_processor            - INFO - Extracted 309 lemmas from 22 sentences (21 successful parses)
+2025-07-01 04:32:08,810 - master_scraper            - INFO - Processing text for article 15/241: visir_18845bb5 from visir
+2025-07-01 04:32:12,760 - text_processor            - INFO - Extracted 114 lemmas from 12 sentences (11 successful parses)
+2025-07-01 04:32:12,760 - master_scraper            - INFO - Processing text for article 16/241: visir_3da13f4e from visir
+2025-07-01 04:32:13,863 - text_processor            - INFO - Extracted 55 lemmas from 6 sentences (5 successful parses)
+2025-07-01 04:32:13,863 - master_scraper            - INFO - Processing text for article 17/241: visir_3d6f3df4 from visir
+2025-07-01 04:32:19,248 - text_processor            - INFO - Extracted 270 lemmas from 27 sentences (23 successful parses)
+2025-07-01 04:32:19,249 - master_scraper            - INFO - Processing text for article 18/241: visir_4f99a9d9 from visir
+2025-07-01 04:32:20,559 - text_processor            - INFO - Extracted 66 lemmas from 7 sentences (6 successful parses)
+2025-07-01 04:32:20,559 - master_scraper            - INFO - Processing text for article 19/241: visir_e120ae41 from visir
+2025-07-01 04:32:23,772 - text_processor            - INFO - Extracted 158 lemmas from 21 sentences (19 successful parses)
+2025-07-01 04:32:23,772 - master_scraper            - INFO - Processing text for article 20/241: visir_f9000117 from visir
+2025-07-01 04:32:27,672 - text_processor            - INFO - Extracted 166 lemmas from 17 sentences (16 successful parses)
+2025-07-01 04:32:27,672 - master_scraper            - INFO - Processing text for article 21/241: visir_6facc4bc from visir
+2025-07-01 04:32:28,425 - text_processor            - INFO - Extracted 41 lemmas from 6 sentences (5 successful parses)
+2025-07-01 04:32:28,425 - master_scraper            - INFO - Processing text for article 22/241: visir_8590148f from visir
+2025-07-01 04:32:29,969 - text_processor            - INFO - Extracted 113 lemmas from 13 sentences (12 successful parses)
+2025-07-01 04:32:29,969 - master_scraper            - INFO - Processing text for article 23/241: visir_aee8d8ea from visir
+2025-07-01 04:32:33,679 - text_processor            - INFO - Extracted 177 lemmas from 18 sentences (18 successful parses)
+2025-07-01 04:32:33,679 - master_scraper            - INFO - Processing text for article 24/241: visir_2a54745b from visir
+2025-07-01 04:32:37,843 - text_processor            - INFO - Extracted 229 lemmas from 20 sentences (17 successful parses)
+2025-07-01 04:32:37,843 - master_scraper            - INFO - Processing text for article 25/241: visir_2a933a8e from visir
+2025-07-01 04:32:38,625 - text_processor            - INFO - Extracted 64 lemmas from 9 sentences (9 successful parses)
+2025-07-01 04:32:38,626 - master_scraper            - INFO - Processing text for article 26/241: visir_917d3ce1 from visir
+2025-07-01 04:32:39,910 - text_processor            - INFO - Extracted 51 lemmas from 4 sentences (4 successful parses)
+2025-07-01 04:32:39,910 - master_scraper            - INFO - Processing text for article 27/241: visir_86632f03 from visir
+2025-07-01 04:32:44,770 - text_processor            - INFO - Extracted 183 lemmas from 15 sentences (14 successful parses)
+2025-07-01 04:32:44,770 - master_scraper            - INFO - Processing text for article 28/241: visir_e35ed224 from visir
+2025-07-01 04:32:50,451 - text_processor            - INFO - Extracted 293 lemmas from 27 sentences (27 successful parses)
+2025-07-01 04:32:50,451 - master_scraper            - INFO - Processing text for article 29/241: visir_580622cb from visir
+2025-07-01 04:32:57,942 - text_processor            - INFO - Extracted 249 lemmas from 22 sentences (19 successful parses)
+2025-07-01 04:32:57,942 - master_scraper            - INFO - Processing text for article 30/241: visir_7ac9dc1a from visir
+2025-07-01 04:33:00,721 - text_processor            - INFO - Extracted 119 lemmas from 17 sentences (14 successful parses)
+2025-07-01 04:33:00,721 - master_scraper            - INFO - Processing text for article 31/241: visir_1e12fc7e from visir
+2025-07-01 04:33:09,400 - text_processor            - INFO - Extracted 345 lemmas from 43 sentences (38 successful parses)
+2025-07-01 04:33:09,401 - master_scraper            - INFO - Processing text for article 32/241: visir_0f85843e from visir
+2025-07-01 04:33:10,471 - text_processor            - INFO - Extracted 55 lemmas from 7 sentences (7 successful parses)
+2025-07-01 04:33:10,471 - master_scraper            - INFO - Processing text for article 33/241: visir_159dcf1a from visir
+2025-07-01 04:33:14,368 - text_processor            - INFO - Extracted 153 lemmas from 16 sentences (16 successful parses)
+2025-07-01 04:33:14,368 - master_scraper            - INFO - Processing text for article 34/241: visir_63f46d67 from visir
+2025-07-01 04:33:15,619 - text_processor            - INFO - Extracted 66 lemmas from 7 sentences (7 successful parses)
+2025-07-01 04:33:15,619 - master_scraper            - INFO - Processing text for article 35/241: visir_777b2a05 from visir
+2025-07-01 04:33:16,568 - text_processor            - INFO - Extracted 67 lemmas from 9 sentences (9 successful parses)
+2025-07-01 04:33:16,568 - master_scraper            - INFO - Processing text for article 36/241: visir_c2c56baa from visir
+2025-07-01 04:33:18,597 - text_processor            - INFO - Extracted 92 lemmas from 8 sentences (8 successful parses)
+2025-07-01 04:33:18,597 - master_scraper            - INFO - Processing text for article 37/241: visir_1f407e8d from visir
+2025-07-01 04:33:43,234 - text_processor            - INFO - Extracted 1063 lemmas from 144 sentences (135 successful parses)
+2025-07-01 04:33:43,234 - master_scraper            - INFO - Processing text for article 38/241: visir_0a631b6d from visir
+2025-07-01 04:33:44,944 - text_processor            - INFO - Extracted 69 lemmas from 6 sentences (5 successful parses)
+2025-07-01 04:33:44,944 - master_scraper            - INFO - Processing text for article 39/241: visir_c8a0d2df from visir
+2025-07-01 04:33:46,974 - text_processor            - INFO - Extracted 100 lemmas from 19 sentences (13 successful parses)
+2025-07-01 04:33:46,974 - master_scraper            - INFO - Processing text for article 40/241: visir_5b260843 from visir
+2025-07-01 04:33:49,339 - text_processor            - INFO - Extracted 79 lemmas from 9 sentences (6 successful parses)
+2025-07-01 04:33:49,339 - master_scraper            - INFO - Processing text for article 41/241: visir_135ca9ea from visir
+2025-07-01 04:33:50,801 - text_processor            - INFO - Extracted 76 lemmas from 9 sentences (9 successful parses)
+2025-07-01 04:33:50,801 - master_scraper            - INFO - Processing text for article 42/241: visir_df3c9f7e from visir
+2025-07-01 04:33:55,773 - text_processor            - INFO - Extracted 245 lemmas from 26 sentences (23 successful parses)
+2025-07-01 04:33:55,773 - master_scraper            - INFO - Processing text for article 43/241: visir_e0ea44bb from visir
+2025-07-01 04:33:57,082 - text_processor            - INFO - Extracted 53 lemmas from 6 sentences (5 successful parses)
+2025-07-01 04:33:57,082 - master_scraper            - INFO - Processing text for article 44/241: visir_9d1844ca from visir
+2025-07-01 04:33:58,960 - text_processor            - INFO - Extracted 87 lemmas from 12 sentences (9 successful parses)
+2025-07-01 04:33:58,960 - master_scraper            - INFO - Processing text for article 45/241: visir_350e4ebd from visir
+2025-07-01 04:33:59,867 - text_processor            - INFO - Extracted 51 lemmas from 5 sentences (5 successful parses)
+2025-07-01 04:33:59,867 - master_scraper            - INFO - Processing text for article 46/241: visir_0ea332cc from visir
+2025-07-01 04:34:02,762 - text_processor            - INFO - Extracted 161 lemmas from 16 sentences (16 successful parses)
+2025-07-01 04:34:02,762 - master_scraper            - INFO - Processing text for article 47/241: visir_aef50e52 from visir
+2025-07-01 04:34:07,377 - text_processor            - INFO - Extracted 113 lemmas from 8 sentences (8 successful parses)
+2025-07-01 04:34:07,378 - master_scraper            - INFO - Processing text for article 48/241: visir_5ceb95c7 from visir
+2025-07-01 04:34:14,064 - text_processor            - INFO - Extracted 277 lemmas from 30 sentences (27 successful parses)
+2025-07-01 04:34:14,064 - master_scraper            - INFO - Processing text for article 49/241: visir_60e66756 from visir
+2025-07-01 04:34:20,632 - text_processor            - INFO - Extracted 262 lemmas from 32 sentences (29 successful parses)
+2025-07-01 04:34:20,632 - master_scraper            - INFO - Processing text for article 50/241: visir_7a4e20db from visir
+2025-07-01 04:34:23,043 - text_processor            - INFO - Extracted 108 lemmas from 15 sentences (12 successful parses)
+2025-07-01 04:34:23,043 - master_scraper            - INFO - Processing text for article 51/241: visir_431481ba from visir
+2025-07-01 04:34:25,897 - text_processor            - INFO - Extracted 124 lemmas from 14 sentences (12 successful parses)
+2025-07-01 04:34:25,897 - master_scraper            - INFO - Processing text for article 52/241: visir_5d6f216d from visir
+2025-07-01 04:34:33,382 - text_processor            - INFO - Extracted 154 lemmas from 16 sentences (14 successful parses)
+2025-07-01 04:34:33,382 - master_scraper            - INFO - Processing text for article 53/241: visir_ef06e92a from visir
+2025-07-01 04:34:35,276 - text_processor            - INFO - Extracted 91 lemmas from 12 sentences (9 successful parses)
+2025-07-01 04:34:35,276 - master_scraper            - INFO - Processing text for article 54/241: visir_7a6ec5a5 from visir
+2025-07-01 04:34:36,435 - text_processor            - INFO - Extracted 13 lemmas from 24 sentences (2 successful parses)
+2025-07-01 04:34:36,435 - master_scraper            - INFO - Processing text for article 55/241: visir_d56976b5 from visir
+2025-07-01 04:34:48,063 - text_processor            - INFO - Extracted 419 lemmas from 49 sentences (42 successful parses)
+2025-07-01 04:34:48,063 - master_scraper            - INFO - Processing text for article 56/241: visir_d53a4066 from visir
+2025-07-01 04:34:58,780 - text_processor            - INFO - Extracted 478 lemmas from 64 sentences (57 successful parses)
+2025-07-01 04:34:58,780 - master_scraper            - INFO - Processing text for article 57/241: mbl_9e84dcca from mbl
+2025-07-01 04:35:01,362 - text_processor            - INFO - Extracted 124 lemmas from 17 sentences (14 successful parses)
+2025-07-01 04:35:01,363 - master_scraper            - INFO - Processing text for article 58/241: mbl_4457abad from mbl
+2025-07-01 04:35:03,733 - text_processor            - INFO - Extracted 120 lemmas from 13 sentences (13 successful parses)
+2025-07-01 04:35:03,734 - master_scraper            - INFO - Processing text for article 59/241: mbl_d893ebbf from mbl
+2025-07-01 04:35:06,152 - text_processor            - INFO - Extracted 196 lemmas from 19 sentences (19 successful parses)
+2025-07-01 04:35:06,152 - master_scraper            - INFO - Processing text for article 60/241: mbl_b429918f from mbl
+2025-07-01 04:35:08,023 - text_processor            - INFO - Extracted 128 lemmas from 12 sentences (11 successful parses)
+2025-07-01 04:35:08,023 - master_scraper            - INFO - Processing text for article 61/241: mbl_f1ccf35c from mbl
+2025-07-01 04:35:10,227 - text_processor            - INFO - Extracted 118 lemmas from 11 sentences (9 successful parses)
+2025-07-01 04:35:10,227 - master_scraper            - INFO - Processing text for article 62/241: mbl_d463dfa1 from mbl
+2025-07-01 04:35:14,520 - text_processor            - INFO - Extracted 246 lemmas from 25 sentences (24 successful parses)
+2025-07-01 04:35:14,520 - master_scraper            - INFO - Processing text for article 63/241: mbl_d3a6e0f8 from mbl
+2025-07-01 04:35:15,501 - text_processor            - INFO - Extracted 62 lemmas from 5 sentences (5 successful parses)
+2025-07-01 04:35:15,501 - master_scraper            - INFO - Processing text for article 64/241: mbl_35cab687 from mbl
+2025-07-01 04:35:17,209 - text_processor            - INFO - Extracted 95 lemmas from 8 sentences (8 successful parses)
+2025-07-01 04:35:17,209 - master_scraper            - INFO - Processing text for article 65/241: mbl_b7e7af84 from mbl
+2025-07-01 04:35:34,677 - text_processor            - INFO - Extracted 313 lemmas from 25 sentences (18 successful parses)
+2025-07-01 04:35:34,678 - master_scraper            - INFO - Processing text for article 66/241: mbl_f5f44573 from mbl
+2025-07-01 04:35:36,587 - text_processor            - INFO - Extracted 98 lemmas from 10 sentences (9 successful parses)
+2025-07-01 04:35:36,587 - master_scraper            - INFO - Processing text for article 67/241: mbl_b5d3f6f1 from mbl
+2025-07-01 04:35:37,654 - text_processor            - INFO - Extracted 69 lemmas from 7 sentences (7 successful parses)
+2025-07-01 04:35:37,654 - master_scraper            - INFO - Processing text for article 68/241: mbl_f9ee2f4b from mbl
+2025-07-01 04:35:43,043 - text_processor            - INFO - Extracted 290 lemmas from 42 sentences (37 successful parses)
+2025-07-01 04:35:43,044 - master_scraper            - INFO - Processing text for article 69/241: mbl_011db253 from mbl
+2025-07-01 04:35:44,429 - text_processor            - INFO - Extracted 102 lemmas from 10 sentences (10 successful parses)
+2025-07-01 04:35:44,429 - master_scraper            - INFO - Processing text for article 70/241: mbl_0b7325f3 from mbl
+2025-07-01 04:35:46,231 - text_processor            - INFO - Extracted 99 lemmas from 20 sentences (19 successful parses)
+2025-07-01 04:35:46,231 - master_scraper            - INFO - Processing text for article 71/241: mbl_30dfe0e7 from mbl
+2025-07-01 04:35:48,786 - text_processor            - INFO - Extracted 143 lemmas from 14 sentences (12 successful parses)
+2025-07-01 04:35:48,786 - master_scraper            - INFO - Processing text for article 72/241: mbl_3a188c3d from mbl
+2025-07-01 04:35:49,574 - text_processor            - INFO - Extracted 67 lemmas from 7 sentences (7 successful parses)
+2025-07-01 04:35:49,574 - master_scraper            - INFO - Processing text for article 73/241: mbl_32baaf96 from mbl
+2025-07-01 04:35:53,880 - text_processor            - INFO - Extracted 254 lemmas from 30 sentences (27 successful parses)
+2025-07-01 04:35:53,881 - master_scraper            - INFO - Processing text for article 74/241: mbl_fb22cbad from mbl
+2025-07-01 04:36:06,501 - text_processor            - INFO - Extracted 543 lemmas from 56 sentences (54 successful parses)
+2025-07-01 04:36:06,501 - master_scraper            - INFO - Processing text for article 75/241: mbl_fcf61bef from mbl
+2025-07-01 04:36:08,753 - text_processor            - INFO - Extracted 131 lemmas from 13 sentences (12 successful parses)
+2025-07-01 04:36:08,753 - master_scraper            - INFO - Processing text for article 76/241: mbl_05bd1cc4 from mbl
+2025-07-01 04:36:09,181 - text_processor            - INFO - Extracted 61 lemmas from 6 sentences (6 successful parses)
+2025-07-01 04:36:09,181 - master_scraper            - INFO - Processing text for article 77/241: mbl_f0e085c7 from mbl
+2025-07-01 04:36:10,140 - text_processor            - INFO - Extracted 92 lemmas from 10 sentences (9 successful parses)
+2025-07-01 04:36:10,140 - master_scraper            - INFO - Processing text for article 78/241: mbl_6ece3d9b from mbl
+2025-07-01 04:36:12,695 - text_processor            - INFO - Extracted 156 lemmas from 23 sentences (20 successful parses)
+2025-07-01 04:36:12,695 - master_scraper            - INFO - Processing text for article 79/241: mbl_4f4850df from mbl
+2025-07-01 04:36:14,043 - text_processor            - INFO - Extracted 74 lemmas from 8 sentences (7 successful parses)
+2025-07-01 04:36:14,043 - master_scraper            - INFO - Processing text for article 80/241: mbl_61e9f701 from mbl
+2025-07-01 04:36:14,947 - text_processor            - INFO - Extracted 95 lemmas from 13 sentences (13 successful parses)
+2025-07-01 04:36:14,948 - master_scraper            - INFO - Processing text for article 81/241: mbl_e3afc391 from mbl
+2025-07-01 04:36:17,473 - text_processor            - INFO - Extracted 131 lemmas from 8 sentences (8 successful parses)
+2025-07-01 04:36:17,473 - master_scraper            - INFO - Processing text for article 82/241: mbl_9451f6b8 from mbl
+2025-07-01 04:36:18,596 - text_processor            - INFO - Extracted 36 lemmas from 5 sentences (3 successful parses)
+2025-07-01 04:36:18,596 - master_scraper            - INFO - Processing text for article 83/241: mbl_4e1892fa from mbl
+2025-07-01 04:36:18,992 - text_processor            - INFO - Extracted 20 lemmas from 2 sentences (2 successful parses)
+2025-07-01 04:36:18,992 - master_scraper            - INFO - Processing text for article 84/241: mbl_ce8faa27 from mbl
+2025-07-01 04:36:20,478 - text_processor            - INFO - Extracted 73 lemmas from 6 sentences (5 successful parses)
+2025-07-01 04:36:20,478 - master_scraper            - INFO - Processing text for article 85/241: mbl_766cc2e5 from mbl
+2025-07-01 04:36:23,301 - text_processor            - INFO - Extracted 143 lemmas from 10 sentences (10 successful parses)
+2025-07-01 04:36:23,301 - master_scraper            - INFO - Processing text for article 86/241: mbl_90dde631 from mbl
+2025-07-01 04:36:25,228 - text_processor            - INFO - Extracted 103 lemmas from 6 sentences (6 successful parses)
+2025-07-01 04:36:25,228 - master_scraper            - INFO - Processing text for article 87/241: mbl_87281c0b from mbl
+2025-07-01 04:36:27,611 - text_processor            - INFO - Extracted 111 lemmas from 9 sentences (8 successful parses)
+2025-07-01 04:36:27,611 - master_scraper            - INFO - Processing text for article 88/241: mbl_4b6e3c95 from mbl
+2025-07-01 04:36:28,791 - text_processor            - INFO - Extracted 94 lemmas from 9 sentences (8 successful parses)
+2025-07-01 04:36:28,791 - master_scraper            - INFO - Processing text for article 89/241: mbl_17dc7a84 from mbl
+2025-07-01 04:36:30,357 - text_processor            - INFO - Extracted 118 lemmas from 10 sentences (8 successful parses)
+2025-07-01 04:36:30,357 - master_scraper            - INFO - Processing text for article 90/241: mbl_8b7fb371 from mbl
+2025-07-01 04:36:32,476 - text_processor            - INFO - Extracted 122 lemmas from 15 sentences (13 successful parses)
+2025-07-01 04:36:32,476 - master_scraper            - INFO - Processing text for article 91/241: mbl_66a1fa4e from mbl
+2025-07-01 04:36:33,277 - text_processor            - INFO - Extracted 56 lemmas from 5 sentences (5 successful parses)
+2025-07-01 04:36:33,277 - master_scraper            - INFO - Processing text for article 92/241: mbl_7fcd1bfc from mbl
+2025-07-01 04:36:43,411 - text_processor            - INFO - Extracted 376 lemmas from 23 sentences (21 successful parses)
+2025-07-01 04:36:43,411 - master_scraper            - INFO - Processing text for article 93/241: mbl_f2f0f2bc from mbl
+2025-07-01 04:36:45,712 - text_processor            - INFO - Extracted 120 lemmas from 11 sentences (11 successful parses)
+2025-07-01 04:36:45,712 - master_scraper            - INFO - Processing text for article 94/241: mbl_5d277e3e from mbl
+2025-07-01 04:36:46,205 - text_processor            - INFO - Extracted 32 lemmas from 5 sentences (4 successful parses)
+2025-07-01 04:36:46,205 - master_scraper            - INFO - Processing text for article 95/241: mbl_0d2835b9 from mbl
+2025-07-01 04:36:47,262 - text_processor            - INFO - Extracted 70 lemmas from 7 sentences (6 successful parses)
+2025-07-01 04:36:47,262 - master_scraper            - INFO - Processing text for article 96/241: mbl_8b7d2d89 from mbl
+2025-07-01 04:36:47,892 - text_processor            - INFO - Extracted 49 lemmas from 5 sentences (5 successful parses)
+2025-07-01 04:36:47,892 - master_scraper            - INFO - Processing text for article 97/241: mbl_c762d068 from mbl
+2025-07-01 04:36:51,890 - text_processor            - INFO - Extracted 179 lemmas from 16 sentences (15 successful parses)
+2025-07-01 04:36:51,891 - master_scraper            - INFO - Processing text for article 98/241: mbl_4e704d47 from mbl
+2025-07-01 04:36:52,745 - text_processor            - INFO - Extracted 46 lemmas from 6 sentences (5 successful parses)
+2025-07-01 04:36:52,746 - master_scraper            - INFO - Processing text for article 99/241: mbl_96847da0 from mbl
+2025-07-01 04:36:53,368 - text_processor            - INFO - Extracted 46 lemmas from 4 sentences (4 successful parses)
+2025-07-01 04:36:53,368 - master_scraper            - INFO - Processing text for article 100/241: mbl_5bc9e1b9 from mbl
+2025-07-01 04:36:55,453 - text_processor            - INFO - Extracted 110 lemmas from 8 sentences (7 successful parses)
+2025-07-01 04:36:55,454 - master_scraper            - INFO - Processing text for article 101/241: mbl_499d5ebe from mbl
+2025-07-01 04:36:56,569 - text_processor            - INFO - Extracted 75 lemmas from 9 sentences (9 successful parses)
+2025-07-01 04:36:56,569 - master_scraper            - INFO - Processing text for article 102/241: mbl_0d987f22 from mbl
+2025-07-01 04:36:59,965 - text_processor            - INFO - Extracted 135 lemmas from 14 sentences (12 successful parses)
+2025-07-01 04:36:59,965 - master_scraper            - INFO - Processing text for article 103/241: mbl_8062d337 from mbl
+2025-07-01 04:37:03,202 - text_processor            - INFO - Extracted 155 lemmas from 18 sentences (14 successful parses)
+2025-07-01 04:37:03,202 - master_scraper            - INFO - Processing text for article 104/241: mbl_f98c3a3b from mbl
+2025-07-01 04:37:04,840 - text_processor            - INFO - Extracted 108 lemmas from 11 sentences (10 successful parses)
+2025-07-01 04:37:04,840 - master_scraper            - INFO - Processing text for article 105/241: mbl_c2dce451 from mbl
+2025-07-01 04:37:05,378 - text_processor            - INFO - Extracted 54 lemmas from 6 sentences (5 successful parses)
+2025-07-01 04:37:05,379 - master_scraper            - INFO - Processing text for article 106/241: mbl_cd1d1a30 from mbl
+2025-07-01 04:37:07,288 - text_processor            - INFO - Extracted 57 lemmas from 5 sentences (5 successful parses)
+2025-07-01 04:37:07,288 - master_scraper            - INFO - Processing text for article 107/241: mbl_668ddba6 from mbl
+2025-07-01 04:37:12,245 - text_processor            - INFO - Extracted 318 lemmas from 28 sentences (26 successful parses)
+2025-07-01 04:37:12,245 - master_scraper            - INFO - Processing text for article 108/241: mbl_c574d4c5 from mbl
+2025-07-01 04:37:13,613 - text_processor            - INFO - Extracted 84 lemmas from 14 sentences (9 successful parses)
+2025-07-01 04:37:13,614 - master_scraper            - INFO - Processing text for article 109/241: mbl_e601f86f from mbl
+2025-07-01 04:37:14,947 - text_processor            - INFO - Extracted 103 lemmas from 14 sentences (13 successful parses)
+2025-07-01 04:37:14,947 - master_scraper            - INFO - Processing text for article 110/241: mbl_737431d8 from mbl
+2025-07-01 04:37:15,408 - text_processor            - INFO - Extracted 46 lemmas from 7 sentences (7 successful parses)
+2025-07-01 04:37:15,408 - master_scraper            - INFO - Processing text for article 111/241: mbl_563fffc9 from mbl
+2025-07-01 04:37:17,519 - text_processor            - INFO - Extracted 150 lemmas from 18 sentences (16 successful parses)
+2025-07-01 04:37:17,519 - master_scraper            - INFO - Processing text for article 112/241: mbl_dc2bf18a from mbl
+2025-07-01 04:37:18,077 - text_processor            - INFO - Extracted 56 lemmas from 7 sentences (7 successful parses)
+2025-07-01 04:37:18,077 - master_scraper            - INFO - Processing text for article 113/241: mbl_b1bc3bbf from mbl
+2025-07-01 04:37:21,670 - text_processor            - INFO - Extracted 173 lemmas from 16 sentences (16 successful parses)
+2025-07-01 04:37:21,670 - master_scraper            - INFO - Processing text for article 114/241: mbl_3500d352 from mbl
+2025-07-01 04:37:22,150 - text_processor            - INFO - Extracted 60 lemmas from 7 sentences (7 successful parses)
+2025-07-01 04:37:22,150 - master_scraper            - INFO - Processing text for article 115/241: mbl_2d5ab74a from mbl
+2025-07-01 04:37:23,930 - text_processor            - INFO - Extracted 82 lemmas from 9 sentences (8 successful parses)
+2025-07-01 04:37:23,930 - master_scraper            - INFO - Processing text for article 116/241: mbl_5ab958b4 from mbl
+2025-07-01 04:37:25,479 - text_processor            - INFO - Extracted 101 lemmas from 7 sentences (7 successful parses)
+2025-07-01 04:37:25,479 - master_scraper            - INFO - Processing text for article 117/241: mbl_e8c9c87d from mbl
+2025-07-01 04:37:26,012 - text_processor            - INFO - Extracted 32 lemmas from 5 sentences (3 successful parses)
+2025-07-01 04:37:26,012 - master_scraper            - INFO - Processing text for article 118/241: mbl_b50704d6 from mbl
+2025-07-01 04:37:26,933 - text_processor            - INFO - Extracted 45 lemmas from 3 sentences (3 successful parses)
+2025-07-01 04:37:26,934 - master_scraper            - INFO - Processing text for article 119/241: mbl_4bf84711 from mbl
+2025-07-01 04:37:27,864 - text_processor            - INFO - Extracted 70 lemmas from 9 sentences (9 successful parses)
+2025-07-01 04:37:27,865 - master_scraper            - INFO - Processing text for article 120/241: mbl_3c1455da from mbl
+2025-07-01 04:37:28,776 - text_processor            - INFO - Extracted 68 lemmas from 8 sentences (8 successful parses)
+2025-07-01 04:37:28,776 - master_scraper            - INFO - Processing text for article 121/241: mbl_7ac15897 from mbl
+2025-07-01 04:37:29,603 - text_processor            - INFO - Extracted 43 lemmas from 6 sentences (6 successful parses)
+2025-07-01 04:37:29,603 - master_scraper            - INFO - Processing text for article 122/241: mbl_635b4777 from mbl
+2025-07-01 04:37:29,863 - text_processor            - INFO - Extracted 14 lemmas from 5 sentences (2 successful parses)
+2025-07-01 04:37:29,863 - master_scraper            - INFO - Processing text for article 123/241: mbl_219e39eb from mbl
+2025-07-01 04:37:30,454 - text_processor            - INFO - Extracted 42 lemmas from 6 sentences (5 successful parses)
+2025-07-01 04:37:30,454 - master_scraper            - INFO - Processing text for article 124/241: mbl_4f3166da from mbl
+2025-07-01 04:37:32,122 - text_processor            - INFO - Extracted 59 lemmas from 7 sentences (7 successful parses)
+2025-07-01 04:37:32,122 - master_scraper            - INFO - Processing text for article 125/241: mbl_8f648b6b from mbl
+2025-07-01 04:37:33,079 - text_processor            - INFO - Extracted 63 lemmas from 6 sentences (6 successful parses)
+2025-07-01 04:37:33,079 - master_scraper            - INFO - Processing text for article 126/241: mbl_0c53be48 from mbl
+2025-07-01 04:37:34,310 - text_processor            - INFO - Extracted 48 lemmas from 5 sentences (5 successful parses)
+2025-07-01 04:37:34,310 - master_scraper            - INFO - Processing text for article 127/241: mbl_54213364 from mbl
+2025-07-01 04:37:34,655 - text_processor            - INFO - Extracted 39 lemmas from 6 sentences (5 successful parses)
+2025-07-01 04:37:34,656 - master_scraper            - INFO - Processing text for article 128/241: mbl_1ecc7faf from mbl
+2025-07-01 04:37:35,663 - text_processor            - INFO - Extracted 75 lemmas from 5 sentences (5 successful parses)
+2025-07-01 04:37:35,663 - master_scraper            - INFO - Processing text for article 129/241: mbl_7a980929 from mbl
+2025-07-01 04:37:36,984 - text_processor            - INFO - Extracted 57 lemmas from 8 sentences (6 successful parses)
+2025-07-01 04:37:36,984 - master_scraper            - INFO - Processing text for article 130/241: mbl_71af7d40 from mbl
+2025-07-01 04:37:38,649 - text_processor            - INFO - Extracted 77 lemmas from 8 sentences (6 successful parses)
+2025-07-01 04:37:38,649 - master_scraper            - INFO - Processing text for article 131/241: mbl_f11a4f99 from mbl
+2025-07-01 04:37:39,558 - text_processor            - INFO - Extracted 56 lemmas from 9 sentences (8 successful parses)
+2025-07-01 04:37:39,558 - master_scraper            - INFO - Processing text for article 132/241: mbl_f5d02852 from mbl
+2025-07-01 04:37:40,051 - text_processor            - INFO - Extracted 56 lemmas from 5 sentences (5 successful parses)
+2025-07-01 04:37:40,052 - master_scraper            - INFO - Processing text for article 133/241: mbl_ffcc47a0 from mbl
+2025-07-01 04:37:40,713 - text_processor            - INFO - Extracted 43 lemmas from 4 sentences (4 successful parses)
+2025-07-01 04:37:40,713 - master_scraper            - INFO - Processing text for article 134/241: mbl_a9eaf6ac from mbl
+2025-07-01 04:37:41,409 - text_processor            - INFO - Extracted 49 lemmas from 5 sentences (5 successful parses)
+2025-07-01 04:37:41,409 - master_scraper            - INFO - Processing text for article 135/241: mbl_9172deaa from mbl
+2025-07-01 04:37:43,125 - text_processor            - INFO - Extracted 76 lemmas from 6 sentences (6 successful parses)
+2025-07-01 04:37:43,126 - master_scraper            - INFO - Processing text for article 136/241: mbl_2ea0c077 from mbl
+2025-07-01 04:37:43,967 - text_processor            - INFO - Extracted 49 lemmas from 4 sentences (4 successful parses)
+2025-07-01 04:37:43,967 - master_scraper            - INFO - Processing text for article 137/241: mbl_1d75aa00 from mbl
+2025-07-01 04:37:44,392 - text_processor            - INFO - Extracted 47 lemmas from 4 sentences (4 successful parses)
+2025-07-01 04:37:44,392 - master_scraper            - INFO - Processing text for article 138/241: mbl_11ad9e32 from mbl
+2025-07-01 04:37:45,280 - text_processor            - INFO - Extracted 68 lemmas from 8 sentences (7 successful parses)
+2025-07-01 04:37:45,280 - master_scraper            - INFO - Processing text for article 139/241: mbl_0655b581 from mbl
+2025-07-01 04:37:45,823 - text_processor            - INFO - Extracted 28 lemmas from 4 sentences (3 successful parses)
+2025-07-01 04:37:45,823 - master_scraper            - INFO - Processing text for article 140/241: mbl_29ee83e9 from mbl
+2025-07-01 04:37:46,484 - text_processor            - INFO - Extracted 60 lemmas from 6 sentences (5 successful parses)
+2025-07-01 04:37:46,485 - master_scraper            - INFO - Processing text for article 141/241: mbl_fe8fc668 from mbl
+2025-07-01 04:37:48,165 - text_processor            - INFO - Extracted 147 lemmas from 14 sentences (11 successful parses)
+2025-07-01 04:37:48,165 - master_scraper            - INFO - Processing text for article 142/241: mbl_e6ce8317 from mbl
+2025-07-01 04:37:48,846 - text_processor            - INFO - Extracted 60 lemmas from 5 sentences (4 successful parses)
+2025-07-01 04:37:48,847 - master_scraper            - INFO - Processing text for article 143/241: mbl_5118d3c5 from mbl
+2025-07-01 04:37:49,422 - text_processor            - INFO - Extracted 67 lemmas from 6 sentences (5 successful parses)
+2025-07-01 04:37:49,423 - master_scraper            - INFO - Processing text for article 144/241: mbl_b44149f5 from mbl
+2025-07-01 04:37:49,737 - text_processor            - INFO - Extracted 23 lemmas from 3 sentences (2 successful parses)
+2025-07-01 04:37:49,737 - master_scraper            - INFO - Processing text for article 145/241: mbl_9b0cdd7f from mbl
+2025-07-01 04:37:50,709 - text_processor            - INFO - Extracted 50 lemmas from 5 sentences (5 successful parses)
+2025-07-01 04:37:50,709 - master_scraper            - INFO - Processing text for article 146/241: mbl_31b09499 from mbl
+2025-07-01 04:37:58,599 - text_processor            - INFO - Extracted 525 lemmas from 65 sentences (56 successful parses)
+2025-07-01 04:37:58,600 - master_scraper            - INFO - Processing text for article 147/241: mbl_594b2de6 from mbl
+2025-07-01 04:37:59,918 - text_processor            - INFO - Extracted 75 lemmas from 13 sentences (11 successful parses)
+2025-07-01 04:37:59,918 - master_scraper            - INFO - Processing text for article 148/241: mbl_e377ba4a from mbl
+2025-07-01 04:38:00,849 - text_processor            - INFO - Extracted 60 lemmas from 8 sentences (7 successful parses)
+2025-07-01 04:38:00,849 - master_scraper            - INFO - Processing text for article 149/241: mbl_4c1f8fd4 from mbl
+2025-07-01 04:38:02,408 - text_processor            - INFO - Extracted 84 lemmas from 16 sentences (10 successful parses)
+2025-07-01 04:38:02,409 - master_scraper            - INFO - Processing text for article 150/241: mbl_e8bcaeda from mbl
+2025-07-01 04:38:04,062 - text_processor            - INFO - Extracted 95 lemmas from 11 sentences (10 successful parses)
+2025-07-01 04:38:04,062 - master_scraper            - INFO - Processing text for article 151/241: mbl_ec072404 from mbl
+2025-07-01 04:38:11,984 - text_processor            - INFO - Extracted 410 lemmas from 48 sentences (40 successful parses)
+2025-07-01 04:38:11,984 - master_scraper            - INFO - Processing text for article 152/241: mbl_9514da5c from mbl
+2025-07-01 04:38:30,307 - text_processor            - INFO - Extracted 883 lemmas from 118 sentences (97 successful parses)
+2025-07-01 04:38:30,307 - master_scraper            - INFO - Processing text for article 153/241: mbl_46004fe4 from mbl
+2025-07-01 04:38:30,993 - text_processor            - INFO - Extracted 48 lemmas from 8 sentences (7 successful parses)
+2025-07-01 04:38:30,993 - master_scraper            - INFO - Processing text for article 154/241: mbl_fdb9e17d from mbl
+2025-07-01 04:38:34,010 - text_processor            - INFO - Extracted 185 lemmas from 23 sentences (21 successful parses)
+2025-07-01 04:38:34,010 - master_scraper            - INFO - Processing text for article 155/241: mbl_b0d1a69a from mbl
+2025-07-01 04:38:38,342 - text_processor            - INFO - Extracted 134 lemmas from 19 sentences (13 successful parses)
+2025-07-01 04:38:38,342 - master_scraper            - INFO - Processing text for article 156/241: mbl_a7892b20 from mbl
+2025-07-01 04:38:44,098 - text_processor            - INFO - Extracted 316 lemmas from 47 sentences (42 successful parses)
+2025-07-01 04:38:44,098 - master_scraper            - INFO - Processing text for article 157/241: mbl_d32a96ac from mbl
+2025-07-01 04:38:44,679 - text_processor            - INFO - Extracted 56 lemmas from 7 sentences (7 successful parses)
+2025-07-01 04:38:44,679 - master_scraper            - INFO - Processing text for article 158/241: mbl_5534fe5f from mbl
+2025-07-01 04:38:45,174 - text_processor            - INFO - Extracted 32 lemmas from 6 sentences (5 successful parses)
+2025-07-01 04:38:45,174 - master_scraper            - INFO - Processing text for article 159/241: mbl_daa2658d from mbl
+2025-07-01 04:38:45,233 - text_processor            - INFO - Extracted 8 lemmas from 1 sentences (1 successful parses)
+2025-07-01 04:38:45,233 - master_scraper            - INFO - Processing text for article 160/241: mbl_093f29fa from mbl
+2025-07-01 04:38:46,563 - text_processor            - INFO - Extracted 74 lemmas from 17 sentences (7 successful parses)
+2025-07-01 04:38:46,563 - master_scraper            - INFO - Processing text for article 161/241: mbl_8f88d7c0 from mbl
+2025-07-01 04:38:48,153 - text_processor            - INFO - Extracted 113 lemmas from 11 sentences (11 successful parses)
+2025-07-01 04:38:48,154 - master_scraper            - INFO - Processing text for article 162/241: vb_331f1326 from vb
+2025-07-01 04:38:51,247 - text_processor            - INFO - Extracted 149 lemmas from 18 sentences (16 successful parses)
+2025-07-01 04:38:51,247 - master_scraper            - INFO - Processing text for article 163/241: vb_07320f6b from vb
+2025-07-01 04:38:53,539 - text_processor            - INFO - Extracted 161 lemmas from 19 sentences (15 successful parses)
+2025-07-01 04:38:53,539 - master_scraper            - INFO - Processing text for article 164/241: vb_d2cfcab8 from vb
+2025-07-01 04:39:00,297 - text_processor            - INFO - Extracted 291 lemmas from 27 sentences (25 successful parses)
+2025-07-01 04:39:00,297 - master_scraper            - INFO - Processing text for article 165/241: vb_3ad4bf8c from vb
+2025-07-01 04:39:02,093 - text_processor            - INFO - Extracted 97 lemmas from 11 sentences (11 successful parses)
+2025-07-01 04:39:02,093 - master_scraper            - INFO - Processing text for article 166/241: vb_319ae00f from vb
+2025-07-01 04:39:04,862 - text_processor            - INFO - Extracted 133 lemmas from 10 sentences (10 successful parses)
+2025-07-01 04:39:04,862 - master_scraper            - INFO - Processing text for article 167/241: vb_b1c15eca from vb
+2025-07-01 04:39:05,771 - text_processor            - INFO - Extracted 86 lemmas from 8 sentences (8 successful parses)
+2025-07-01 04:39:05,771 - master_scraper            - INFO - Processing text for article 168/241: vb_e226de5c from vb
+2025-07-01 04:39:07,031 - text_processor            - INFO - Extracted 76 lemmas from 10 sentences (8 successful parses)
+2025-07-01 04:39:07,031 - master_scraper            - INFO - Processing text for article 169/241: vb_38e763ed from vb
+2025-07-01 04:39:07,957 - text_processor            - INFO - Extracted 69 lemmas from 6 sentences (5 successful parses)
+2025-07-01 04:39:07,957 - master_scraper            - INFO - Processing text for article 170/241: vb_d30dcfbf from vb
+2025-07-01 04:39:10,117 - text_processor            - INFO - Extracted 112 lemmas from 10 sentences (9 successful parses)
+2025-07-01 04:39:10,117 - master_scraper            - INFO - Processing text for article 171/241: vb_17c3cefd from vb
+2025-07-01 04:39:11,699 - text_processor            - INFO - Extracted 130 lemmas from 12 sentences (12 successful parses)
+2025-07-01 04:39:11,700 - master_scraper            - INFO - Processing text for article 172/241: vb_60e0fa27 from vb
+2025-07-01 04:39:14,160 - text_processor            - INFO - Extracted 195 lemmas from 20 sentences (19 successful parses)
+2025-07-01 04:39:14,160 - master_scraper            - INFO - Processing text for article 173/241: vb_efd77daa from vb
+2025-07-01 04:39:15,066 - text_processor            - INFO - Extracted 81 lemmas from 8 sentences (7 successful parses)
+2025-07-01 04:39:15,067 - master_scraper            - INFO - Processing text for article 174/241: vb_73ef10d9 from vb
+2025-07-01 04:39:16,855 - text_processor            - INFO - Extracted 84 lemmas from 8 sentences (8 successful parses)
+2025-07-01 04:39:16,855 - master_scraper            - INFO - Processing text for article 175/241: vb_8962ddd5 from vb
+2025-07-01 04:39:17,874 - text_processor            - INFO - Extracted 79 lemmas from 10 sentences (8 successful parses)
+2025-07-01 04:39:17,875 - master_scraper            - INFO - Processing text for article 176/241: vb_08b83744 from vb
+2025-07-01 04:39:18,516 - text_processor            - INFO - Extracted 65 lemmas from 5 sentences (5 successful parses)
+2025-07-01 04:39:18,516 - master_scraper            - INFO - Processing text for article 177/241: vb_8522ab07 from vb
+2025-07-01 04:39:19,114 - text_processor            - INFO - Extracted 53 lemmas from 7 sentences (6 successful parses)
+2025-07-01 04:39:19,114 - master_scraper            - INFO - Processing text for article 178/241: vb_fbc4b26a from vb
+2025-07-01 04:39:20,332 - text_processor            - INFO - Extracted 130 lemmas from 14 sentences (14 successful parses)
+2025-07-01 04:39:20,332 - master_scraper            - INFO - Processing text for article 179/241: vb_fdae51b8 from vb
+2025-07-01 04:39:21,279 - text_processor            - INFO - Extracted 65 lemmas from 6 sentences (6 successful parses)
+2025-07-01 04:39:21,279 - master_scraper            - INFO - Processing text for article 180/241: vb_5b02858e from vb
+2025-07-01 04:39:22,689 - text_processor            - INFO - Extracted 71 lemmas from 5 sentences (5 successful parses)
+2025-07-01 04:39:22,689 - master_scraper            - INFO - Processing text for article 181/241: vb_6802d07f from vb
+2025-07-01 04:39:23,736 - text_processor            - INFO - Extracted 58 lemmas from 6 sentences (6 successful parses)
+2025-07-01 04:39:23,736 - master_scraper            - INFO - Processing text for article 182/241: vb_3ba50410 from vb
+2025-07-01 04:39:27,678 - text_processor            - INFO - Extracted 233 lemmas from 23 sentences (23 successful parses)
+2025-07-01 04:39:27,678 - master_scraper            - INFO - Processing text for article 183/241: vb_e551e7a8 from vb
+2025-07-01 04:39:29,204 - text_processor            - INFO - Extracted 75 lemmas from 6 sentences (6 successful parses)
+2025-07-01 04:39:29,205 - master_scraper            - INFO - Processing text for article 184/241: vb_2fa58f29 from vb
+2025-07-01 04:39:29,692 - text_processor            - INFO - Extracted 68 lemmas from 8 sentences (8 successful parses)
+2025-07-01 04:39:29,692 - master_scraper            - INFO - Processing text for article 185/241: vb_4ad2c3ab from vb
+2025-07-01 04:39:33,976 - text_processor            - INFO - Extracted 234 lemmas from 25 sentences (24 successful parses)
+2025-07-01 04:39:33,976 - master_scraper            - INFO - Processing text for article 186/241: vb_00c3b1b9 from vb
+2025-07-01 04:39:36,685 - text_processor            - INFO - Extracted 146 lemmas from 22 sentences (20 successful parses)
+2025-07-01 04:39:36,685 - master_scraper            - INFO - Processing text for article 187/241: ruv_f5db47f7 from ruv
+2025-07-01 04:39:38,432 - text_processor            - INFO - Extracted 141 lemmas from 18 sentences (17 successful parses)
+2025-07-01 04:39:38,432 - master_scraper            - INFO - Processing text for article 188/241: ruv_4abc2148 from ruv
+2025-07-01 04:39:38,792 - text_processor            - INFO - Extracted 42 lemmas from 7 sentences (7 successful parses)
+2025-07-01 04:39:38,793 - master_scraper            - INFO - Processing text for article 189/241: ruv_ccc6b40c from ruv
+2025-07-01 04:39:39,288 - text_processor            - INFO - Extracted 48 lemmas from 5 sentences (5 successful parses)
+2025-07-01 04:39:39,288 - master_scraper            - INFO - Processing text for article 190/241: ruv_b7d4d7f2 from ruv
+2025-07-01 04:39:41,639 - text_processor            - INFO - Extracted 108 lemmas from 12 sentences (11 successful parses)
+2025-07-01 04:39:41,640 - master_scraper            - INFO - Processing text for article 191/241: ruv_cfae49a7 from ruv
+2025-07-01 04:39:45,077 - text_processor            - INFO - Extracted 173 lemmas from 22 sentences (21 successful parses)
+2025-07-01 04:39:45,077 - master_scraper            - INFO - Processing text for article 192/241: ruv_6c7b7c57 from ruv
+2025-07-01 04:39:46,969 - text_processor            - INFO - Extracted 119 lemmas from 16 sentences (15 successful parses)
+2025-07-01 04:39:46,969 - master_scraper            - INFO - Processing text for article 193/241: ruv_e8313b9f from ruv
+2025-07-01 04:39:49,107 - text_processor            - INFO - Extracted 146 lemmas from 18 sentences (16 successful parses)
+2025-07-01 04:39:49,107 - master_scraper            - INFO - Processing text for article 194/241: ruv_94c798aa from ruv
+2025-07-01 04:39:49,827 - text_processor            - INFO - Extracted 57 lemmas from 6 sentences (6 successful parses)
+2025-07-01 04:39:49,827 - master_scraper            - INFO - Processing text for article 195/241: ruv_7699c745 from ruv
+2025-07-01 04:39:50,555 - text_processor            - INFO - Extracted 71 lemmas from 10 sentences (10 successful parses)
+2025-07-01 04:39:50,555 - master_scraper            - INFO - Processing text for article 196/241: ruv_8120e956 from ruv
+2025-07-01 04:39:52,156 - text_processor            - INFO - Extracted 100 lemmas from 13 sentences (12 successful parses)
+2025-07-01 04:39:52,156 - master_scraper            - INFO - Processing text for article 197/241: ruv_0a1b5c72 from ruv
+2025-07-01 04:39:52,756 - text_processor            - INFO - Extracted 50 lemmas from 6 sentences (6 successful parses)
+2025-07-01 04:39:52,756 - master_scraper            - INFO - Processing text for article 198/241: ruv_f4517786 from ruv
+2025-07-01 04:39:54,058 - text_processor            - INFO - Extracted 114 lemmas from 14 sentences (14 successful parses)
+2025-07-01 04:39:54,059 - master_scraper            - INFO - Processing text for article 199/241: ruv_142ab300 from ruv
+2025-07-01 04:39:56,838 - text_processor            - INFO - Extracted 166 lemmas from 23 sentences (20 successful parses)
+2025-07-01 04:39:56,838 - master_scraper            - INFO - Processing text for article 200/241: ruv_1718cd67 from ruv
+2025-07-01 04:39:58,061 - text_processor            - INFO - Extracted 115 lemmas from 16 sentences (14 successful parses)
+2025-07-01 04:39:58,061 - master_scraper            - INFO - Processing text for article 201/241: ruv_b6640f78 from ruv
+2025-07-01 04:39:59,488 - text_processor            - INFO - Extracted 129 lemmas from 14 sentences (13 successful parses)
+2025-07-01 04:39:59,488 - master_scraper            - INFO - Processing text for article 202/241: ruv_71686e0d from ruv
+2025-07-01 04:40:00,472 - text_processor            - INFO - Extracted 103 lemmas from 11 sentences (11 successful parses)
+2025-07-01 04:40:00,472 - master_scraper            - INFO - Processing text for article 203/241: ruv_da5aa87a from ruv
+2025-07-01 04:40:01,109 - text_processor            - INFO - Extracted 47 lemmas from 4 sentences (4 successful parses)
+2025-07-01 04:40:01,109 - master_scraper            - INFO - Processing text for article 204/241: ruv_12c74e34 from ruv
+2025-07-01 04:40:01,857 - text_processor            - INFO - Extracted 44 lemmas from 5 sentences (5 successful parses)
+2025-07-01 04:40:01,857 - master_scraper            - INFO - Processing text for article 205/241: ruv_cebd14f2 from ruv
+2025-07-01 04:40:03,441 - text_processor            - INFO - Extracted 88 lemmas from 9 sentences (9 successful parses)
+2025-07-01 04:40:03,441 - master_scraper            - INFO - Processing text for article 206/241: ruv_d1321bed from ruv
+2025-07-01 04:40:06,877 - text_processor            - INFO - Extracted 140 lemmas from 14 sentences (14 successful parses)
+2025-07-01 04:40:06,877 - master_scraper            - INFO - Processing text for article 207/241: ruv_a7930be6 from ruv
+2025-07-01 04:40:09,384 - text_processor            - INFO - Extracted 140 lemmas from 15 sentences (15 successful parses)
+2025-07-01 04:40:09,384 - master_scraper            - INFO - Processing text for article 208/241: ruv_484053ef from ruv
+2025-07-01 04:40:10,509 - text_processor            - INFO - Extracted 61 lemmas from 6 sentences (5 successful parses)
+2025-07-01 04:40:10,509 - master_scraper            - INFO - Processing text for article 209/241: ruv_66cab261 from ruv
+2025-07-01 04:40:16,018 - text_processor            - INFO - Extracted 315 lemmas from 39 sentences (36 successful parses)
+2025-07-01 04:40:16,018 - master_scraper            - INFO - Processing text for article 210/241: ruv_1f615da8 from ruv
+2025-07-01 04:40:17,235 - text_processor            - INFO - Extracted 87 lemmas from 12 sentences (8 successful parses)
+2025-07-01 04:40:17,235 - master_scraper            - INFO - Processing text for article 211/241: ruv_5527f557 from ruv
+2025-07-01 04:40:19,349 - text_processor            - INFO - Extracted 152 lemmas from 23 sentences (22 successful parses)
+2025-07-01 04:40:19,350 - master_scraper            - INFO - Processing text for article 212/241: ruv_857795b0 from ruv
+2025-07-01 04:40:24,069 - text_processor            - INFO - Extracted 295 lemmas from 45 sentences (41 successful parses)
+2025-07-01 04:40:24,069 - master_scraper            - INFO - Processing text for article 213/241: ruv_06196896 from ruv
+2025-07-01 04:40:25,789 - text_processor            - INFO - Extracted 110 lemmas from 17 sentences (14 successful parses)
+2025-07-01 04:40:25,789 - master_scraper            - INFO - Processing text for article 214/241: ruv_ee98afb0 from ruv
+2025-07-01 04:40:31,060 - text_processor            - INFO - Extracted 242 lemmas from 26 sentences (25 successful parses)
+2025-07-01 04:40:31,060 - master_scraper            - INFO - Processing text for article 215/241: ruv_50f93754 from ruv
+2025-07-01 04:40:31,476 - text_processor            - INFO - Extracted 34 lemmas from 6 sentences (6 successful parses)
+2025-07-01 04:40:31,476 - master_scraper            - INFO - Processing text for article 216/241: ruv_f7e958f9 from ruv
+2025-07-01 04:40:33,331 - text_processor            - INFO - Extracted 118 lemmas from 15 sentences (14 successful parses)
+2025-07-01 04:40:33,331 - master_scraper            - INFO - Processing text for article 217/241: ruv_aab4995e from ruv
+2025-07-01 04:40:34,357 - text_processor            - INFO - Extracted 107 lemmas from 13 sentences (13 successful parses)
+2025-07-01 04:40:34,357 - master_scraper            - INFO - Processing text for article 218/241: ruv_c1b7623b from ruv
+2025-07-01 04:40:34,795 - text_processor            - INFO - Extracted 62 lemmas from 8 sentences (8 successful parses)
+2025-07-01 04:40:34,795 - master_scraper            - INFO - Processing text for article 219/241: ruv_859348cc from ruv
+2025-07-01 04:40:36,111 - text_processor            - INFO - Extracted 108 lemmas from 17 sentences (17 successful parses)
+2025-07-01 04:40:36,111 - master_scraper            - INFO - Processing text for article 220/241: ruv_bbfa144e from ruv
+2025-07-01 04:40:36,981 - text_processor            - INFO - Extracted 68 lemmas from 12 sentences (11 successful parses)
+2025-07-01 04:40:36,981 - master_scraper            - INFO - Processing text for article 221/241: ruv_6b97841e from ruv
+2025-07-01 04:40:37,409 - text_processor            - INFO - Extracted 33 lemmas from 8 sentences (7 successful parses)
+2025-07-01 04:40:37,410 - master_scraper            - INFO - Processing text for article 222/241: ruv_48540419 from ruv
+2025-07-01 04:40:39,118 - text_processor            - INFO - Extracted 92 lemmas from 9 sentences (9 successful parses)
+2025-07-01 04:40:39,118 - master_scraper            - INFO - Processing text for article 223/241: ruv_58e25424 from ruv
+2025-07-01 04:40:39,779 - text_processor            - INFO - Extracted 53 lemmas from 9 sentences (9 successful parses)
+2025-07-01 04:40:39,779 - master_scraper            - INFO - Processing text for article 224/241: ruv_66a37cbf from ruv
+2025-07-01 04:40:40,056 - text_processor            - INFO - Extracted 7 lemmas from 4 sentences (2 successful parses)
+2025-07-01 04:40:40,056 - master_scraper            - INFO - Processing text for article 225/241: ruv_562ca3c4 from ruv
+2025-07-01 04:40:40,593 - text_processor            - INFO - Extracted 68 lemmas from 8 sentences (8 successful parses)
+2025-07-01 04:40:40,593 - master_scraper            - INFO - Processing text for article 226/241: ruv_290a58b0 from ruv
+2025-07-01 04:40:41,190 - text_processor            - INFO - Extracted 56 lemmas from 8 sentences (8 successful parses)
+2025-07-01 04:40:41,190 - master_scraper            - INFO - Processing text for article 227/241: ruv_4c5184c3 from ruv
+2025-07-01 04:40:42,092 - text_processor            - INFO - Extracted 67 lemmas from 8 sentences (8 successful parses)
+2025-07-01 04:40:42,092 - master_scraper            - INFO - Processing text for article 228/241: ruv_13c031d2 from ruv
+2025-07-01 04:40:42,646 - text_processor            - INFO - Extracted 53 lemmas from 8 sentences (8 successful parses)
+2025-07-01 04:40:42,647 - master_scraper            - INFO - Processing text for article 229/241: ruv_4f1f5141 from ruv
+2025-07-01 04:40:43,678 - text_processor            - INFO - Extracted 90 lemmas from 9 sentences (8 successful parses)
+2025-07-01 04:40:43,678 - master_scraper            - INFO - Processing text for article 230/241: ruv_b52d0ad0 from ruv
+2025-07-01 04:40:46,884 - text_processor            - INFO - Extracted 133 lemmas from 13 sentences (10 successful parses)
+2025-07-01 04:40:46,884 - master_scraper            - INFO - Processing text for article 231/241: ruv_bb4028d9 from ruv
+2025-07-01 04:40:47,212 - text_processor            - INFO - Extracted 31 lemmas from 4 sentences (3 successful parses)
+2025-07-01 04:40:47,212 - master_scraper            - INFO - Processing text for article 232/241: ruv_bb5e2bf6 from ruv
+2025-07-01 04:40:48,558 - text_processor            - INFO - Extracted 83 lemmas from 9 sentences (9 successful parses)
+2025-07-01 04:40:48,558 - master_scraper            - INFO - Processing text for article 233/241: ruv_d0cad0a2 from ruv
+2025-07-01 04:40:50,899 - text_processor            - INFO - Extracted 154 lemmas from 15 sentences (15 successful parses)
+2025-07-01 04:40:50,900 - master_scraper            - INFO - Processing text for article 234/241: ruv_462f1432 from ruv
+2025-07-01 04:40:52,026 - text_processor            - INFO - Extracted 62 lemmas from 9 sentences (6 successful parses)
+2025-07-01 04:40:52,026 - master_scraper            - INFO - Processing text for article 235/241: ruv_33c98df1 from ruv
+2025-07-01 04:40:53,006 - text_processor            - INFO - Extracted 91 lemmas from 11 sentences (11 successful parses)
+2025-07-01 04:40:53,006 - master_scraper            - INFO - Processing text for article 236/241: ruv_7538baf5 from ruv
+2025-07-01 04:40:53,755 - text_processor            - INFO - Extracted 69 lemmas from 5 sentences (5 successful parses)
+2025-07-01 04:40:53,755 - master_scraper            - INFO - Processing text for article 237/241: ruv_a1c1425b from ruv
+2025-07-01 04:40:54,477 - text_processor            - INFO - Extracted 53 lemmas from 6 sentences (6 successful parses)
+2025-07-01 04:40:54,477 - master_scraper            - INFO - Processing text for article 238/241: ruv_9eff89e3 from ruv
+2025-07-01 04:40:55,492 - text_processor            - INFO - Extracted 62 lemmas from 6 sentences (5 successful parses)
+2025-07-01 04:40:55,492 - master_scraper            - INFO - Processing text for article 239/241: ruv_23b46fda from ruv
+2025-07-01 04:41:01,473 - text_processor            - INFO - Extracted 454 lemmas from 69 sentences (63 successful parses)
+2025-07-01 04:41:01,473 - master_scraper            - INFO - Processing text for article 240/241: ruv_0d7113f8 from ruv
+2025-07-01 04:41:05,695 - text_processor            - INFO - Extracted 220 lemmas from 34 sentences (32 successful parses)
+2025-07-01 04:41:05,695 - master_scraper            - INFO - Processing text for article 241/241: ruv_04d2ab27 from ruv
+2025-07-01 04:41:12,509 - text_processor            - INFO - Extracted 366 lemmas from 63 sentences (54 successful parses)
+2025-07-01 04:41:12,532 - file_handler              - INFO - Saved file to: src/outputs/news/articles/articles_2025-06-30.json
+2025-07-01 04:41:12,532 - master_scraper            - INFO - Successfully saved 241 articles to src/outputs/news/articles/articles_2025-06-30.json
+2025-07-01 04:41:12,533 - __main__                  - INFO - ✓ News scraping completed
+2025-07-01 04:41:12,534 - __main__                  - INFO - Step 3/6: Processing article groups
+2025-07-01 04:41:12,546 - file_handler              - INFO - Loaded file from: src/outputs/news/articles/articles_2025-06-30.json
+2025-07-01 04:41:12,546 - article_group_processor   - INFO - Processing 241 articles into groups
+2025-07-01 04:41:12,724 - clustering_strategy_AgglomerativeClusteringStrategy - INFO - Starting Agglomerative clustering with parameters: n_clusters=None, distance_threshold=0.67
+2025-07-01 04:43:02,622 - clustering_strategy_AgglomerativeClusteringStrategy - INFO - Starting cluster distribution:
+2025-07-01 04:43:02,622 - clustering_strategy_AgglomerativeClusteringStrategy - INFO - Number of clusters with size 1: 23
+2025-07-01 04:43:02,622 - clustering_strategy_AgglomerativeClusteringStrategy - INFO - Number of clusters with size 2: 37
+2025-07-01 04:43:02,622 - clustering_strategy_AgglomerativeClusteringStrategy - INFO - Number of clusters with size 3: 19
+2025-07-01 04:43:02,622 - clustering_strategy_AgglomerativeClusteringStrategy - INFO - Number of clusters with size 4: 5
+2025-07-01 04:43:02,622 - clustering_strategy_AgglomerativeClusteringStrategy - INFO - Number of clusters with size 5: 4
+2025-07-01 04:43:02,622 - clustering_strategy_AgglomerativeClusteringStrategy - INFO - Number of clusters with size 6: 3
+2025-07-01 04:43:02,622 - clustering_strategy_AgglomerativeClusteringStrategy - INFO - Number of clusters with size 9: 1
+2025-07-01 04:43:02,622 - clustering_strategy_AgglomerativeClusteringStrategy - INFO - Number of clusters with size 10: 2
+2025-07-01 04:43:02,622 - file_handler              - INFO - Loaded file from: src/prompts/group_name_prompt.txt
+2025-07-01 04:43:04,819 - httpx                     - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-07-01 04:43:06,856 - httpx                     - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-07-01 04:43:07,552 - httpx                     - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-07-01 04:43:09,278 - httpx                     - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-07-01 04:43:09,632 - httpx                     - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-07-01 04:43:09,991 - httpx                     - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-07-01 04:43:10,265 - httpx                     - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-07-01 04:43:11,053 - httpx                     - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-07-01 04:43:11,451 - httpx                     - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-07-01 04:43:12,281 - httpx                     - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-07-01 04:43:12,669 - httpx                     - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-07-01 04:43:13,456 - httpx                     - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-07-01 04:43:13,784 - httpx                     - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-07-01 04:43:14,327 - httpx                     - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-07-01 04:43:14,736 - httpx                     - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-07-01 04:43:15,078 - httpx                     - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-07-01 04:43:15,540 - httpx                     - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-07-01 04:43:15,879 - httpx                     - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-07-01 04:43:16,543 - httpx                     - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-07-01 04:43:17,041 - httpx                     - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-07-01 04:43:17,489 - httpx                     - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-07-01 04:43:19,391 - httpx                     - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-07-01 04:43:19,833 - httpx                     - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-07-01 04:43:20,218 - httpx                     - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-07-01 04:43:20,553 - httpx                     - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-07-01 04:43:20,987 - httpx                     - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-07-01 04:43:21,352 - httpx                     - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-07-01 04:43:21,759 - httpx                     - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-07-01 04:43:22,107 - httpx                     - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-07-01 04:43:22,515 - httpx                     - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-07-01 04:43:22,903 - httpx                     - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-07-01 04:43:23,377 - httpx                     - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-07-01 04:43:23,776 - httpx                     - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-07-01 04:43:24,069 - httpx                     - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-07-01 04:43:24,409 - httpx                     - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-07-01 04:43:24,652 - httpx                     - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-07-01 04:43:25,043 - httpx                     - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-07-01 04:43:25,286 - httpx                     - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-07-01 04:43:25,625 - httpx                     - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-07-01 04:43:25,922 - httpx                     - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-07-01 04:43:26,289 - httpx                     - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-07-01 04:43:26,701 - httpx                     - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-07-01 04:43:27,194 - httpx                     - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-07-01 04:43:27,554 - httpx                     - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-07-01 04:43:27,885 - httpx                     - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-07-01 04:43:28,200 - httpx                     - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-07-01 04:43:28,653 - httpx                     - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-07-01 04:43:29,057 - httpx                     - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-07-01 04:43:29,332 - httpx                     - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-07-01 04:43:29,758 - httpx                     - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-07-01 04:43:30,158 - httpx                     - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-07-01 04:43:30,625 - httpx                     - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-07-01 04:43:31,123 - httpx                     - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-07-01 04:43:31,387 - httpx                     - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-07-01 04:43:31,706 - httpx                     - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-07-01 04:43:32,200 - httpx                     - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-07-01 04:43:32,761 - httpx                     - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-07-01 04:43:33,166 - httpx                     - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-07-01 04:43:33,416 - httpx                     - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-07-01 04:43:33,684 - httpx                     - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-07-01 04:43:34,004 - httpx                     - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-07-01 04:43:34,292 - httpx                     - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-07-01 04:43:34,679 - httpx                     - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-07-01 04:43:34,983 - httpx                     - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-07-01 04:43:35,331 - httpx                     - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-07-01 04:43:35,710 - httpx                     - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-07-01 04:43:36,015 - httpx                     - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-07-01 04:43:36,548 - httpx                     - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-07-01 04:43:36,874 - httpx                     - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-07-01 04:43:37,114 - httpx                     - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-07-01 04:43:37,435 - httpx                     - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-07-01 04:43:37,778 - httpx                     - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-07-01 04:43:38,288 - httpx                     - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-07-01 04:43:38,781 - httpx                     - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-07-01 04:43:39,345 - httpx                     - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-07-01 04:43:39,767 - httpx                     - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-07-01 04:43:40,101 - httpx                     - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-07-01 04:43:40,504 - httpx                     - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-07-01 04:43:40,986 - httpx                     - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-07-01 04:43:41,373 - httpx                     - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-07-01 04:43:41,870 - httpx                     - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-07-01 04:43:42,162 - httpx                     - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-07-01 04:43:42,579 - httpx                     - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-07-01 04:43:42,917 - httpx                     - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-07-01 04:43:43,180 - httpx                     - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-07-01 04:43:43,570 - httpx                     - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-07-01 04:43:44,031 - httpx                     - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-07-01 04:43:44,395 - httpx                     - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-07-01 04:43:44,818 - httpx                     - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-07-01 04:43:45,100 - httpx                     - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-07-01 04:43:45,557 - httpx                     - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-07-01 04:43:45,856 - httpx                     - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-07-01 04:43:46,211 - httpx                     - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-07-01 04:43:46,504 - httpx                     - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-07-01 04:43:46,531 - file_handler              - INFO - Saved file to: src/outputs/news/article_groups/article_groups_2025-06-30.json
+2025-07-01 04:43:46,531 - article_group_processor   - INFO - Saved article groups to: src/outputs/news/article_groups/article_groups_2025-06-30.json
+2025-07-01 04:43:46,534 - __main__                  - INFO - ✓ Article group processing completed
+2025-07-01 04:43:46,534 - __main__                  - INFO - Step 4/6: Starting newsletter processing
+2025-07-01 04:43:46,556 - __main__                  - INFO - Running newsletter generator...
+2025-07-01 04:43:46,556 - newsletter_generator      - INFO - Starting newsletter generation for 2025-06-30
+2025-07-01 04:43:46,556 - newsletter_generator      - INFO - Loading article groups data...
+2025-07-01 04:43:46,558 - file_handler              - INFO - Loaded file from: src/outputs/news/article_groups/article_groups_2025-06-30.json
+2025-07-01 04:43:46,558 - prompt_generator          - INFO - Generating prompt for 2025-06-30
+2025-07-01 04:43:46,577 - file_handler              - INFO - Loaded file from: src/outputs/news/articles/articles_2025-06-30.json
+2025-07-01 04:43:46,579 - file_handler              - INFO - Loaded file from: src/prompts/base_newsletter_prompt.txt
+2025-07-01 04:43:46,580 - file_handler              - INFO - Loaded file from: src/outputs/newsletters/processed/newsletter_processed_2025-06-29.json
+2025-07-01 04:43:46,582 - file_handler              - INFO - Saved file to: src/outputs/text/generated_prompt_2025-06-30.txt
+2025-07-01 04:43:46,582 - raw_nl_generator          - INFO - Starting newsletter generation for 2025-06-30
+2025-07-01 04:43:46,582 - raw_nl_generator          - INFO - Generating newsletter from prompt
+2025-07-01 04:43:47,538 - raw_nl_generator          - INFO - Estimated prompt tokens: 204688
+2025-07-01 04:45:07,188 - httpx                     - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-07-01 04:45:07,224 - raw_nl_generator          - INFO - Completion tokens: 7152
+2025-07-01 04:45:07,224 - raw_nl_generator          - INFO - Total tokens used: 156494
+2025-07-01 04:45:07,225 - file_handler              - INFO - Saved file to: src/outputs/newsletters/unprocessed/newsletter_unprocessed_2025-06-30.json
+2025-07-01 04:45:07,225 - raw_nl_generator          - INFO - Saved unprocessed newsletter to: src/outputs/newsletters/unprocessed/newsletter_unprocessed_2025-06-30.json
+2025-07-01 04:45:07,225 - file_handler              - INFO - Loaded file from: src/outputs/newsletters/unprocessed/newsletter_unprocessed_2025-06-30.json
+2025-07-01 04:45:07,227 - file_handler              - INFO - Loaded file from: src/outputs/news/article_groups/article_groups_2025-06-30.json
+2025-07-01 04:45:07,227 - nl_processor              - INFO - Processing newsletter (ignore_impacts=True)
+2025-07-01 04:45:07,227 - matcher                   - INFO - Matching news items with article groups
+2025-07-01 04:45:07,228 - matcher                   - INFO - Preparing corpus for LSA similarity
+2025-07-01 04:45:07,239 - file_handler              - INFO - Loaded file from: src/outputs/news/articles/articles_2025-06-30.json
+2025-07-01 04:45:07,389 - matcher                   - INFO - Corpus prepared with 241 documents
+2025-07-01 04:45:07,393 - matcher                   - INFO - Matching items in category: key_events
+2025-07-01 04:45:08,245 - text_processor            - INFO - Extracted 88 lemmas from 8 sentences (7 successful parses)
+2025-07-01 04:45:09,367 - text_processor            - INFO - Extracted 92 lemmas from 9 sentences (8 successful parses)
+2025-07-01 04:45:10,551 - text_processor            - INFO - Extracted 87 lemmas from 8 sentences (8 successful parses)
+2025-07-01 04:45:11,683 - text_processor            - INFO - Extracted 92 lemmas from 8 sentences (8 successful parses)
+2025-07-01 04:45:12,582 - text_processor            - INFO - Extracted 54 lemmas from 8 sentences (6 successful parses)
+2025-07-01 04:45:13,549 - text_processor            - INFO - Extracted 64 lemmas from 8 sentences (7 successful parses)
+2025-07-01 04:45:14,690 - text_processor            - INFO - Extracted 75 lemmas from 8 sentences (7 successful parses)
+2025-07-01 04:45:15,418 - text_processor            - INFO - Extracted 50 lemmas from 6 sentences (5 successful parses)
+2025-07-01 04:45:15,616 - matcher                   - INFO - Matching items in category: domestic_news
+2025-07-01 04:45:15,915 - text_processor            - INFO - Extracted 26 lemmas from 4 sentences (3 successful parses)
+2025-07-01 04:45:16,248 - text_processor            - INFO - Extracted 13 lemmas from 3 sentences (2 successful parses)
+2025-07-01 04:45:16,749 - text_processor            - INFO - Extracted 25 lemmas from 4 sentences (3 successful parses)
+2025-07-01 04:45:17,112 - text_processor            - INFO - Extracted 6 lemmas from 3 sentences (1 successful parses)
+2025-07-01 04:45:17,431 - text_processor            - INFO - Extracted 13 lemmas from 3 sentences (2 successful parses)
+2025-07-01 04:45:17,624 - matcher                   - INFO - Matching items in category: foreign_news
+2025-07-01 04:45:17,958 - text_processor            - INFO - Extracted 44 lemmas from 4 sentences (4 successful parses)
+2025-07-01 04:45:18,438 - text_processor            - INFO - Extracted 38 lemmas from 4 sentences (4 successful parses)
+2025-07-01 04:45:19,137 - text_processor            - INFO - Extracted 24 lemmas from 3 sentences (2 successful parses)
+2025-07-01 04:45:19,471 - text_processor            - INFO - Extracted 9 lemmas from 2 sentences (1 successful parses)
+2025-07-01 04:45:19,663 - matcher                   - INFO - Matching items in category: business
+2025-07-01 04:45:19,723 - text_processor            - INFO - Extracted 7 lemmas from 2 sentences (1 successful parses)
+2025-07-01 04:45:20,011 - text_processor            - INFO - Extracted 11 lemmas from 2 sentences (1 successful parses)
+2025-07-01 04:45:20,399 - text_processor            - INFO - Extracted 21 lemmas from 3 sentences (2 successful parses)
+2025-07-01 04:45:20,807 - text_processor            - INFO - Extracted 15 lemmas from 3 sentences (2 successful parses)
+2025-07-01 04:45:21,111 - text_processor            - INFO - Extracted 9 lemmas from 2 sentences (1 successful parses)
+2025-07-01 04:45:21,300 - matcher                   - INFO - Matching items in category: famous_people
+2025-07-01 04:45:21,611 - text_processor            - INFO - Extracted 30 lemmas from 3 sentences (3 successful parses)
+2025-07-01 04:45:22,253 - text_processor            - INFO - Extracted 27 lemmas from 2 sentences (2 successful parses)
+2025-07-01 04:45:22,691 - text_processor            - INFO - Extracted 28 lemmas from 3 sentences (3 successful parses)
+2025-07-01 04:45:22,887 - matcher                   - INFO - Matching items in category: sports
+2025-07-01 04:45:23,034 - text_processor            - INFO - Extracted 12 lemmas from 3 sentences (2 successful parses)
+2025-07-01 04:45:23,341 - text_processor            - INFO - Extracted 23 lemmas from 3 sentences (3 successful parses)
+2025-07-01 04:45:23,587 - text_processor            - INFO - Extracted 6 lemmas from 2 sentences (1 successful parses)
+2025-07-01 04:45:23,921 - text_processor            - INFO - Extracted 23 lemmas from 2 sentences (2 successful parses)
+2025-07-01 04:45:24,115 - matcher                   - INFO - Matching items in category: arts
+2025-07-01 04:45:24,344 - text_processor            - INFO - Extracted 29 lemmas from 2 sentences (2 successful parses)
+2025-07-01 04:45:24,676 - text_processor            - INFO - Extracted 11 lemmas from 3 sentences (2 successful parses)
+2025-07-01 04:45:24,866 - matcher                   - INFO - Matching items in category: science
+2025-07-01 04:45:25,168 - text_processor            - INFO - Extracted 27 lemmas from 2 sentences (2 successful parses)
+2025-07-01 04:45:25,480 - text_processor            - INFO - Extracted 8 lemmas from 2 sentences (1 successful parses)
+2025-07-01 04:45:25,673 - nl_processor              - INFO - Setting impacts to NULL for all news items
+2025-07-01 04:45:25,674 - file_handler              - INFO - Saved file to: src/outputs/newsletters/processed/newsletter_processed_2025-06-30.json
+2025-07-01 04:45:25,674 - nl_processor              - INFO - Saved processed newsletter to: src/outputs/newsletters/processed/newsletter_processed_2025-06-30.json
+2025-07-01 04:45:25,675 - newsletter_generator      - INFO - Newsletter generation completed successfully
+2025-07-01 04:45:25,675 - __main__                  - INFO - ✓ Newsletter processing completed
+2025-07-01 04:45:25,675 - __main__                  - INFO - Step 5/6: Formatting newsletter
+2025-07-01 04:45:25,675 - newsletter_formatter      - INFO - Starting newsletter formatting...
+2025-07-01 04:45:25,676 - file_handler              - INFO - Loaded file from: src/outputs/newsletters/processed/newsletter_processed_2025-06-30.json
+2025-07-01 04:45:25,676 - newsletter_formatter      - INFO - Processing newsletter from newsletter_processed_2025-06-30.json
+2025-07-01 04:45:25,676 - newsletter_formatter      - INFO - Content keys: ['main_headline', 'summary', 'key_events', 'domestic_news', 'foreign_news', 'business', 'famous_people', 'sports', 'arts', 'science', 'closing_summary', 'summary_impact', 'summary_impact_urls']
+2025-07-01 04:45:25,677 - file_handler              - INFO - Loaded file from: src/outputs/news/article_groups/article_groups_2025-06-30.json
+2025-07-01 04:45:25,679 - file_handler              - INFO - Loaded file from: src/outputs/text/nl_style.txt
+2025-07-01 04:45:25,679 - newsletter_formatter      - INFO - Newsletter HTML formatting completed
+2025-07-01 04:45:25,680 - file_handler              - INFO - Saved file to: src/outputs/newsletters/formatted/newsletter_formatted_2025-06-30.html
+2025-07-01 04:45:25,680 - newsletter_formatter      - INFO - Formatted newsletter saved to: src/outputs/newsletters/formatted/newsletter_formatted_2025-06-30.html
+2025-07-01 04:45:25,680 - __main__                  - INFO - ✓ Newsletter formatting completed
+2025-07-01 04:45:25,680 - __main__                  - INFO - Step 6/6: Updating newsletter index
+2025-07-01 04:45:25,680 - update_index              - INFO - Starting index update...
+2025-07-01 04:45:25,689 - update_index              - INFO - Found 54 newsletter files
+2025-07-01 04:45:25,689 - update_index              - INFO - Updated latest newsletter card for date: 2025-06-30
+2025-07-01 04:45:25,694 - update_index              - INFO - Updated newsletter table with 54 entries
+2025-07-01 04:45:25,697 - update_index              - INFO - Successfully wrote updated index.html
+2025-07-01 04:45:25,698 - update_index              - INFO - Index update completed successfully
+2025-07-01 04:45:25,698 - __main__                  - INFO - ✓ Index update completed
+2025-07-01 04:45:25,698 - __main__                  - INFO - Step 7/7: Sending newsletter
+2025-07-01 04:45:26,506 - file_handler              - INFO - Loaded file from: src/outputs/newsletters/formatted/newsletter_formatted_2025-06-30.html
+2025-07-01 04:45:27,679 - send_newsletter           - INFO - Newsletter sent to Richard@styrksyn.is
+2025-07-01 04:45:28,607 - send_newsletter           - INFO - Newsletter sent to karirogg@gmail.com
+2025-07-01 04:45:29,393 - send_newsletter           - INFO - Newsletter sent to hallaemilia@gmail.com
+2025-07-01 04:45:30,404 - send_newsletter           - INFO - Newsletter sent to valdi7913@gmail.com
+2025-07-01 04:45:31,282 - send_newsletter           - INFO - Newsletter sent to jasonandrigislason@gmail.com
+2025-07-01 04:45:32,123 - send_newsletter           - INFO - Newsletter sent to Kristinlarus76@gmail.com
+2025-07-01 04:45:33,095 - send_newsletter           - INFO - Newsletter sent to arndishalla01@gmail.com
+2025-07-01 04:45:33,934 - send_newsletter           - INFO - Newsletter sent to Hanna.m.jonsd@gmail.com
+2025-07-01 04:45:33,945 - send_newsletter           - INFO - Newsletter sent to 8 subscribers
+2025-07-01 04:45:33,945 - __main__                  - INFO - ✓ Newsletter sending completed
+2025-07-01 04:45:33,945 - __main__                  - INFO - ✓ Newsletter automation pipeline completed successfully
