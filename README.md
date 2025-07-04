@@ -1,3 +1,4 @@
+# OLD REPO NO LONGER IN USE
 # Automated Newsletter Generation System
 
 This project is an automated system for generating and sending newsletters based on news articles. It includes functionality for scraping news, generating newsletters using AI, formatting them, and sending them to subscribers. The system also maintains a static website for newsletter archives and subscriptions.
